@@ -7,6 +7,12 @@
         
         <class>eagles.sabor_mel.model.Documento</class>
         <class>eagles.sabor_mel.model.Pessoa</class>
+        <class>eagles.sabor_mel.model.Cidade</class>
+        <class>eagles.sabor_mel.model.Estado</class>
+        <class>eagles.sabor_mel.model.Pais</class>
+        <class>eagles.sabor_mel.model.Endereco</class>
+        <class>eagles.sabor_mel.model.Funcionario</class>
+        <class>eagles.sabor_mel.model.Telefone</class>
         
         
         <properties>
