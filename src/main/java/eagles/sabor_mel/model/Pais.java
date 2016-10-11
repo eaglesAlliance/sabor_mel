@@ -5,6 +5,8 @@ import javax.persistence.*;
 import java.io.*;
 import java.util.*;
 
+@Entity
+@Table
 public class Pais implements Serializable{
     @Id
     @Column

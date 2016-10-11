@@ -6,6 +6,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table
 public class Estado implements Serializable{
     
     @Id
