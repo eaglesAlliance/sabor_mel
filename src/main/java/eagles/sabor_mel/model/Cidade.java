@@ -30,9 +30,8 @@ public class Cidade implements Serializable{
 
     public Cidade(){}
     
-    public Cidade(String cidade, Estado estado){
+    public Cidade(String cidade){
         this.cidade = cidade;
-        this.estado = estado;
     }
     
     public Long getIdCidade() {
@@ -56,6 +55,7 @@ public class Cidade implements Serializable{
     }
 
     public void setEstado(Estado estado) {
+        estado.addCidade(this);
         this.estado = estado;
     }
     
