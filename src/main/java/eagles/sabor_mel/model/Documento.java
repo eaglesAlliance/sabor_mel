@@ -25,7 +25,7 @@ public class Documento implements Serializable{
     
     public Documento(){}
     
-    public Documento(String tipo, String numero){
+    public Documento(String numero, String tipo){
         this.tipo = tipo;
         this.numero = numero;
     }
