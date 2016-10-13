@@ -27,9 +27,10 @@ public class Telefone implements Serializable{
 
     public Telefone(){}
     
-    public Telefone(String ddd, String numero){
+    public Telefone(String ddd, String numero, String tipo){
         this.ddd = ddd;
         this.numero = numero;
+        this.tipo = tipo;
     }
     
     
