@@ -540,11 +540,11 @@
                                                           <Component id="numero" min="-2" pref="41" max="-2" attributes="0"/>
                                                       </Group>
                                                       <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="jTextField1" min="-2" pref="206" max="-2" attributes="0"/>
+                                                          <Component id="bairro" min="-2" pref="206" max="-2" attributes="0"/>
                                                           <EmptySpace max="-2" attributes="0"/>
                                                           <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
                                                           <EmptySpace max="-2" attributes="0"/>
-                                                          <Component id="jTextField2" min="-2" pref="176" max="-2" attributes="0"/>
+                                                          <Component id="cidade" min="-2" pref="176" max="-2" attributes="0"/>
                                                           <EmptySpace max="32767" attributes="0"/>
                                                           <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
                                                           <EmptySpace max="-2" attributes="0"/>
@@ -617,8 +617,8 @@
                                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                       <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="bairro" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cidade" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                       <Component id="estados" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -692,6 +692,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="nome">
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="nomeMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel10">
               <Properties>
@@ -731,9 +734,6 @@
               </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="telefone">
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="try{ &#xd;&#xa;    javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter(&quot;####-#####&quot;);&#xd;&#xa;    telefone = new javax.swing.JFormattedTextField(mask);&#xd;&#xa;}&#xd;&#xa;catch (Exception e){&#xd;&#xa;}"/>
-              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="addTelefone">
               <Properties>
@@ -795,12 +795,7 @@
             <Component class="javax.swing.JComboBox" name="estados">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -862,6 +857,9 @@
                   <Image iconType="3" name="/img/checked (1).png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="confirmMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelTelefone2">
               <Properties>
@@ -874,9 +872,6 @@
               </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="telefone2">
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="try{ &#xd;&#xa;    javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter(&quot;####-#####&quot;);&#xd;&#xa;    telefone2 = new javax.swing.JFormattedTextField(mask);&#xd;&#xa;}&#xd;&#xa;catch (Exception e){&#xd;&#xa;}"/>
-              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="labelTelefone3">
               <Properties>
@@ -889,13 +884,10 @@
               </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="telefone3">
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="try{ &#xd;&#xa;    javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter(&quot;####-#####&quot;);&#xd;&#xa;    telefone3 = new javax.swing.JFormattedTextField(mask);&#xd;&#xa;}&#xd;&#xa;catch (Exception e){&#xd;&#xa;}"/>
-              </AuxValues>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField1">
+            <Component class="javax.swing.JTextField" name="bairro">
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField2">
+            <Component class="javax.swing.JTextField" name="cidade">
             </Component>
           </SubComponents>
         </Container>
