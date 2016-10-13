@@ -14,24 +14,24 @@ public class Funcionario implements Serializable{
     private Long idFuncionario;
     
     @Column
-    private String nomeUsuario;
+    private String usuario;
     
     @Column
     private String senha;
     
     @Column
-    private String tipoFuncionario;
+    private String tipo;
     
     @OneToOne
-    @JoinColumn(name="idPessoa")
+    @JoinColumn(name="pessoa", nullable= false)
     private Pessoa pessoa;
     
     public Funcionario(){}
     
-    public Funcionario(String nomeUsuario, String senha, String tipoFuncionario, Pessoa pessoa){
-        this.nomeUsuario = nomeUsuario;
+    public Funcionario(String usuario, String senha, String tipo, Pessoa pessoa){
+        this.usuario = usuario;
         this.senha = senha;
-        this.tipoFuncionario = tipoFuncionario;
+        this.tipo = tipo;
         this.pessoa = pessoa;
     }
 
@@ -43,12 +43,12 @@ public class Funcionario implements Serializable{
         this.idFuncionario = idFuncionario;
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public void setusuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getSenha() {
@@ -59,12 +59,12 @@ public class Funcionario implements Serializable{
         this.senha = senha;
     }
 
-    public String getTipoFuncionario() {
-        return tipoFuncionario;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setTipoFuncionario(String tipoFuncionario) {
-        this.tipoFuncionario = tipoFuncionario;
+    public void setTipoo(String tipoFuncionario) {
+        this.tipo = tipoFuncionario;
     }
 
     public Pessoa getPessoa() {

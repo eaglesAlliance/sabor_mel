@@ -16,14 +16,13 @@ public class Estado implements Serializable{
     private Long idEstado;
     
     @Column
-    private String estado;
+    private String nome;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "idPais", nullable = false)
-    private Pais pais;
+    @Column
+    private String uf;
     
     @OneToMany(
-       mappedBy = "idCidade", 
+       mappedBy = "estado", 
        targetEntity = Cidade.class, 
        fetch = FetchType.LAZY, 
        cascade = CascadeType.ALL)
@@ -31,9 +30,9 @@ public class Estado implements Serializable{
     
     public Estado(){}
     
-    public Estado(String estado, Pais pais){
-        this.estado = estado;
-        this.pais = pais;
+    public Estado(String nome, String uf){
+        this.nome = nome;
+        this.uf = uf;
     }
 
     public Long getIdEstado() {
@@ -44,21 +43,14 @@ public class Estado implements Serializable{
         this.idEstado = idEstado;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getNome() {
+        return nome;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public Pais getPais() {
-        return pais;
-    }
-
-    public void setPais(Pais pais) {
-        this.pais = pais;
-    }
     
     public List<Cidade> getCidades() {
         return cidades;
@@ -67,4 +59,13 @@ public class Estado implements Serializable{
     public void addCidade(Cidade cidade) {
         this.cidades.add(cidade);
     }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+    
 }

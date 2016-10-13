@@ -18,8 +18,11 @@ public class Telefone implements Serializable{
     @Column
     private String numero;
     
+    @Column
+    private String tipo;
+ 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "idPessoa", nullable = false)
+    @JoinColumn(name = "pessoa", nullable = false)
     private Pessoa pessoa;
 
     public Telefone(){}
@@ -52,6 +55,14 @@ public class Telefone implements Serializable{
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+    
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public Pessoa getPessoa() {

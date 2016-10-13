@@ -23,10 +23,10 @@ public class Cidade implements Serializable{
     
     @OneToMany(
        mappedBy = "cidade", 
-       targetEntity = Endereco.class, 
+       targetEntity = Bairro.class, 
        fetch = FetchType.LAZY, 
        cascade = CascadeType.ALL)
-    private final List<Endereco> enderecos = new ArrayList<Endereco>();
+    private final List<Bairro> bairros = new ArrayList<Bairro>();
 
     public Cidade(){}
     
@@ -59,11 +59,11 @@ public class Cidade implements Serializable{
         this.estado = estado;
     }
     
-    public List<Endereco> getEnderecos() {
-        return enderecos;
+    public List<Bairro> getBairros() {
+        return bairros;
     }
 
-    public void addEndereco(Endereco endereco) {
-        this.enderecos.add(endereco);
+    public void addBairro(Bairro bairro) {
+        this.bairros.add(bairro);
     }
 }

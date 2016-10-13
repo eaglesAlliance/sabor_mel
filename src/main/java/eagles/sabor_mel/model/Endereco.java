@@ -14,38 +14,52 @@ public class Endereco implements Serializable{
     private Long idEndereco;
     
     @Column
+    private String logradouro;
+    
+    @Column
+    private String numero;
+    
+    @Column
     private String cep;
     
-    @Column
-    private String definicao;
-    
-    @Column
-    private String nome;
-    
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "idPessoa", nullable = false)
+    @OneToOne(mappedBy = "endereco")
     private Pessoa pessoa;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "idCidade", nullable = false)
-    private Cidade cidade;
-
+    @JoinColumn(name = "bairro", nullable = false)
+    private Bairro bairro;
+    
+    
     public Endereco(){}
     
-    public Endereco(String definicao, String nome, String cep, Cidade cidade, Pessoa pessoa){
-        this.definicao = definicao;
-        this.nome = nome;
-        this.cep = cep;
-        this.cidade = cidade;
-        this.pessoa = pessoa;
+    public Endereco(String logradouro, String numero, Bairro bairro){
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.bairro = bairro;
     }
-    
+
     public Long getIdEndereco() {
         return idEndereco;
     }
 
     public void setIdEndereco(Long idEndereco) {
         this.idEndereco = idEndereco;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
     public String getCep() {
@@ -56,22 +70,6 @@ public class Endereco implements Serializable{
         this.cep = cep;
     }
 
-    public String getDefinicao() {
-        return definicao;
-    }
-
-    public void setDefinicao(String definicao) {
-        this.definicao = definicao;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public Pessoa getPessoa() {
         return pessoa;
     }
@@ -80,12 +78,12 @@ public class Endereco implements Serializable{
         this.pessoa = pessoa;
     }
 
-    public Cidade getCidade() {
-        return cidade;
+    public Bairro getBairro() {
+        return bairro;
     }
 
-    public void setCidade(Cidade cidade) {
-        this.cidade = cidade;
+    public void setBairro(Bairro bairro) {
+        this.bairro = bairro;
     }
     
     

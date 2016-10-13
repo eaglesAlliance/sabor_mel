@@ -4,9 +4,9 @@ package eagles.sabor_mel.dao;
 import eagles.sabor_mel.model.*;
 import java.util.*;
 
-public class PaisDAO extends DAO<Pais>{
-    public Pais getById(final Long id) {
-        return entityManager.find(Pais.class, id);
+public class BairroDAO extends DAO<Bairro>{
+    public Bairro getById(final Long id) {
+        return entityManager.find(Bairro.class, id);
     }
  
     public boolean removeById(final Long id) {
@@ -14,8 +14,8 @@ public class PaisDAO extends DAO<Pais>{
     	boolean result = true;
     	
         try {
-            Pais pais = this.getById(id);
-            super.remove(pais);
+            Bairro bairro = this.getById(id);
+            super.remove(bairro);
         } catch (Exception ex) {
             ex.printStackTrace();
             result = false;
@@ -25,8 +25,8 @@ public class PaisDAO extends DAO<Pais>{
     }
  
     @SuppressWarnings("unchecked")
-	public List<Pais> findAll() {
+	public List<Bairro> findAll() {
     	return entityManager
-    		.createQuery("FROM Pais").getResultList();
+    		.createQuery("FROM Bairro").getResultList();
     }
 }

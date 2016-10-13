@@ -14,7 +14,7 @@ public class Documento implements Serializable{
     private Long idDocumento;
     
     @Column
-    private String tipoDocumento;
+    private String tipo;
     
     @Column
     private String numero;
@@ -25,8 +25,8 @@ public class Documento implements Serializable{
     
     public Documento(){}
     
-    public Documento(String tipoDocumento, String numero){
-        this.tipoDocumento = tipoDocumento;
+    public Documento(String tipo, String numero){
+        this.tipo = tipo;
         this.numero = numero;
     }
     
@@ -38,12 +38,12 @@ public class Documento implements Serializable{
         this.idDocumento = idDocumento;
     }
 
-    public String getTipoDocumento() {
-        return tipoDocumento;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+    public void setTipo(String tipoDocumento) {
+        this.tipo = tipoDocumento;
     }
 
     public String getNumero() {

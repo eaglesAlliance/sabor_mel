@@ -19,6 +19,18 @@ public class Pessoa implements Serializable{
     @JoinColumn(name = "documento")
     private Documento documento;
     
+    @OneToOne
+    @JoinColumn(name = "endereco")
+    private Endereco endereco;
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+    
     @Column
     private String email;
     
