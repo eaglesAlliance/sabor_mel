@@ -28,11 +28,10 @@ public class Funcionario implements Serializable{
     
     public Funcionario(){}
     
-    public Funcionario(String usuario, String senha, String tipo, Pessoa pessoa){
+    public Funcionario(String usuario, String senha, String tipo){
         this.usuario = usuario;
         this.senha = senha;
         this.tipo = tipo;
-        this.pessoa = pessoa;
     }
 
     public Long getIdFuncionario() {
@@ -63,7 +62,7 @@ public class Funcionario implements Serializable{
         return tipo;
     }
 
-    public void setTipoo(String tipoFuncionario) {
+    public void setTipo(String tipoFuncionario) {
         this.tipo = tipoFuncionario;
     }
 
@@ -72,6 +71,7 @@ public class Funcionario implements Serializable{
     }
 
     public void setPessoa(Pessoa pessoa) {
+        pessoa.setFuncionario(this);
         this.pessoa = pessoa;
     }
     
