@@ -29,8 +29,16 @@ public class Bairro implements Serializable{
     
     public Bairro(){}
     
-    public Bairro(String nome, Cidade cidade){
+    public Bairro(String nome){
         this.nome = nome;
+    }
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        cidade.addBairro(this);
         this.cidade = cidade;
     }
 
