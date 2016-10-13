@@ -32,10 +32,10 @@ public class Endereco implements Serializable{
     
     public Endereco(){}
     
-    public Endereco(String logradouro, String numero, Bairro bairro){
+    public Endereco(String logradouro, String numero, String cep){
         this.logradouro = logradouro;
         this.numero = numero;
-        this.bairro = bairro;
+        this.cep = cep;
     }
 
     public Long getIdEndereco() {
@@ -83,6 +83,7 @@ public class Endereco implements Serializable{
     }
 
     public void setBairro(Bairro bairro) {
+        bairro.addEndereco(this);
         this.bairro = bairro;
     }
     
