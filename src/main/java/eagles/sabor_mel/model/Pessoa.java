@@ -28,6 +28,7 @@ public class Pessoa implements Serializable{
     }
 
     public void setEndereco(Endereco endereco) {
+        endereco.setPessoa(this);
         this.endereco = endereco;
     }
     
@@ -45,11 +46,21 @@ public class Pessoa implements Serializable{
         cascade = CascadeType.ALL)
     private final List<Telefone> telefones = new ArrayList<Telefone>();
     
+    @OneToOne(mappedBy = "pessoa")
+    private Funcionario funcionario;
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+    
     public Pessoa(){}
     
-    public Pessoa(String nome, String email, Calendar dataNascimento, Documento documento){
+    public Pessoa(String nome, String email, Calendar dataNascimento){
         this.nome = nome;
-        this.documento = documento;
         this.dataNascimento = dataNascimento;
         this.email = email;
     }
@@ -91,6 +102,7 @@ public class Pessoa implements Serializable{
     }
 
     public void setDocumento(Documento documento) {
+        documento.setPessoa(this);
         this.documento = documento;
     }
     
@@ -99,6 +111,7 @@ public class Pessoa implements Serializable{
 	}
 
     public void addTelefone(Telefone telefone) {
+            telefone.setPessoa(this);
             this.telefones.add(telefone);
     }
     
