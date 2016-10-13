@@ -29,4 +29,9 @@ public class EstadoDAO extends DAO<Estado>{
     	return entityManager
     		.createQuery("FROM Estado").getResultList();
     }
+        
+        
+    public List<Estado> findByUf(String uf){
+        return entityManager.createQuery("FROM Estado WHERE uf = "+uf).getResultList();
+    }
 }
