@@ -41,7 +41,7 @@ public abstract class DAO<E> {
         
         return result;
     }
- 
+    
     public boolean merge(E object) {
     	
     	boolean result = true;
