@@ -16,11 +16,11 @@ public class Pessoa implements Serializable{
     private String nome;
     
     @OneToOne
-    @JoinColumn(name = "documento")
+    @JoinColumn(name="documento")
     private Documento documento;
     
     @OneToOne
-    @JoinColumn(name = "endereco")
+    @JoinColumn(name="endereco")
     private Endereco endereco;
 
     public Endereco getEndereco() {

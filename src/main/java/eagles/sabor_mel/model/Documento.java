@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.io.*;
 
 @Entity
-@Table
+@Table/*( uniqueConstraints ={ @UniqueConstraint( columnNames = "numero" ) } )*/
 public class Documento implements Serializable{
     
     @Id
@@ -19,7 +19,7 @@ public class Documento implements Serializable{
     @Column
     private String numero;
     
-    @OneToOne(mappedBy = "documento")
+    @OneToOne(mappedBy="documento")
     private Pessoa pessoa;
 
     

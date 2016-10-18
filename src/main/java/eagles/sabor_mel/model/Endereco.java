@@ -22,7 +22,7 @@ public class Endereco implements Serializable{
     @Column
     private String cep;
     
-    @OneToOne(mappedBy = "endereco")
+    @OneToOne(mappedBy="endereco")
     private Pessoa pessoa;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

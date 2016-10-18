@@ -23,7 +23,7 @@ public class Funcionario implements Serializable{
     private String tipo;
     
     @OneToOne
-    @JoinColumn(name="pessoa", nullable= false)
+    @JoinColumn(name="pessoa", nullable=false)
     private Pessoa pessoa;
     
     public Funcionario(){}
