@@ -55,7 +55,7 @@ public class Validation {
     
     
     public boolean validateCombo(int index){
-        return index != 0;
+        return index != -1;
     }
     
     public boolean validateUsuario(String usuario){
