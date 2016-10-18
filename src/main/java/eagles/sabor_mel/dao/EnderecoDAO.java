@@ -29,4 +29,9 @@ public class EnderecoDAO extends DAO<Endereco>{
     	return entityManager
     		.createQuery("FROM Endereco").getResultList();
     }
+        
+    @SuppressWarnings("JPQLValidation")
+        public Long getMax(){
+            return (Long)entityManager.createQuery("SELECT MAX(idEndereco) FROM Endereco").getSingleResult();
+        }
 }
