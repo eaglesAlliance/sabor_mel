@@ -16,17 +16,19 @@ import eagles.sabor_mel.dao.PessoaDAO;
 import eagles.sabor_mel.dao.TelefoneDAO;
 import eagles.sabor_mel.model.Bairro;
 import eagles.sabor_mel.model.Cidade;
+import eagles.sabor_mel.model.Documento;
 import eagles.sabor_mel.model.Endereco;
 import eagles.sabor_mel.model.Estado;
+import eagles.sabor_mel.model.Funcionario;
+import eagles.sabor_mel.model.Pessoa;
+import eagles.sabor_mel.model.Telefone;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.util.ArrayList;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.List;
-import java.util.regex.Pattern;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -42,13 +44,25 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(this.MAXIMIZED_BOTH); 
         
         
-        EstadoDAO estDAO = new EstadoDAO();
-        List<Estado> listEstados = estDAO.findAll();
+        carregaComboEstados();
         
-        for(int i = 0; i < listEstados.size(); i++){
-            estados.addItem(listEstados.get(i).getUf());
+        carregaUsuarios();
+        
+        redefineEstilo();
+        
+        
+    }
+
+    public void carregaComboEstados() {
+        EstadoDAO estadoDAO = new EstadoDAO();
+        List<Estado> listDaoEstados = estadoDAO.findAll();
+        
+        for(int i = 0; i < listDaoEstados.size(); i++){
+            estados.addItem(listDaoEstados.get(i).getUf());
         }
-        
+    }
+
+    public void redefineEstilo() {
         acessos.setBackground(Color.white);
         estados.setBackground(Color.white);
         
@@ -59,6 +73,32 @@ public class Principal extends javax.swing.JFrame {
         labelTelefone3.setVisible(false);
         ddd3.setVisible(false);
         telefone3.setVisible(false);
+    }
+
+    public void carregaUsuarios() {
+        PessoaDAO daoPessoa = new PessoaDAO();
+        List<Pessoa> pessoas = daoPessoa.findAll();
+        ((DefaultTableModel)tabelaUsuario.getModel()).setNumRows(0);
+        for(int i = 0; i < pessoas.size(); i++){
+            String acesso = pessoas.get(i).getFuncionario().getTipo();
+            String tipo = "";
+            
+            switch(acesso){
+                case("V"):
+                    tipo = "Vendedor";
+                    break;
+                case("A"):
+                    tipo = "Administrador";
+                    break;
+            }
+            
+            ((DefaultTableModel)tabelaUsuario.getModel()).addRow(new String[]{
+                pessoas.get(i).getFuncionario().getIdFuncionario().toString(),
+                pessoas.get(i).getNome(),
+                pessoas.get(i).getFuncionario().getUsuario(), 
+                tipo
+            });
+        }
     }
     
     /**
@@ -173,6 +213,7 @@ public class Principal extends javax.swing.JFrame {
         telefone3 = new javax.swing.JTextField();
         bairro = new javax.swing.JTextField();
         cidade = new javax.swing.JTextField();
+        btnRefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -395,15 +436,20 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "Usuário", "Acesso"
+                "ID", "Nome", "Usuário", "Acesso"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tabelaUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaUsuarioMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tabelaUsuario);
@@ -458,7 +504,7 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel24.setText("Acesso");
 
-        acessos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        acessos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vendedor", "Administrador" }));
 
         delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete.png"))); // NOI18N
 
@@ -472,6 +518,13 @@ public class Principal extends javax.swing.JFrame {
         labelTelefone2.setText("Telefone 2");
 
         labelTelefone3.setText("Telefone 3");
+
+        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/refresh-page-option.png"))); // NOI18N
+        btnRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRefreshMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout usuariosLayout = new javax.swing.GroupLayout(usuarios);
         usuarios.setLayout(usuariosLayout);
@@ -488,100 +541,101 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addGroup(usuariosLayout.createSequentialGroup()
                                 .addGap(2, 2, 2)
-                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(usuariosLayout.createSequentialGroup()
+                                        .addComponent(btnRefresh)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(confirm)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(delete))
-                                    .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(usuariosLayout.createSequentialGroup()
-                                            .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(usuariosLayout.createSequentialGroup()
-                                                    .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(usuariosLayout.createSequentialGroup()
-                                                            .addComponent(jLabel11)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(dataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(jLabel12)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(documento, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(usuariosLayout.createSequentialGroup()
-                                                            .addComponent(jLabel9)
-                                                            .addGap(19, 19, 19)
-                                                            .addComponent(nome)))
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usuariosLayout.createSequentialGroup()
-                                                    .addComponent(jLabel14)
-                                                    .addGap(292, 292, 292)))
-                                            .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(usuariosLayout.createSequentialGroup()
-                                                    .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel10)
-                                                        .addComponent(jLabel13))
-                                                    .addGap(27, 27, 27)
-                                                    .addComponent(email))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usuariosLayout.createSequentialGroup()
-                                                    .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addGroup(usuariosLayout.createSequentialGroup()
-                                                            .addComponent(labelTelefone3)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                            .addComponent(ddd3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(telefone3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
-                                                            .addGap(69, 69, 69)
-                                                            .addComponent(ddd, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(telefone, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                            .addGap(0, 0, Short.MAX_VALUE))
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
-                                                            .addComponent(labelTelefone2)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                            .addComponent(ddd2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(telefone2)))
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(addTelefone))))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
-                                            .addComponent(jLabel22)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel23)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel24)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(acessos, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
-                                            .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel18)
-                                                .addComponent(jLabel15))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(usuariosLayout.createSequentialGroup()
-                                                    .addComponent(cep, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(jLabel16)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(logradouro)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(jLabel17)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(numero, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(usuariosLayout.createSequentialGroup()
-                                                    .addComponent(bairro, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(jLabel19)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(cidade, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(jLabel20)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(estados, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))))))))))
+                                    .addGroup(usuariosLayout.createSequentialGroup()
+                                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(usuariosLayout.createSequentialGroup()
+                                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(usuariosLayout.createSequentialGroup()
+                                                        .addComponent(jLabel11)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(dataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jLabel12)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(documento, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(usuariosLayout.createSequentialGroup()
+                                                        .addComponent(jLabel9)
+                                                        .addGap(19, 19, 19)
+                                                        .addComponent(nome)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usuariosLayout.createSequentialGroup()
+                                                .addComponent(jLabel14)
+                                                .addGap(292, 292, 292)))
+                                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(usuariosLayout.createSequentialGroup()
+                                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel10)
+                                                    .addComponent(jLabel13))
+                                                .addGap(27, 27, 27)
+                                                .addComponent(email))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usuariosLayout.createSequentialGroup()
+                                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addGroup(usuariosLayout.createSequentialGroup()
+                                                        .addComponent(labelTelefone3)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(ddd3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(telefone3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
+                                                        .addGap(69, 69, 69)
+                                                        .addComponent(ddd, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(telefone, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(0, 0, Short.MAX_VALUE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
+                                                        .addComponent(labelTelefone2)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(ddd2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(telefone2)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(addTelefone))))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
+                                        .addComponent(jLabel22)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel23)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel24)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(acessos, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
+                                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel18)
+                                            .addComponent(jLabel15))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(usuariosLayout.createSequentialGroup()
+                                                .addComponent(cep, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel16)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(logradouro)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel17)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(numero, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(usuariosLayout.createSequentialGroup()
+                                                .addComponent(bairro, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel19)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cidade, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel20)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(estados, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))))))))
                 .addContainerGap(88, Short.MAX_VALUE))
         );
         usuariosLayout.setVerticalGroup(
@@ -609,50 +663,55 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(ddd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(telefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(addTelefone))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelTelefone2)
-                            .addComponent(ddd2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(telefone2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelTelefone3)
-                            .addComponent(ddd3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(telefone3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
-                            .addComponent(cep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16)
-                            .addComponent(logradouro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17)
-                            .addComponent(numero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel19)
-                                .addComponent(jLabel18)
-                                .addComponent(bairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(cidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel20)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel22)
-                            .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel23)
-                            .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel24)
-                            .addComponent(acessos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44)
-                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(delete)
-                            .addComponent(confirm)))
+                        .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(usuariosLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelTelefone2)
+                                    .addComponent(ddd2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(telefone2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelTelefone3)
+                                    .addComponent(ddd3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(telefone3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel15)
+                                    .addComponent(cep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel16)
+                                    .addComponent(logradouro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel17)
+                                    .addComponent(numero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel19)
+                                        .addComponent(jLabel18)
+                                        .addComponent(bairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel20)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel21)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel22)
+                                    .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel23)
+                                    .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel24)
+                                    .addComponent(acessos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(44, 44, 44)
+                                .addGroup(usuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(delete)
+                                    .addComponent(confirm)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usuariosLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnRefresh))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
@@ -792,25 +851,23 @@ public class Principal extends javax.swing.JFrame {
                                                         if(validate.validateSenha(senha.getText())){
                                                             if(validate.validateCombo(acessos.getSelectedIndex())){
                                                                 System.out.println("ALL DONE!!!!");
-                                                                System.out.println(nome.getText());
-                                                                System.out.println(email.getText());
-                                                                System.out.println(dataNascimento.getText());
-                                                                System.out.println(documento.getText());
-                                                                System.out.println(ddd.getText());
-                                                                System.out.println(telefone.getText());
-                                                                System.out.println(cep.getText());
-                                                                System.out.println(logradouro.getText());
-                                                                System.out.println(bairro.getText());
-                                                                System.out.println(cidade.getText());
-                                                                System.out.println(numero.getText());
-                                                                System.out.println(usuario.getText());
-                                                                System.out.println(senha.getText());
-                                                                System.out.println(acessos.getSelectedItem());
-                                                                System.out.println(estados.getSelectedItem());
+                                                                
+                                                                
+                                                                //acessos.getSelectedItem();
+                                                                //estados.getSelectedItem();
                                                                 
                                                                 
                                                                 
                                                                 /*Persistence With Hibernate - Good Luck For Us!!!!*/
+                                                                Calendar c = Calendar.getInstance();
+                                                                int day   = Integer.parseInt(dataNascimento.getText().substring(0, 2));
+                                                                int month = Integer.parseInt(dataNascimento.getText().substring(3, 5));
+                                                                int year  = Integer.parseInt(dataNascimento.getText().substring(6, 10));
+                                                                
+                                                                String tipoAcesso = acessos.getSelectedItem().toString().substring(0, 1);
+                                                                System.out.println(tipoAcesso);
+                                                                c.set(year, (month-1), day);
+                                                                
                                                                 EstadoDAO      estDAO = new EstadoDAO();
                                                                 CidadeDAO      cidDAO = new CidadeDAO();
                                                                 BairroDAO      baiDAO = new BairroDAO();
@@ -819,21 +876,47 @@ public class Principal extends javax.swing.JFrame {
                                                                 DocumentoDAO   docDAO = new DocumentoDAO();
                                                                 FuncionarioDAO funDAO = new FuncionarioDAO();
                                                                 TelefoneDAO    telDAO = new TelefoneDAO();
+
                                                                 
-                                                                List<Estado> listDAOEst = estDAO.findByUf((String) estados.getSelectedItem());
+                                                                Cidade objCidade           = new Cidade     (cidade.getText());
+                                                                Bairro objBairro           = new Bairro     (bairro.getText());
+                                                                Endereco objEndereco       = new Endereco   (logradouro.getText(), numero.getText(), cep.getText());
+                                                                Pessoa objPessoa           = new Pessoa     (nome.getText(), email.getText(), c);
+                                                                Documento objDocumento     = new Documento  (documento.getText(), "CPF");
+                                                                Funcionario objFuncionario = new Funcionario(usuario.getText(), senha.getText(), tipoAcesso);
+                                                                Telefone objTelefone       = new Telefone   (ddd.getText(), telefone.getText(), "F");
                                                                 
-                                                                for(int i = 0; i < listDAOEst.size(); i++){
-                                                                    Cidade objCidade = new Cidade(cidade.getText(),listDAOEst.get(i));
-                                                                    listDAOEst.get(i).addCidade(objCidade);
+                                                                
+                                                                List<Estado> list = estDAO.findByUf((String) estados.getSelectedItem());
+                                                                
+                                                                for(int i = 0; i < list.size(); i++){
                                                                     
-                                                                    Bairro objBairro = new Bairro(bairro.getText(),objCidade);
-                                                                    objCidade.addBairro(objBairro);
-                                                                    
-                                                                    Endereco objEndereco = new Endereco(logradouro.getText(), numero.getText(), cep.getText(), objBairro);
-                                                                    objBairro.addEndereco(objEndereco);
-                                                                    
-                                                                    
+                                                                    list.get(i).addCidade(objCidade);
+                                                                    objCidade.setEstado(list.get(i));
+
+
+                                                                    //cidade.setEstado(estado);
+
+                                                                    objBairro.setCidade(objCidade);
+                                                                    objEndereco.setBairro(objBairro);
+                                                                    //endDAO.merge(endereco);
+                                                                    endDAO.merge(objEndereco);
+                                                                    //System.out.println(endDAO.getMax());
+                                                                    objPessoa.setEndereco(endDAO.getById(endDAO.getMax()));
+                                                                    docDAO.persist(objDocumento);
+                                                                    objPessoa.setDocumento(objDocumento);
+                                                                    objPessoa.addTelefone(objTelefone);
+                                                                    pesDAO.persist(objPessoa);
+
+                                                                    objFuncionario.setPessoa(objPessoa);
+
+                                                                    funDAO.persist(objFuncionario);
+                                                                    //System.out.println(list.get(i).getCidades());
                                                                 }
+                                                                
+                                                                limpaCampos();
+                                                                
+                                                                carregaUsuarios();
                                                             }
                                                             else{
                                                                 JOptionPane.showMessageDialog(null, "Selcione o tipo de acesso");
@@ -905,9 +988,67 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_confirmMouseClicked
 
+    public void limpaCampos() {
+        nome.setText(" ");
+        email.setText(" ");
+        dataNascimento.setText(null);
+        documento.setText(null);
+        ddd.setText(null);
+        telefone.setText(" ");
+        cep.setText(null);
+        logradouro.setText(" ");
+        bairro.setText(" ");
+        cidade.setText(" ");
+        numero.setText(" ");
+        usuario.setText(" ");
+        senha.setText(null);
+    }
+
     private void nomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nomeMouseClicked
         nome.setBackground(Color.white);
     }//GEN-LAST:event_nomeMouseClicked
+
+    private void tabelaUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaUsuarioMouseClicked
+        DecimalFormat df = new DecimalFormat("00");
+        DecimalFormat dff = new DecimalFormat("0000");
+        Long id = Long.parseLong((String) tabelaUsuario.getValueAt(tabelaUsuario.getSelectedRow(), 0));
+        FuncionarioDAO dao = new FuncionarioDAO();
+        Funcionario funcionario = dao.getById(id);
+        
+        nome.setText(funcionario.getPessoa().getNome());
+        email.setText(funcionario.getPessoa().getEmail());
+        
+        String dia = (df.format(funcionario.getPessoa().getDataNascimento().get(Calendar.DAY_OF_MONTH)));
+        String mes = (df.format(funcionario.getPessoa().getDataNascimento().get(Calendar.MONTH)+1));
+        String ano = dff.format(funcionario.getPessoa().getDataNascimento().get(Calendar.YEAR));
+        
+        dataNascimento.setText(dia+"/"+mes+"/"+ano);
+        documento.setText(funcionario.getPessoa().getDocumento().getNumero());
+        ddd.setText(funcionario.getPessoa().getTelefones().get(0).getDdd());
+        telefone.setText(funcionario.getPessoa().getTelefones().get(0).getNumero());
+        cep.setText(funcionario.getPessoa().getEndereco().getCep());
+        logradouro.setText(funcionario.getPessoa().getEndereco().getLogradouro());
+        numero.setText(funcionario.getPessoa().getEndereco().getNumero());
+        bairro.setText(funcionario.getPessoa().getEndereco().getBairro().getNome());
+        cidade.setText(funcionario.getPessoa().getEndereco().getBairro().getCidade().getCidade());
+        usuario.setText(funcionario.getUsuario());
+        senha.setText(funcionario.getSenha());
+        System.out.println(funcionario.getTipo());
+        if(funcionario.getTipo().equals("V")){
+            acessos.setSelectedItem("Vendedor");
+        }
+        else{
+            acessos.setSelectedItem("Administrador");
+        }
+        estados.setSelectedItem(funcionario.getPessoa().getEndereco().getBairro().getCidade().getEstado().getUf());
+        
+        delete.setVisible(true);
+    }//GEN-LAST:event_tabelaUsuarioMouseClicked
+
+    private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
+        limpaCampos();
+        delete.setVisible(false);
+    }//GEN-LAST:event_btnRefreshMouseClicked
 
     /**
      * @param args the command line arguments
@@ -952,6 +1093,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnCompra;
     private javax.swing.JButton btnFornecedor;
     private javax.swing.JButton btnProduto;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnRelatorio;
     private javax.swing.JButton btnUsuario;
     private javax.swing.JButton btnVenda;
