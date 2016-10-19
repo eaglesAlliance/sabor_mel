@@ -57,6 +57,7 @@ public class Estado implements Serializable{
     }
 
     public void addCidade(Cidade cidade) {
+        cidade.setEstado(this);
         this.cidades.add(cidade);
     }
 

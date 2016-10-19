@@ -15,20 +15,28 @@ public class Pessoa implements Serializable{
     @Column
     private String nome;
     
-    @OneToOne
-    @JoinColumn(name="documento")
-    private Documento documento;
     
-    @OneToOne
-    @JoinColumn(name="endereco")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="endereco", nullable=false)
     private Endereco endereco;
+    
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="documento", nullable=false)
+    private Documento documento;
+
+    public Documento getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
+    }
 
     public Endereco getEndereco() {
         return endereco;
     }
 
     public void setEndereco(Endereco endereco) {
-        endereco.setPessoa(this);
         this.endereco = endereco;
     }
     
@@ -45,17 +53,6 @@ public class Pessoa implements Serializable{
         fetch = FetchType.LAZY, 
         cascade = CascadeType.ALL)
     private final List<Telefone> telefones = new ArrayList<Telefone>();
-    
-    @OneToOne(mappedBy = "pessoa")
-    private Funcionario funcionario;
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
-    }
     
     public Pessoa(){}
     
@@ -95,15 +92,6 @@ public class Pessoa implements Serializable{
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public Documento getDocumento() {
-        return documento;
-    }
-
-    public void setDocumento(Documento documento) {
-        documento.setPessoa(this);
-        this.documento = documento;
     }
     
     public List<Telefone> getTelefones() {

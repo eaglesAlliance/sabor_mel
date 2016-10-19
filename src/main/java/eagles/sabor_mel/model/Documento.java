@@ -19,8 +19,7 @@ public class Documento implements Serializable{
     @Column
     private String numero;
     
-    @OneToOne(mappedBy="documento")
-    private Pessoa pessoa;
+    
 
     
     public Documento(){}
@@ -54,11 +53,5 @@ public class Documento implements Serializable{
         this.numero = numero;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }   
+    
 }

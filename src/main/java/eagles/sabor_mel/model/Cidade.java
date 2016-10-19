@@ -55,7 +55,6 @@ public class Cidade implements Serializable{
     }
 
     public void setEstado(Estado estado) {
-        //estado.addCidade(this);
         this.estado = estado;
     }
     
@@ -64,6 +63,7 @@ public class Cidade implements Serializable{
     }
 
     public void addBairro(Bairro bairro) {
+        bairro.setCidade(this);
         this.bairros.add(bairro);
     }
 }

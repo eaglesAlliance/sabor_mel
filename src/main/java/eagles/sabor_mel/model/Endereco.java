@@ -22,10 +22,9 @@ public class Endereco implements Serializable{
     @Column
     private String cep;
     
-    @OneToOne(mappedBy="endereco")
-    private Pessoa pessoa;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "bairro", nullable = false)
     private Bairro bairro;
     
@@ -70,20 +69,13 @@ public class Endereco implements Serializable{
         this.cep = cep;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
+   
 
     public Bairro getBairro() {
         return bairro;
     }
 
     public void setBairro(Bairro bairro) {
-        bairro.addEndereco(this);
         this.bairro = bairro;
     }
     

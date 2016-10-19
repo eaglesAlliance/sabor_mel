@@ -38,7 +38,6 @@ public class Bairro implements Serializable{
     }
 
     public void setCidade(Cidade cidade) {
-        cidade.addBairro(this);
         this.cidade = cidade;
     }
 
@@ -63,6 +62,7 @@ public class Bairro implements Serializable{
     }
 
     public void addEndereco(Endereco endereco) {
+        endereco.setBairro(this);
         this.enderecos.add(endereco);
     }
 }

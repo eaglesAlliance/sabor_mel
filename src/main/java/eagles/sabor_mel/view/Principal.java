@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -76,11 +77,11 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public void carregaUsuarios() {
-        PessoaDAO daoPessoa = new PessoaDAO();
-        List<Pessoa> pessoas = daoPessoa.findAll();
+        FuncionarioDAO dao = new FuncionarioDAO();
+        List<Funcionario> funcionarios = dao.findAll();
         ((DefaultTableModel)tabelaUsuario.getModel()).setNumRows(0);
-        for(int i = 0; i < pessoas.size(); i++){
-            String acesso = pessoas.get(i).getFuncionario().getTipo();
+        for(int i = 0; i < funcionarios.size(); i++){
+            String acesso = funcionarios.get(i).getTipo();
             String tipo = "";
             
             switch(acesso){
@@ -93,9 +94,9 @@ public class Principal extends javax.swing.JFrame {
             }
             
             ((DefaultTableModel)tabelaUsuario.getModel()).addRow(new String[]{
-                pessoas.get(i).getFuncionario().getIdFuncionario().toString(),
-                pessoas.get(i).getNome(),
-                pessoas.get(i).getFuncionario().getUsuario(), 
+                funcionarios.get(i).getIdFuncionario().toString(),
+                funcionarios.get(i).getPessoa().getNome(),
+                funcionarios.get(i).getUsuario(), 
                 tipo
             });
         }
@@ -507,6 +508,11 @@ public class Principal extends javax.swing.JFrame {
         acessos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vendedor", "Administrador" }));
 
         delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete.png"))); // NOI18N
+        delete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteMouseClicked(evt);
+            }
+        });
 
         confirm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png"))); // NOI18N
         confirm.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -834,174 +840,170 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_addTelefoneMouseClicked
 
     private void confirmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmMouseClicked
-        Validation validate = new Validation();
         
-        if(validate.validateNome(nome.getText())){
-            if(validate.validateEmail(email.getText())){
-                if(validate.validateDataNascimento(dataNascimento.getText())){
-                    if(validate.validateCpf(documento.getText())){
-                        if(validate.validateDdd(ddd.getText())){
-                            if(validate.validateTelefone(telefone.getText())){
-                                if(validate.validateCep(cep.getText())){
-                                    if(validate.validateEndereco(logradouro.getText())){
-                                        if(validate.validateEndereco(bairro.getText())){
-                                            if(validate.validateEndereco(cidade.getText())){
-                                                if(validate.validateNumero(numero.getText())){
-                                                    if(validate.validateUsuario(usuario.getText())){
-                                                        if(validate.validateSenha(senha.getText())){
-                                                            if(validate.validateCombo(acessos.getSelectedIndex())){
-                                                                System.out.println("ALL DONE!!!!");
-                                                                
-                                                                
-                                                                //acessos.getSelectedItem();
-                                                                //estados.getSelectedItem();
-                                                                
-                                                                
-                                                                
-                                                                /*Persistence With Hibernate - Good Luck For Us!!!!*/
-                                                                Calendar c = Calendar.getInstance();
-                                                                int day   = Integer.parseInt(dataNascimento.getText().substring(0, 2));
-                                                                int month = Integer.parseInt(dataNascimento.getText().substring(3, 5));
-                                                                int year  = Integer.parseInt(dataNascimento.getText().substring(6, 10));
-                                                                
-                                                                String tipoAcesso = acessos.getSelectedItem().toString().substring(0, 1);
-                                                                System.out.println(tipoAcesso);
-                                                                c.set(year, (month-1), day);
-                                                                
-                                                                EstadoDAO      estDAO = new EstadoDAO();
-                                                                CidadeDAO      cidDAO = new CidadeDAO();
-                                                                BairroDAO      baiDAO = new BairroDAO();
-                                                                EnderecoDAO    endDAO = new EnderecoDAO();
-                                                                PessoaDAO      pesDAO = new PessoaDAO();
-                                                                DocumentoDAO   docDAO = new DocumentoDAO();
-                                                                FuncionarioDAO funDAO = new FuncionarioDAO();
-                                                                TelefoneDAO    telDAO = new TelefoneDAO();
+        if(delete.isVisible()){
+            //JOptionPane.showMessageDialog(null,"Editar");
+        }
+        else{
+            Validation validate = new Validation();
 
-                                                                
-                                                                Cidade objCidade           = new Cidade     (cidade.getText());
-                                                                Bairro objBairro           = new Bairro     (bairro.getText());
-                                                                Endereco objEndereco       = new Endereco   (logradouro.getText(), numero.getText(), cep.getText());
-                                                                Pessoa objPessoa           = new Pessoa     (nome.getText(), email.getText(), c);
-                                                                Documento objDocumento     = new Documento  (documento.getText(), "CPF");
-                                                                Funcionario objFuncionario = new Funcionario(usuario.getText(), senha.getText(), tipoAcesso);
-                                                                Telefone objTelefone       = new Telefone   (ddd.getText(), telefone.getText(), "F");
-                                                                
-                                                                
-                                                                List<Estado> list = estDAO.findByUf((String) estados.getSelectedItem());
-                                                                
-                                                                for(int i = 0; i < list.size(); i++){
-                                                                    
-                                                                    list.get(i).addCidade(objCidade);
-                                                                    objCidade.setEstado(list.get(i));
+            if(validate.validateNome(nome.getText())){
+                if(validate.validateEmail(email.getText())){
+                    if(validate.validateDataNascimento(dataNascimento.getText())){
+                        if(validate.validateCpf(documento.getText())){
+                            if(validate.validateDdd(ddd.getText())){
+                                if(validate.validateTelefone(telefone.getText())){
+                                    if(validate.validateCep(cep.getText())){
+                                        if(validate.validateEndereco(logradouro.getText())){
+                                            if(validate.validateEndereco(bairro.getText())){
+                                                if(validate.validateEndereco(cidade.getText())){
+                                                    if(validate.validateNumero(numero.getText())){
+                                                        if(validate.validateUsuario(usuario.getText())){
+                                                            if(validate.validateSenha(senha.getText())){
+                                                                if(validate.validateCombo(acessos.getSelectedIndex())){
+                                                                    System.out.println("ALL DONE!!!!");
 
 
-                                                                    //cidade.setEstado(estado);
+                                                                    //acessos.getSelectedItem();
+                                                                    //estados.getSelectedItem();
 
-                                                                    objBairro.setCidade(objCidade);
-                                                                    objEndereco.setBairro(objBairro);
-                                                                    //endDAO.merge(endereco);
-                                                                    endDAO.merge(objEndereco);
-                                                                    //System.out.println(endDAO.getMax());
-                                                                    objPessoa.setEndereco(endDAO.getById(endDAO.getMax()));
-                                                                    docDAO.persist(objDocumento);
-                                                                    objPessoa.setDocumento(objDocumento);
-                                                                    objPessoa.addTelefone(objTelefone);
-                                                                    pesDAO.persist(objPessoa);
 
-                                                                    objFuncionario.setPessoa(objPessoa);
 
-                                                                    funDAO.persist(objFuncionario);
-                                                                    //System.out.println(list.get(i).getCidades());
+                                                                    /*Persistence With Hibernate - Good Luck For Us!!!!*/
+                                                                    Calendar c = Calendar.getInstance();
+                                                                    int day   = Integer.parseInt(dataNascimento.getText().substring(0, 2));
+                                                                    int month = Integer.parseInt(dataNascimento.getText().substring(3, 5));
+                                                                    int year  = Integer.parseInt(dataNascimento.getText().substring(6, 10));
+
+                                                                    String tipoAcesso = acessos.getSelectedItem().toString().substring(0, 1);
+                                                                    System.out.println(tipoAcesso);
+                                                                    c.set(year, (month-1), day);
+
+                                                                    EstadoDAO      estDAO = new EstadoDAO();
+                                                                    CidadeDAO      cidDAO = new CidadeDAO();
+                                                                    BairroDAO      baiDAO = new BairroDAO();
+                                                                    EnderecoDAO    endDAO = new EnderecoDAO();
+                                                                    PessoaDAO      pesDAO = new PessoaDAO();
+                                                                    DocumentoDAO   docDAO = new DocumentoDAO();
+                                                                    FuncionarioDAO funDAO = new FuncionarioDAO();
+                                                                    TelefoneDAO    telDAO = new TelefoneDAO();
+
+
+                                                                    Cidade objCidade           = new Cidade     (cidade.getText());
+                                                                    Bairro objBairro           = new Bairro     (bairro.getText());
+                                                                    Endereco objEndereco       = new Endereco   (logradouro.getText(), numero.getText(), cep.getText());
+                                                                    Pessoa objPessoa           = new Pessoa     (nome.getText(), email.getText(), c);
+                                                                    Documento objDocumento     = new Documento  (documento.getText(), "CPF");
+                                                                    Funcionario objFuncionario = new Funcionario(usuario.getText(), senha.getText(), tipoAcesso);
+                                                                    Telefone objTelefone       = new Telefone   (ddd.getText(), telefone.getText(), "F");
+
+
+                                                                    FuncionarioDAO dao = new FuncionarioDAO();
+                                                                    EstadoDAO est = new EstadoDAO();
+                                                                    List<Estado> list = est.findByUf("SP");
+
+                                                                    for(int i = 0; i < list.size(); i++){
+                                                                        list.get(i).addCidade(objCidade);
+                                                                        objCidade.addBairro(objBairro);
+                                                                        objBairro.addEndereco(objEndereco);
+                                                                        objPessoa.setEndereco(objEndereco);
+                                                                        objPessoa.addTelefone(objTelefone);
+                                                                        objPessoa.setDocumento(objDocumento);
+                                                                        objFuncionario.setPessoa(objPessoa);
+
+                                                                        dao.merge(objFuncionario);
+                                                                    }
+
+                                                                    limpaCampos();
+
+                                                                    carregaUsuarios();
                                                                 }
-                                                                
-                                                                limpaCampos();
-                                                                
-                                                                carregaUsuarios();
+                                                                else{
+                                                                    JOptionPane.showMessageDialog(null, "Selcione o tipo de acesso");
+                                                                    acessos.requestFocus();
+                                                                }
                                                             }
                                                             else{
-                                                                JOptionPane.showMessageDialog(null, "Selcione o tipo de acesso");
-                                                                acessos.requestFocus();
+                                                                JOptionPane.showMessageDialog(null, "Senha Requerida");
+                                                                senha.requestFocus();
                                                             }
                                                         }
                                                         else{
-                                                            JOptionPane.showMessageDialog(null, "Senha Requerida");
-                                                            senha.requestFocus();
+                                                            JOptionPane.showMessageDialog(null, "Usuário Requerido");
+                                                            usuario.requestFocus();
                                                         }
                                                     }
                                                     else{
-                                                        JOptionPane.showMessageDialog(null, "Usuário Requerido");
-                                                        usuario.requestFocus();
+                                                        JOptionPane.showMessageDialog(null, "Número Requerido");
+                                                        numero.requestFocus();
                                                     }
                                                 }
                                                 else{
-                                                    JOptionPane.showMessageDialog(null, "Número Requerido");
-                                                    numero.requestFocus();
+                                                    JOptionPane.showMessageDialog(null, "Cidade Requerido");
+                                                    cidade.requestFocus();
                                                 }
                                             }
                                             else{
-                                                JOptionPane.showMessageDialog(null, "Cidade Requerido");
-                                                cidade.requestFocus();
+                                                JOptionPane.showMessageDialog(null, "Bairro Requerido");
+                                                bairro.requestFocus();
                                             }
                                         }
                                         else{
-                                            JOptionPane.showMessageDialog(null, "Bairro Requerido");
-                                            bairro.requestFocus();
+                                            JOptionPane.showMessageDialog(null, "Logradouro Requerido");
+                                            logradouro.requestFocus();
                                         }
                                     }
                                     else{
-                                        JOptionPane.showMessageDialog(null, "Logradouro Requerido");
-                                        logradouro.requestFocus();
+                                        JOptionPane.showMessageDialog(null, "Cep Requerido");
+                                        cep.requestFocus();
                                     }
                                 }
                                 else{
-                                    JOptionPane.showMessageDialog(null, "Cep Requerido");
-                                    cep.requestFocus();
+                                    JOptionPane.showMessageDialog(null, "Telefone Requerido");
+                                    telefone.requestFocus();
                                 }
+                            }else{
+                                JOptionPane.showMessageDialog(null, "DDD Requerido");
+                                ddd.requestFocus();
                             }
-                            else{
-                                JOptionPane.showMessageDialog(null, "Telefone Requerido");
-                                telefone.requestFocus();
-                            }
-                        }else{
-                            JOptionPane.showMessageDialog(null, "DDD Requerido");
-                            ddd.requestFocus();
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "CPF Requerido");
+                            documento.requestFocus();
                         }
                     }
                     else{
-                        JOptionPane.showMessageDialog(null, "CPF Requerido");
-                        documento.requestFocus();
+                        JOptionPane.showMessageDialog(null, "Data de Nascimento Requerido");
+                        dataNascimento.requestFocus();
                     }
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Data de Nascimento Requerido");
-                    dataNascimento.requestFocus();
+                    JOptionPane.showMessageDialog(null, "E-mail Requerido");
+                    email.requestFocus();
                 }
             }
             else{
-                JOptionPane.showMessageDialog(null, "E-mail Requerido");
-                email.requestFocus();
+                JOptionPane.showMessageDialog(null, "Nome Requerido");
+                nome.requestFocus();
             }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Nome Requerido");
-            nome.requestFocus();
         }
     }//GEN-LAST:event_confirmMouseClicked
 
     public void limpaCampos() {
-        nome.setText(" ");
-        email.setText(" ");
+        nome.setText(null);
+        email.setText(null);
         dataNascimento.setText(null);
         documento.setText(null);
         ddd.setText(null);
-        telefone.setText(" ");
+        telefone.setText(null);
         cep.setText(null);
-        logradouro.setText(" ");
-        bairro.setText(" ");
-        cidade.setText(" ");
-        numero.setText(" ");
-        usuario.setText(" ");
+        logradouro.setText(null);
+        bairro.setText(null);
+        cidade.setText(null);
+        numero.setText(null);
+        usuario.setText(null);
         senha.setText(null);
+        tabelaUsuario.clearSelection();
     }
 
     private void nomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nomeMouseClicked
@@ -1049,6 +1051,25 @@ public class Principal extends javax.swing.JFrame {
         limpaCampos();
         delete.setVisible(false);
     }//GEN-LAST:event_btnRefreshMouseClicked
+
+    private void deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseClicked
+        DocumentoDAO doc = new DocumentoDAO();
+        EnderecoDAO end = new EnderecoDAO();
+        FuncionarioDAO fun = new FuncionarioDAO();
+        PessoaDAO pes = new PessoaDAO();
+        Long id = Long.parseLong(
+                (String) tabelaUsuario.getValueAt(tabelaUsuario.getSelectedRow(), 0)
+            );
+        
+        fun.removeById(id);
+        
+        
+        
+        //fun.removeById(id);
+        //JOptionPane.showMessageDialog(null,id);
+        limpaCampos();
+        carregaUsuarios();
+    }//GEN-LAST:event_deleteMouseClicked
 
     /**
      * @param args the command line arguments
