@@ -22,7 +22,7 @@ public class Funcionario implements Serializable{
     @Column
     private String tipo;
     
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="pessoa", nullable= false)
     private Pessoa pessoa;
     
@@ -71,7 +71,6 @@ public class Funcionario implements Serializable{
     }
 
     public void setPessoa(Pessoa pessoa) {
-        pessoa.setFuncionario(this);
         this.pessoa = pessoa;
     }
     

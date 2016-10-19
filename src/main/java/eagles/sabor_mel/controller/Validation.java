@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eagles.sabor_mel.control;
+package eagles.sabor_mel.controller;
 
 import java.util.regex.Pattern;
 

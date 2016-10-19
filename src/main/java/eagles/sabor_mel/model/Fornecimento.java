@@ -7,6 +7,7 @@ package eagles.sabor_mel.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -43,6 +45,18 @@ public class Fornecimento implements Serializable{
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "idFornecedor", nullable = false)
     private Fornecedor fornecedor;
+    
+    @OneToMany(mappedBy = "fornecimento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ItemFornecimento> itens;
+
+    public List<ItemFornecimento> getItens() {
+        return itens;
+    }
+    
+    public void addItem(ItemFornecimento item){
+        item.setFornecimento(this);
+        itens.add(item);
+    }
 
     public Long getIdFornecimento() {
         return idFornecimento;

@@ -19,7 +19,7 @@ public class Documento implements Serializable{
     @Column
     private String numero;
     
-    @OneToOne(mappedBy = "documento")
+    @OneToOne(mappedBy = "documento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Pessoa pessoa;
 
     

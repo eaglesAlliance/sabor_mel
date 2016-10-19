@@ -7,6 +7,7 @@ import java.util.*;
 @Entity
 @Table
 public class Pessoa implements Serializable{
+    
     @Id
     @Column
     @GeneratedValue
@@ -19,18 +20,9 @@ public class Pessoa implements Serializable{
     @JoinColumn(name = "documento")
     private Documento documento;
     
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco")
     private Endereco endereco;
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        endereco.setPessoa(this);
-        this.endereco = endereco;
-    }
     
     @Column
     private String email;
@@ -46,23 +38,21 @@ public class Pessoa implements Serializable{
         cascade = CascadeType.ALL)
     private final List<Telefone> telefones = new ArrayList<Telefone>();
     
-    @OneToOne(mappedBy = "pessoa")
-    private Funcionario funcionario;
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
-    }
-    
     public Pessoa(){}
     
     public Pessoa(String nome, String email, Calendar dataNascimento){
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.email = email;
+    }
+    
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        endereco.setPessoa(this);
+        this.endereco = endereco;
     }
 
     public String getEmail() {

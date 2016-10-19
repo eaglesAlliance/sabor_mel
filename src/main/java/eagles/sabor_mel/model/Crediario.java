@@ -6,6 +6,7 @@
 package eagles.sabor_mel.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -39,6 +41,18 @@ public class Crediario implements Serializable{
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "idVenda", nullable = false)
     private Venda venda;
+    
+    @OneToMany(mappedBy = "crediario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Parcela> parcelas;
+
+    public List<Parcela> getParcelas() {
+        return parcelas;
+    }
+    
+    public void addParcela(Parcela parcela){
+        parcela.setCrediario(this);
+        parcelas.add(parcela);
+    }
 
     public Long getIdCrediario() {
         return idCrediario;

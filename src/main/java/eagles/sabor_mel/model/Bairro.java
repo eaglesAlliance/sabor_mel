@@ -33,6 +33,10 @@ public class Bairro implements Serializable{
         this.nome = nome;
     }
 
+    public Bairro(Bairro bairro) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public Cidade getCidade() {
         return cidade;
     }
@@ -63,6 +67,7 @@ public class Bairro implements Serializable{
     }
 
     public void addEndereco(Endereco endereco) {
+        endereco.setBairro(this);
         this.enderecos.add(endereco);
     }
 }
