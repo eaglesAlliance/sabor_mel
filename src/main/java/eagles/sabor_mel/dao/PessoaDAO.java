@@ -2,7 +2,8 @@
 package eagles.sabor_mel.dao;
 
 import eagles.sabor_mel.model.Pessoa;
-import java.util.*;
+import java.util.List;
+
 
 public class PessoaDAO extends DAO<Pessoa>{
     public Pessoa getById(final Long id) {

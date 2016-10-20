@@ -83,9 +83,6 @@ public class Endereco implements Serializable{
     }
 
     public void setBairro(Bairro bairro) {
-        bairro.addEndereco(this);
         this.bairro = bairro;
     }
-    
-    
 }

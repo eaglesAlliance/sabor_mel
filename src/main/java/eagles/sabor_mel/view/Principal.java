@@ -27,12 +27,12 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(this.MAXIMIZED_BOTH);
 
-        EstadoDAO estDAO = new EstadoDAO();
-        List<Estado> listEstados = estDAO.findAll();
+        //EstadoDAO estDAO = new EstadoDAO();
+       // List<Estado> listEstados = estDAO.findAll();
 
-        for (int i = 0; i < listEstados.size(); i++) {
-            estados.addItem(listEstados.get(i).getUf());
-        }
+       // for (int i = 0; i < listEstados.size(); i++) {
+       //     estados.addItem(listEstados.get(i).getUf());
+      //  }
 
         acessos.setBackground(Color.white);
         estados.setBackground(Color.white);

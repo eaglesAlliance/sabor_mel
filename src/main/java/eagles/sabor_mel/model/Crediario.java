@@ -38,7 +38,7 @@ public class Crediario implements Serializable{
     @Column(name = "quantidadeParcela", nullable = false)
     private Integer quantidadeParcela;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "idVenda", nullable = false)
     private Venda venda;
     

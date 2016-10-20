@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sabor_mel?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">dhiegobalthazar</property>
+    <property name="hibernate.connection.password">abc123</property>
+    <mapping class="Pessoa" file="" jar="" package="eagles.saobr_mel.model" resource=""/>
+    <mapping class="Funcionario" file="" jar="" package="eagles.saobr_mel.model" resource=""/>
+    <mapping class="Bairro" file="" jar="" package="eagles.saobr_mel.model" resource=""/>
+    <mapping class="Cidade" file="" jar="" package="eagles.saobr_mel.model" resource=""/>
+    <mapping class="Crediario" file="" jar="" package="eagles.saobr_mel.model" resource=""/>
+    <mapping class="Documento" package="eagles.saobr_mel.model"/>
+    <mapping class="Endereco" package="eagles.saobr_mel.model"/>
+    <mapping class="Estado" package="eagles.saobr_mel.model"/>
+    <mapping class="Fornecedor" package="eagles.saobr_mel.model"/>
+    <mapping class="Fornecimento" package="eagles.saobr_mel.model"/>
+    <mapping class="ItemFornecimento" package="eagles.saobr_mel.model"/>
+    <mapping class="ItemVenda" package="eagles.saobr_mel.model"/>
+    <mapping class="Parcela" package="eagles.saobr_mel.model"/>
+    <mapping class="Produto" package="eagles.saobr_mel.model"/>
+    <mapping class="Telefone" package="eagles.saobr_mel.model"/>
+    <mapping class="Venda" package="eagles.saobr_mel.model"/>
+  </session-factory>
+</hibernate-configuration>
