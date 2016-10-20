@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.io.*;
 import java.util.*;
 
-@Entity
+@Entity(name="Pessoa")
+@Inheritance(strategy=InheritanceType.JOINED)
 @Table
 public class Pessoa implements Serializable{
     @Id
