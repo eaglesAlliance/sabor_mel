@@ -16,9 +16,6 @@ public class Estado implements Serializable{
     private Long idEstado;
     
     @Column
-    private String nome;
-    
-    @Column
     private String uf;
     
     @OneToMany(
@@ -30,8 +27,7 @@ public class Estado implements Serializable{
     
     public Estado(){}
     
-    public Estado(String nome, String uf){
-        this.nome = nome;
+    public Estado(String uf){
         this.uf = uf;
     }
 
@@ -42,15 +38,6 @@ public class Estado implements Serializable{
     public void setIdEstado(Long idEstado) {
         this.idEstado = idEstado;
     }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     
     public List<Cidade> getCidades() {
         return cidades;

@@ -36,8 +36,11 @@ public class Parcela implements Serializable{
     @Column(name = "idParcela", nullable = false)
     private Long idParcela;
     
-    @Column(name = "valorParcela")
+    @Column(name = "valorParcela", nullable = false)
     private Double valorParcela;
+    
+    @Column(name = "parcela", nullable = false)
+    private Integer parcela;
     
     @Column(name = "statusParcela", nullable = false)
     private String status;
@@ -74,6 +77,14 @@ public class Parcela implements Serializable{
         this.status = status;
     }
 
+    public Integer getParcela() {
+        return parcela;
+    }
+
+    public void setParcela(Integer parcela) {
+        this.parcela = parcela;
+    }
+    
     public Crediario getCrediario() {
         return crediario;
     }
@@ -90,5 +101,7 @@ public class Parcela implements Serializable{
         this.dataVencimento = dataVencimento;
     }
     
-    
+    public boolean estaPago(){
+        return getStatus().equals("Sim");
+    }
 }

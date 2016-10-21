@@ -28,7 +28,7 @@ public class Main {
         FuncionarioDAO funDAO = new FuncionarioDAO();
         TelefoneDAO    telDAO = new TelefoneDAO();
         
-        Estado estado           = new Estado("São Paulo", "SP");
+        Estado estado           = new Estado("SP");
         Cidade cidade           = new Cidade("Caraguatatuba");
         Bairro bairro           = new Bairro("Pontal de Santa Marina");
         Endereco endereco       = new Endereco("Rua do Contorno", "199", "11672-020");

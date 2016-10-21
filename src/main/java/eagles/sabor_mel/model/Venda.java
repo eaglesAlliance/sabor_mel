@@ -6,7 +6,7 @@
 package eagles.sabor_mel.model;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,7 +40,7 @@ public class Venda implements Serializable{
     
     @Column(name = "dataVenda")
     @Temporal(TemporalType.DATE)
-    private Calendar dataVenda;
+    private Date dataVenda;
     
     @Column(name = "tipoVenda")
     private String tipoVenda;
@@ -79,11 +79,11 @@ public class Venda implements Serializable{
         this.idVenda = idVenda;
     }
 
-    public Calendar getDataVenda() {
+    public Date getDataVenda() {
         return dataVenda;
     }
 
-    public void setData(Calendar dataVenda) {
+    public void setData(Date dataVenda) {
         this.dataVenda = dataVenda;
     }
 

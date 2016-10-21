@@ -5,6 +5,8 @@
  */
 package eagles.sabor_mel.controller;
 
+import eagles.sabor_mel.dao.DAO;
+import eagles.sabor_mel.dao.FuncionarioDAO;
 import eagles.sabor_mel.dao.PessoaDAO;
 import eagles.sabor_mel.model.Bairro;
 import eagles.sabor_mel.model.Cidade;
@@ -24,7 +26,7 @@ import java.util.List;
  */
 public class ControllerFuncionario {
 
-    public void cadastrar(String usuario, String senha, String tipoFuncionario,
+    public boolean cadastrar(String usuario, String senha, String tipoFuncionario,
             String nome, String email, String dataNascimento,
             String numeroDocumento, String tipoDocumento,
             String logradouro, String numeroEndereco, String cep,
@@ -38,7 +40,7 @@ public class ControllerFuncionario {
         Endereco endereco = new Endereco();
         Bairro bairro = new Bairro(nomeBairro);
         Cidade cidade = new Cidade(nomeCidade);
-        Estado estado = new Estado(nomeEstado, uf);
+        Estado estado = new Estado(uf);
         
         cidade.setEstado(estado);
         bairro.setCidade(cidade);
@@ -47,9 +49,7 @@ public class ControllerFuncionario {
         pessoa.setDocumento(documento);
         
         PessoaDAO dao = new PessoaDAO();
-        dao.persist(pessoa);
-              
-
+        return dao.persist(pessoa);
     }
 
     private Calendar transformData(String data) {
@@ -62,6 +62,11 @@ public class ControllerFuncionario {
             e.printStackTrace();
         }
         return cal;
+    }
+    
+    public List<Funcionario> findByName(String nome){        
+        FuncionarioDAO dao = new FuncionarioDAO();
+        return dao.getByName(nome);
     }
 
 }
