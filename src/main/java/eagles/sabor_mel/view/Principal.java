@@ -859,6 +859,7 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addTelefoneMouseClicked
 
+   
     private void confirmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmMouseClicked
         
         Validation validate = new Validation();
@@ -900,11 +901,31 @@ public class Principal extends javax.swing.JFrame {
                                                                     FuncionarioDAO funDAO = new FuncionarioDAO();
                                                                     TelefoneDAO    telDAO = new TelefoneDAO();
 
-
-                                                                    Cidade objCidade           = new Cidade     (cidade.getText());
-                                                                    Bairro objBairro           = new Bairro     (bairro.getText());
+                                                                    Cidade objCidade = null;
+                                                                    for(int i = 0; i < cidDAO.findAll().size(); i++){
+                                                                        if(cidDAO.findAll().get(i).getCidade().equals(cidade.getText())){
+                                                                            objCidade = cidDAO.findAll().get(i);
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    
+                                                                    if(objCidade == null){
+                                                                        objCidade = new Cidade(cidade.getText());
+                                                                    }
+                                                                    
+                                                                    Bairro objBairro = null;
+                                                                    for(int i = 0; i < baiDAO.findAll().size(); i++){
+                                                                        if(baiDAO.findAll().get(i).getNome().equals(bairro.getText())){
+                                                                            objBairro = baiDAO.findAll().get(i);
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    if(objBairro == null){
+                                                                        objBairro = new Bairro(bairro.getText());
+                                                                    }
+                                                                    
                                                                     Endereco objEndereco       = new Endereco   (logradouro.getText(), numero.getText(), cep.getText());
-    //                                                                    Pessoa objPessoa           = new Pessoa     (nome.getText(), email.getText(), c);
+                                                               
                                                                     Documento objDocumento     = new Documento  (documento.getText(), "CPF");
                                                                     Funcionario objFuncionario = new Funcionario(usuario.getText(), senha.getText(), tipoAcesso, nome.getText(), email.getText(), c);
                                                                     Telefone objTelefone       = new Telefone   (ddd.getText(), telefone.getText(), "F");
@@ -928,8 +949,8 @@ public class Principal extends javax.swing.JFrame {
                                                                     
                                                                     acao = "insert";
                                                                     Mensagem msg = new Mensagem();
-                                                                    Thread mensagem = new Thread(msg);
-                                                                    mensagem.start();
+                                                                    Thread mensagemT = new Thread(msg);
+                                                                    mensagemT.start();
                                                                     
                                                                     limpaCampos();
 
@@ -962,8 +983,8 @@ public class Principal extends javax.swing.JFrame {
                                                                     
                                                                     acao = "edit";
                                                                     Mensagem msg = new Mensagem();
-                                                                    Thread mensagem = new Thread(msg);
-                                                                    mensagem.start();
+                                                                    Thread mensagemT = new Thread(msg);
+                                                                    mensagemT.start();
                                                                     
                                                                     limpaCampos();
                                                                     carregaUsuarios();
