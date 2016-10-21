@@ -14,7 +14,7 @@ public class Cidade implements Serializable{
     @GeneratedValue
     private Long idCidade;
     
-    @Column
+    @Column(unique = true)
     private String cidade;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
