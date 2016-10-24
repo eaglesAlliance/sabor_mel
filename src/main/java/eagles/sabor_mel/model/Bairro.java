@@ -57,7 +57,7 @@ public class Bairro implements Serializable{
         this.nome = nome;
     }
     
-    public List<Endereco> getEEnderecos() {
+    public List<Endereco> getEnderecos() {
         return enderecos;
     }
 

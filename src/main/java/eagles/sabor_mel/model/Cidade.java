@@ -1,4 +1,3 @@
-
 package eagles.sabor_mel.model;
 
 import javax.persistence.*;
@@ -42,12 +41,12 @@ public class Cidade implements Serializable{
         this.idCidade = idCidade;
     }
 
-    public String getCidade() {
+    public String getNome() {
         return nome;
     }
 
-    public void setCidade(String cidade) {
-        this.nome = cidade;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public Estado getEstado() {

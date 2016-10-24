@@ -1,4 +1,3 @@
-
 package eagles.sabor_mel.model;
 
 import javax.persistence.*;
@@ -22,12 +21,9 @@ public class Endereco implements Serializable{
     @Column(nullable = false, length = 9)
     private String cep;
     
-    
-    
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "bairro", nullable = false)
     private Bairro bairro;
-    
     
     public Endereco(){}
     
@@ -69,15 +65,11 @@ public class Endereco implements Serializable{
         this.cep = cep;
     }
 
-   
-
     public Bairro getBairro() {
         return bairro;
     }
 
     public void setBairro(Bairro bairro) {
         this.bairro = bairro;
-    }
-    
-    
+    } 
 }

@@ -16,7 +16,9 @@ public class Pessoa implements Serializable{
     @Column(nullable = false, length = 100)
     private String nome;
     
-    
+    @Enumerated(EnumType.ORDINAL)
+    private Sexo sexo;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="endereco", nullable=false)
     private Endereco endereco;
@@ -25,23 +27,7 @@ public class Pessoa implements Serializable{
     @JoinColumn(name="documento", nullable=false)
     private Documento documento;
 
-    public Documento getDocumento() {
-        return documento;
-    }
-
-    public void setDocumento(Documento documento) {
-        this.documento = documento;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-    
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 100)
     private String email;
     
     @Column(nullable = false)
@@ -53,14 +39,15 @@ public class Pessoa implements Serializable{
         targetEntity = Telefone.class, 
         fetch = FetchType.LAZY, 
         cascade = CascadeType.ALL)
-    private final List<Telefone> telefones = new ArrayList<Telefone>();
+    private List<Telefone> telefones = new ArrayList<Telefone>();
     
     public Pessoa(){}
     
-    public Pessoa(String nome, String email, Calendar dataNascimento){
+    public Pessoa(String nome, String email, Calendar dataNascimento, Sexo sexo){
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.email = email;
+        this.sexo = sexo;
     }
 
     public String getEmail() {
@@ -71,6 +58,14 @@ public class Pessoa implements Serializable{
         this.email = email;
     }
 
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
+    }
+    
     public Calendar getDataNascimento() {
         return dataNascimento;
     }
@@ -96,12 +91,36 @@ public class Pessoa implements Serializable{
     }
     
     public List<Telefone> getTelefones() {
-		return telefones;
-	}
+        return telefones;
+    }
 
+    public Documento getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+    
     public void addTelefone(Telefone telefone) {
-            telefone.setPessoa(this);
-            this.telefones.add(telefone);
+        telefone.setPessoa(this);
+        this.telefones.add(telefone);
+    }
+    
+    public void setTelefone(List telefones) {
+            
+        this.telefones = telefones;
+        for(int i = 0; i < this.telefones.size(); i++){
+            this.telefones.get(i).setPessoa(this);
+        }
     }
     
 }

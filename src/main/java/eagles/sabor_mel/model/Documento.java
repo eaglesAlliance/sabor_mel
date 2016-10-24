@@ -13,8 +13,8 @@ public class Documento implements Serializable{
     @GeneratedValue
     private Long idDocumento;
     
-    @Column(length = 4)
-    private String tipo;
+    @Enumerated(EnumType.ORDINAL)
+    private TipoDocumento tipo;
     
     @Column(nullable = false, length = 18)
     private String numero;
@@ -24,8 +24,9 @@ public class Documento implements Serializable{
     
     public Documento(){}
     
-    public Documento(String numero){
+    public Documento(String numero, TipoDocumento tipo){
         this.numero = numero;
+        this.tipo = tipo;
     }
     
     public Long getIdDocumento() {
@@ -36,12 +37,12 @@ public class Documento implements Serializable{
         this.idDocumento = idDocumento;
     }
 
-    public String getTipo() {
+    public TipoDocumento getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipoDocumento) {
-        this.tipo = tipoDocumento;
+    public void setTipo(TipoDocumento tipo) {
+        this.tipo = tipo;
     }
 
     public String getNumero() {

@@ -18,8 +18,8 @@ public class Telefone implements Serializable{
     @Column(nullable = false, length = 10)
     private String numero;
     
-    @Column(length = 1)
-    private String tipo;
+    @Enumerated(EnumType.ORDINAL)
+    private TipoTelefone tipo;
  
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "pessoa", nullable = false)
@@ -27,9 +27,10 @@ public class Telefone implements Serializable{
 
     public Telefone(){}
     
-    public Telefone(String ddd, String numero){
+    public Telefone(String ddd, String numero, TipoTelefone tipo){
         this.ddd = ddd;
         this.numero = numero;
+        this.tipo = tipo;
     }
     
     
@@ -56,12 +57,12 @@ public class Telefone implements Serializable{
     public void setNumero(String numero) {
         this.numero = numero;
     }
-    
-    public String getTipo() {
+
+    public TipoTelefone getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoTelefone tipo) {
         this.tipo = tipo;
     }
 

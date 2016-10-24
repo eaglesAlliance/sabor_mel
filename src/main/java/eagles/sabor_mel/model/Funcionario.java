@@ -17,17 +17,25 @@ public class Funcionario extends Pessoa{
     @Column(nullable = false, length = 100)
     private String senha;
     
-    @Column(nullable = false, length = 1)
-    private String tipo;
+    @Enumerated(EnumType.ORDINAL)
+    private Acesso acesso;
+
+    public Acesso getAcesso() {
+        return acesso;
+    }
+
+    public void setAcesso(Acesso acesso) {
+        this.acesso = acesso;
+    }
     
 
     public Funcionario(){}
     
-    public Funcionario(String usuario, String senha, String tipo, String nome, String email, Calendar dataNascimento){
-        super(nome, email, dataNascimento);
+    public Funcionario(String usuario, String senha, Acesso acesso, String nome, String email, Calendar dataNascimento, Sexo sexo){
+        super(nome, email, dataNascimento, sexo);
         this.usuario = usuario;
         this.senha = senha;
-        this.tipo = tipo;
+        this.acesso = acesso;
     }
 
     public String getUsuario() {
@@ -44,14 +52,6 @@ public class Funcionario extends Pessoa{
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipoFuncionario) {
-        this.tipo = tipoFuncionario;
     }
       
 }
