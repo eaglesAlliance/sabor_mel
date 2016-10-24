@@ -1,4 +1,3 @@
-
 package eagles.sabor_mel.test;
 
 import eagles.sabor_mel.model.Estado;
@@ -8,12 +7,15 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args){
+        
         /*Cria um DAO de Estado*/
         EstadoDAO dao = new EstadoDAO();
         
-        /*Cria um objeto do tipo Estado*/
+        /*Cria uma lista de Estados para persistência*/
         List<Estado> estados = new ArrayList<>();
         
+        /*Adiciona Estados à lista*/
+        estados.add(new Estado("São Paulo", "SP"));
         estados.add(new Estado("Acre", "AC"));
         estados.add(new Estado("Alagoas	", "AL"));
         estados.add(new Estado("Amapá", "AP"));
@@ -38,20 +40,15 @@ public class Main {
         estados.add(new Estado("Rondônia", "RO"));
         estados.add(new Estado("Roraima", "RR"));
         estados.add(new Estado("Santa Catarina", "SC"));
-        //estados.add(new Estado("São Paulo", "SP"));
         estados.add(new Estado("Sergipe", "SE"));
         estados.add(new Estado("Tocantins", "TO"));
-
         
-        /*Persiste o Estado*/
+        /*Persiste a lista de Estados*/
         for(int i = 0; i < estados.size(); i++){
             dao.persist(estados.get(i));
         }
         
-//        CidadeDAO dao = new CidadeDAO();
-//        String nome = "Caraguatatuba";
-//        
-//        System.out.println("ID CIDADE: "+dao.getByNome(nome).getIdCidade());
+        /*Encerra*/
         System.exit(0);
     }
 }
