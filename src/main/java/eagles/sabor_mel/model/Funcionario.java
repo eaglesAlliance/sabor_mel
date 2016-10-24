@@ -2,7 +2,6 @@
 package eagles.sabor_mel.model;
 
 import javax.persistence.*;
-import java.io.*;
 import java.util.Calendar;
 
 @Entity(name="Funcionario")
@@ -10,24 +9,18 @@ import java.util.Calendar;
 //@Table
 public class Funcionario extends Pessoa{
     
-//    @Id
-//    @GeneratedValue
-//    @Column
-//    private Long idFuncionario;
+
     
-    @Column
+    @Column(nullable = false, length = 20)
     private String usuario;
     
-    @Column
+    @Column(nullable = false, length = 100)
     private String senha;
     
-    @Column
+    @Column(nullable = false, length = 1)
     private String tipo;
     
-//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name="pessoa", nullable=false)
-//    private Pessoa pessoa;
-    
+
     public Funcionario(){}
     
     public Funcionario(String usuario, String senha, String tipo, String nome, String email, Calendar dataNascimento){
@@ -36,14 +29,6 @@ public class Funcionario extends Pessoa{
         this.senha = senha;
         this.tipo = tipo;
     }
-
-//    public Long getIdFuncionario() {
-//        return idFuncionario;
-//    }
-//
-//    public void setIdFuncionario(Long idFuncionario) {
-//        this.idFuncionario = idFuncionario;
-//    }
 
     public String getUsuario() {
         return usuario;
@@ -68,14 +53,5 @@ public class Funcionario extends Pessoa{
     public void setTipo(String tipoFuncionario) {
         this.tipo = tipoFuncionario;
     }
-
-//    public Pessoa getPessoa() {
-//        return pessoa;
-//    }
-//
-//    public void setPessoa(Pessoa pessoa) {
-//        this.pessoa = pessoa;
-//    }
-    
-    
+      
 }

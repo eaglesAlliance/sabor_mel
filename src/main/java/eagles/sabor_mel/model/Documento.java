@@ -13,10 +13,10 @@ public class Documento implements Serializable{
     @GeneratedValue
     private Long idDocumento;
     
-    @Column
+    @Column(length = 4)
     private String tipo;
     
-    @Column
+    @Column(nullable = false, length = 18)
     private String numero;
     
     
@@ -24,8 +24,7 @@ public class Documento implements Serializable{
     
     public Documento(){}
     
-    public Documento(String numero, String tipo){
-        this.tipo = tipo;
+    public Documento(String numero){
         this.numero = numero;
     }
     

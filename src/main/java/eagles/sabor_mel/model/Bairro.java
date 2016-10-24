@@ -13,7 +13,7 @@ public class Bairro implements Serializable{
     @GeneratedValue
     private Long idBairro;
     
-    @Column
+    @Column(nullable = false, length = 100)
     private String nome;
     
     @OneToMany(
