@@ -14,8 +14,8 @@ public class Cidade implements Serializable{
     @GeneratedValue
     private Long idCidade;
     
-    @Column
-    private String cidade;
+    @Column(nullable = false, length = 100)
+    private String nome;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "estado", nullable = false)
@@ -30,8 +30,8 @@ public class Cidade implements Serializable{
 
     public Cidade(){}
     
-    public Cidade(String cidade){
-        this.cidade = cidade;
+    public Cidade(String nome){
+        this.nome = nome;
     }
     
     public Long getIdCidade() {
@@ -43,11 +43,11 @@ public class Cidade implements Serializable{
     }
 
     public String getCidade() {
-        return cidade;
+        return nome;
     }
 
     public void setCidade(String cidade) {
-        this.cidade = cidade;
+        this.nome = cidade;
     }
 
     public Estado getEstado() {
@@ -55,7 +55,6 @@ public class Cidade implements Serializable{
     }
 
     public void setEstado(Estado estado) {
-        estado.addCidade(this);
         this.estado = estado;
     }
     
@@ -64,6 +63,7 @@ public class Cidade implements Serializable{
     }
 
     public void addBairro(Bairro bairro) {
+        bairro.setCidade(this);
         this.bairros.add(bairro);
     }
 }

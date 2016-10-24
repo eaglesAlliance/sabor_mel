@@ -3,6 +3,7 @@ package eagles.sabor_mel.dao;
 
 import eagles.sabor_mel.model.*;
 import java.util.*;
+import javax.persistence.NoResultException;
 
 public class CidadeDAO extends DAO<Cidade>{
     public Cidade getById(final Long id) {
@@ -26,7 +27,21 @@ public class CidadeDAO extends DAO<Cidade>{
  
     @SuppressWarnings("unchecked")
 	public List<Cidade> findAll() {
-    	return entityManager
+            return entityManager
     		.createQuery("FROM Cidade").getResultList();
-    }
+        }
+        
+        public boolean existCidade(String nome){
+            Cidade cidade = new Cidade();
+            try{
+                cidade = (Cidade) entityManager.createQuery(
+                            "FROM Cidade WHERE cidade = '"+nome+"'"
+                            ).getSingleResult();
+                return true;
+            }
+            catch(NoResultException e){
+                return false;
+            }
+            
+        }
 }

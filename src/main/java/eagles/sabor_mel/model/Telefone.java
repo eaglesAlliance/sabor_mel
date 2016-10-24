@@ -12,13 +12,13 @@ public class Telefone implements Serializable{
     @GeneratedValue
     private Long idTelefone;
     
-    @Column
+    @Column(nullable = false, length = 4)
     private String ddd;
     
-    @Column
+    @Column(nullable = false, length = 10)
     private String numero;
     
-    @Column
+    @Column(length = 1)
     private String tipo;
  
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -27,10 +27,9 @@ public class Telefone implements Serializable{
 
     public Telefone(){}
     
-    public Telefone(String ddd, String numero, String tipo){
+    public Telefone(String ddd, String numero){
         this.ddd = ddd;
         this.numero = numero;
-        this.tipo = tipo;
     }
     
     

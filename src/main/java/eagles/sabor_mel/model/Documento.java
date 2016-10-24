@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.io.*;
 
 @Entity
-@Table
+@Table/*( uniqueConstraints ={ @UniqueConstraint( columnNames = "numero" ) } )*/
 public class Documento implements Serializable{
     
     @Id
@@ -13,20 +13,20 @@ public class Documento implements Serializable{
     @GeneratedValue
     private Long idDocumento;
     
-    @Column
+    @Column(length = 4)
     private String tipo;
     
-    @Column
+    @Column(nullable = false, length = 18)
     private String numero;
     
     @OneToOne(mappedBy = "documento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Pessoa pessoa;
+    
 
     
     public Documento(){}
     
-    public Documento(String numero, String tipo){
-        this.tipo = tipo;
+    public Documento(String numero){
         this.numero = numero;
     }
     
@@ -54,11 +54,5 @@ public class Documento implements Serializable{
         this.numero = numero;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }   
+    
 }

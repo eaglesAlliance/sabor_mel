@@ -8,7 +8,7 @@ public class EstadoDAO extends DAO<Estado>{
     public Estado getById(final Long id) {
         return entityManager.find(Estado.class, id);
     }
- 
+    
     public boolean removeById(final Long id) {
     	
     	boolean result = true;
@@ -24,14 +24,15 @@ public class EstadoDAO extends DAO<Estado>{
         return result;
     }
  
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "JPQLValidation"})
 	public List<Estado> findAll() {
     	return entityManager
     		.createQuery("FROM Estado").getResultList();
     }
         
         
+    @SuppressWarnings("JPQLValidation")
     public List<Estado> findByUf(String uf){
-        return entityManager.createQuery("FROM Estado WHERE uf = "+uf).getResultList();
+        return entityManager.createQuery("FROM Estado WHERE uf = '"+uf+"'").getResultList();
     }
 }

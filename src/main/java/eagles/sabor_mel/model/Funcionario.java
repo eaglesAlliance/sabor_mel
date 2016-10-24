@@ -2,24 +2,22 @@
 package eagles.sabor_mel.model;
 
 import javax.persistence.*;
-import java.io.*;
+import java.util.Calendar;
 
-@Entity
-@Table
-public class Funcionario implements Serializable{
+@Entity(name="Funcionario")
+@PrimaryKeyJoinColumn(name="pessoa")
+//@Table
+public class Funcionario extends Pessoa{
     
-    @Id
-    @GeneratedValue
-    @Column
-    private Long idFuncionario;
+
     
-    @Column
+    @Column(nullable = false, length = 20)
     private String usuario;
     
-    @Column
+    @Column(nullable = false, length = 100)
     private String senha;
     
-    @Column
+    @Column(nullable = false, length = 1)
     private String tipo;
     
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -28,25 +26,18 @@ public class Funcionario implements Serializable{
     
     public Funcionario(){}
     
-    public Funcionario(String usuario, String senha, String tipo){
+    public Funcionario(String usuario, String senha, String tipo, String nome, String email, Calendar dataNascimento){
+        super(nome, email, dataNascimento);
         this.usuario = usuario;
         this.senha = senha;
         this.tipo = tipo;
-    }
-
-    public Long getIdFuncionario() {
-        return idFuncionario;
-    }
-
-    public void setIdFuncionario(Long idFuncionario) {
-        this.idFuncionario = idFuncionario;
     }
 
     public String getUsuario() {
         return usuario;
     }
 
-    public void setusuario(String usuario) {
+    public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
 

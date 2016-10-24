@@ -13,19 +13,18 @@ public class Endereco implements Serializable{
     @GeneratedValue
     private Long idEndereco;
     
-    @Column
+    @Column(nullable = false, length = 100)
     private String logradouro;
     
-    @Column
+    @Column(nullable = false, length = 7)
     private String numero;
     
-    @Column
+    @Column(nullable = false, length = 9)
     private String cep;
     
-    @OneToOne(mappedBy = "endereco")
-    private Pessoa pessoa;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "bairro", nullable = false)
     private Bairro bairro;
     
@@ -70,13 +69,7 @@ public class Endereco implements Serializable{
         this.cep = cep;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
+   
 
     public Bairro getBairro() {
         return bairro;

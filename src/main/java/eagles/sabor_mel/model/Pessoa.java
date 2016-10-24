@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.io.*;
 import java.util.*;
 
-@Entity
+@Entity(name="Pessoa")
+@Inheritance(strategy=InheritanceType.JOINED)
 @Table
 public class Pessoa implements Serializable{
     
@@ -13,21 +14,19 @@ public class Pessoa implements Serializable{
     @GeneratedValue
     private Long idPessoa;
     
-    @Column
+    @Column(nullable = false, length = 100)
     private String nome;
     
-    @OneToOne
-    @JoinColumn(name = "documento")
-    private Documento documento;
     
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco")
     private Endereco endereco;
+
     
-    @Column
+    @Column(nullable = false, length = 45)
     private String email;
     
-    @Column
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Calendar dataNascimento;
     
@@ -85,15 +84,6 @@ public class Pessoa implements Serializable{
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public Documento getDocumento() {
-        return documento;
-    }
-
-    public void setDocumento(Documento documento) {
-        documento.setPessoa(this);
-        this.documento = documento;
     }
     
     public List<Telefone> getTelefones() {
