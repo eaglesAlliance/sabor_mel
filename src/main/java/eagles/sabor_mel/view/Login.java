@@ -1,27 +1,35 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eagles.sabor_mel.view;
 
+import eagles.sabor_mel.control.HashSha;
 import eagles.sabor_mel.dao.*;
+import java.awt.Cursor;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 /**
  *
- * @author etivideo
+ * @author Tiago Lima Villalobos
  */
 public class Login extends javax.swing.JFrame {
     
+    /*Controle de Login*/
     public static boolean permitir = false;
+    
+    /**/
+    public static String nivelAcesso = "";
+    public static String nome = "";
     
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        usuario.requestFocus();
         logo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
     }
@@ -42,8 +50,10 @@ public class Login extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         senha = new javax.swing.JPasswordField();
         entrar = new javax.swing.JButton();
+        lblSair = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/new_logo.png"))); // NOI18N
 
@@ -61,29 +71,45 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        lblSair.setText("sair...");
+        lblSair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblSairMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblSairMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblSairMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(entrar)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(usuario)
-                            .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(entrar)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(usuario)
+                                    .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblSair)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,17 +118,23 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(logo)
                 .addGap(18, 18, 18)
                 .addComponent(titulo)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(entrar)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(entrar)
+                        .addContainerGap(23, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblSair)
+                        .addContainerGap())))
         );
 
         pack();
@@ -113,25 +145,57 @@ public class Login extends javax.swing.JFrame {
         boolean found = false;
         for(int i = 0; i < dao.findAll().size(); i++){
             if(dao.findAll().get(i).getUsuario().equals(usuario.getText())){
-                if(dao.findAll().get(i).getSenha().equals(senha.getText())){
+                HashSha hash = new HashSha(dao.findAll().get(i).getSenha());
+                HashSha hashNova = new HashSha(senha.getText());
+                
+                String hashSenha = "";
+                String hashNovaSenha  = "";
+                try {
+                    hashSenha = hash.hashSenha();
+                    hashNovaSenha = hash.hashSenha();
+                } 
+                catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                } 
+                catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                
+                if(hashSenha.equals(hashNovaSenha)){
                     found = true;
+                    nivelAcesso = dao.findAll().get(i).getAcesso().toString();
+                    nome = dao.findAll().get(i).getNome();
                     break;
                 }
             }
         }
         
         if(found){
-            JOptionPane.showMessageDialog(null,"Logando...");
             permitir = true;
-            new Principal().setVisible(true);
             this.dispose();
+            new Principal().setVisible(true);
         }
         else{
-            JOptionPane.showMessageDialog(null,"Usuário não encontrado");
+            JOptionPane.showMessageDialog(null,"Usuário ou Senha Inválida!");
             usuario.setText(null);
             senha.setText(null);
         }
     }//GEN-LAST:event_entrarMouseClicked
+
+    private void lblSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSairMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_lblSairMouseClicked
+
+    private void lblSairMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSairMouseEntered
+        Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR); 
+        setCursor(cursor);
+    }//GEN-LAST:event_lblSairMouseEntered
+
+    private void lblSairMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSairMouseExited
+        Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR); 
+        setCursor(cursor);
+    }//GEN-LAST:event_lblSairMouseExited
 
     /**
      * @param args the command line arguments
@@ -172,6 +236,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton entrar;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel lblSair;
     private javax.swing.JLabel logo;
     private javax.swing.JPasswordField senha;
     private javax.swing.JLabel titulo;
