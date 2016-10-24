@@ -38,7 +38,7 @@ public class Validation {
     }
     
     public boolean validateTelefone(String telefone){
-       return telefone.length() >= 8 && telefone.length() < 9;
+       return telefone.length() >= 8 && telefone.length() <= 9;
     }
     
     public boolean validateCep(String cep){
