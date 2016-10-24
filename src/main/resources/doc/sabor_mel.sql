@@ -1,58 +1,52 @@
--- MySQL dump 10.13  Distrib 5.7.13, for Linux (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 4.2.11
+-- http://www.phpmyadmin.net
 --
--- Host: localhost    Database: sabor_mel
--- ------------------------------------------------------
--- Server version	5.7.13-0ubuntu0.16.04.2
+-- Host: 127.0.0.1
+-- Generation Time: 24-Out-2016 às 20:53
+-- Versão do servidor: 5.6.21
+-- PHP Version: 5.6.3
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Bairro`
+-- Database: `sabor_mel`
 --
 
-DROP TABLE IF EXISTS `Bairro`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Bairro` (
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `bairro`
+--
+
+CREATE TABLE IF NOT EXISTS `bairro` (
   `idBairro` bigint(20) NOT NULL,
-  `nome` varchar(255) DEFAULT NULL,
-  `cidade` bigint(20) NOT NULL,
-  PRIMARY KEY (`idBairro`),
-  KEY `FK60r3aysiw339apo88005c6d16` (`cidade`),
-  CONSTRAINT `FK60r3aysiw339apo88005c6d16` FOREIGN KEY (`cidade`) REFERENCES `Cidade` (`idCidade`)
+  `nome` varchar(100) NOT NULL,
+  `cidade` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Bairro`
+-- Extraindo dados da tabela `bairro`
 --
 
-LOCK TABLES `Bairro` WRITE;
-/*!40000 ALTER TABLE `Bairro` DISABLE KEYS */;
-INSERT INTO `Bairro` VALUES (42,'Pontal Santa Marina',41);
-/*!40000 ALTER TABLE `Bairro` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `delete_cidade` 
-AFTER DELETE ON `Bairro` FOR EACH ROW
-BEGIN
+INSERT INTO `bairro` (`idBairro`, `nome`, `cidade`) VALUES
+(30, 'Pontal Santa Marina', 29),
+(36, 'Itaim Bibi', 35),
+(55, 'Santarem', 54);
+
+--
+-- Acionadores `bairro`
+--
+DELIMITER //
+CREATE TRIGGER `delete_cidade` AFTER DELETE ON `bairro`
+ FOR EACH ROW BEGIN
 	DECLARE numRows INT;
         SET numRows = (SELECT COUNT(*) FROM Bairro WHERE cidade = OLD.cidade);
         IF (numRows < 1) THEN
@@ -60,131 +54,81 @@ BEGIN
 				DELETE FROM Cidade WHERE idCidade = OLD.cidade;
 			END;
 		END IF;
-END */;;
+END
+//
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `Cidade`
+-- Estrutura da tabela `cidade`
 --
 
-DROP TABLE IF EXISTS `Cidade`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Cidade` (
+CREATE TABLE IF NOT EXISTS `cidade` (
   `idCidade` bigint(20) NOT NULL,
-  `cidade` varchar(255) DEFAULT NULL,
-  `estado` bigint(20) NOT NULL,
   `nome` varchar(100) NOT NULL,
-  PRIMARY KEY (`idCidade`),
-  UNIQUE KEY `UK_aofy2p0mtjqp3i61tg91res6x` (`nome`),
-  UNIQUE KEY `UK_5kly3fbtte6hf8ys0v92k8snu` (`cidade`),
-  KEY `FKh6fr9qce1jn2uls4htno0qbf3` (`estado`),
-  CONSTRAINT `FKh6fr9qce1jn2uls4htno0qbf3` FOREIGN KEY (`estado`) REFERENCES `Estado` (`idEstado`)
+  `estado` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Cidade`
+-- Extraindo dados da tabela `cidade`
 --
 
-LOCK TABLES `Cidade` WRITE;
-/*!40000 ALTER TABLE `Cidade` DISABLE KEYS */;
-INSERT INTO `Cidade` VALUES (41,NULL,1,'Caraguatatuba');
-/*!40000 ALTER TABLE `Cidade` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `cidade` (`idCidade`, `nome`, `estado`) VALUES
+(29, 'Caraguatatuba', 1),
+(35, 'São Paulo', 1),
+(54, 'Curitiba', 17);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `Documento`
+-- Estrutura da tabela `documento`
 --
 
-DROP TABLE IF EXISTS `Documento`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Documento` (
+CREATE TABLE IF NOT EXISTS `documento` (
   `idDocumento` bigint(20) NOT NULL,
-  `numero` varchar(255) DEFAULT NULL,
-  `tipo` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`idDocumento`)
+  `numero` varchar(18) NOT NULL,
+  `tipo` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Documento`
+-- Extraindo dados da tabela `documento`
 --
 
-LOCK TABLES `Documento` WRITE;
-/*!40000 ALTER TABLE `Documento` DISABLE KEYS */;
-INSERT INTO `Documento` VALUES (40,'340.124.578-37','CPF');
-/*!40000 ALTER TABLE `Documento` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `define_tipo_documento` BEFORE INSERT ON `Documento` 
-FOR EACH ROW
-BEGIN
-	IF(LENGTH(NEW.numero) = 14) THEN
-		SET NEW.tipo = 'CPF';
-	ELSE 
-		SET NEW.tipo = 'CNPJ';
-	END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
+INSERT INTO `documento` (`idDocumento`, `numero`, `tipo`) VALUES
+(28, '340.124.578-37', 0),
+(34, '125.858.333-99', 0),
+(53, '254.125.478-95', 0);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `Endereco`
+-- Estrutura da tabela `endereco`
 --
 
-DROP TABLE IF EXISTS `Endereco`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Endereco` (
+CREATE TABLE IF NOT EXISTS `endereco` (
   `idEndereco` bigint(20) NOT NULL,
-  `cep` varchar(255) DEFAULT NULL,
-  `logradouro` varchar(255) DEFAULT NULL,
-  `numero` varchar(255) DEFAULT NULL,
-  `bairro` bigint(20) NOT NULL,
-  PRIMARY KEY (`idEndereco`),
-  KEY `FK8ht1pm5smxh5k65vc211hm1es` (`bairro`),
-  CONSTRAINT `FK8ht1pm5smxh5k65vc211hm1es` FOREIGN KEY (`bairro`) REFERENCES `Bairro` (`idBairro`)
+  `cep` varchar(9) NOT NULL,
+  `logradouro` varchar(100) NOT NULL,
+  `numero` varchar(7) NOT NULL,
+  `bairro` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Endereco`
+-- Extraindo dados da tabela `endereco`
 --
 
-LOCK TABLES `Endereco` WRITE;
-/*!40000 ALTER TABLE `Endereco` DISABLE KEYS */;
-INSERT INTO `Endereco` VALUES (43,'11672-020','Rua do Contorno','199',42);
-/*!40000 ALTER TABLE `Endereco` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `delete_bairro` 
-AFTER DELETE ON `Endereco` FOR EACH ROW
-BEGIN
+INSERT INTO `endereco` (`idEndereco`, `cep`, `logradouro`, `numero`, `bairro`) VALUES
+(31, '11672-020', 'Rua do Contorno', '199', 30),
+(37, '00450-160', 'Rua Viradouro', '63', 36),
+(56, '11254-222', 'Rua Benfica', '240', 55);
+
+--
+-- Acionadores `endereco`
+--
+DELIMITER //
+CREATE TRIGGER `delete_bairro` AFTER DELETE ON `endereco`
+ FOR EACH ROW BEGIN
 	DECLARE numRows INT;
         SET numRows = (SELECT COUNT(*) FROM Endereco WHERE bairro = OLD.bairro);
         IF (numRows < 1) THEN
@@ -192,178 +136,244 @@ BEGIN
 				DELETE FROM Bairro WHERE idBairro = OLD.bairro;
 			END;
 		END IF;
-END */;;
+END
+//
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `Estado`
+-- Estrutura da tabela `estado`
 --
 
-DROP TABLE IF EXISTS `Estado`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Estado` (
+CREATE TABLE IF NOT EXISTS `estado` (
   `idEstado` bigint(20) NOT NULL,
-  `nome` varchar(255) DEFAULT NULL,
-  `uf` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`idEstado`)
+  `nome` varchar(45) NOT NULL,
+  `uf` varchar(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Estado`
+-- Extraindo dados da tabela `estado`
 --
 
-LOCK TABLES `Estado` WRITE;
-/*!40000 ALTER TABLE `Estado` DISABLE KEYS */;
-INSERT INTO `Estado` VALUES (1,'São Paulo','SP'),(2,'Acre','AC'),(3,'Alagoas	','AL'),(4,'Amapá','AP'),(5,'Amazonas','AM'),(6,'Bahia','BA'),(7,'Ceará','CE'),(8,'Distrito Federal','DF'),(9,'Espírito Santo','ES'),(10,'Goiás','GO'),(11,'Maranhão','MA'),(12,'Mato Grosso','MT'),(13,'Mato Grosso do Sul','MS'),(14,'Minas Gerais','MG'),(15,'Pará','PA'),(16,'Paraíba','PB'),(17,'Paraná','PR'),(18,'Pernambuco','PE'),(19,'Piauí','PI'),(20,'Rio de Janeiro','RJ'),(21,'Rio Grande do Norte','RN'),(22,'Rio Grande do Sul','RS'),(23,'Rondônia','RO'),(24,'Roraima','RR'),(25,'Santa Catarina','SC'),(26,'Sergipe','SE'),(27,'Tocantins','TO');
-/*!40000 ALTER TABLE `Estado` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `estado` (`idEstado`, `nome`, `uf`) VALUES
+(1, 'São Paulo', 'SP'),
+(2, 'Acre', 'AC'),
+(3, 'Alagoas	', 'AL'),
+(4, 'Amapá', 'AP'),
+(5, 'Amazonas', 'AM'),
+(6, 'Bahia', 'BA'),
+(7, 'Ceará', 'CE'),
+(8, 'Distrito Federal', 'DF'),
+(9, 'Espírito Santo', 'ES'),
+(10, 'Goiás', 'GO'),
+(11, 'Maranhão', 'MA'),
+(12, 'Mato Grosso', 'MT'),
+(13, 'Mato Grosso do Sul', 'MS'),
+(14, 'Minas Gerais', 'MG'),
+(15, 'Pará', 'PA'),
+(16, 'Paraíba', 'PB'),
+(17, 'Paraná', 'PR'),
+(18, 'Pernambuco', 'PE'),
+(19, 'Piauí', 'PI'),
+(20, 'Rio de Janeiro', 'RJ'),
+(21, 'Rio Grande do Norte', 'RN'),
+(22, 'Rio Grande do Sul', 'RS'),
+(23, 'Rondônia', 'RO'),
+(24, 'Roraima', 'RR'),
+(25, 'Santa Catarina', 'SC'),
+(26, 'Sergipe', 'SE'),
+(27, 'Tocantins', 'TO');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `Funcionario`
+-- Estrutura da tabela `funcionario`
 --
 
-DROP TABLE IF EXISTS `Funcionario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Funcionario` (
-  `senha` varchar(255) DEFAULT NULL,
-  `tipo` varchar(255) DEFAULT NULL,
-  `usuario` varchar(255) DEFAULT NULL,
-  `pessoa` bigint(20) NOT NULL,
-  PRIMARY KEY (`pessoa`),
-  CONSTRAINT `FKjswill93do4651y3iij8rvxep` FOREIGN KEY (`pessoa`) REFERENCES `Pessoa` (`idPessoa`)
+CREATE TABLE IF NOT EXISTS `funcionario` (
+  `acesso` int(11) DEFAULT NULL,
+  `senha` varchar(100) NOT NULL,
+  `usuario` varchar(20) NOT NULL,
+  `pessoa` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Funcionario`
+-- Extraindo dados da tabela `funcionario`
 --
 
-LOCK TABLES `Funcionario` WRITE;
-/*!40000 ALTER TABLE `Funcionario` DISABLE KEYS */;
-INSERT INTO `Funcionario` VALUES ('heavy666','A','tiagolima',44);
-/*!40000 ALTER TABLE `Funcionario` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `funcionario` (`acesso`, `senha`, `usuario`, `pessoa`) VALUES
+(0, 'E1DD9B9ACB6DDD3CCB36E3B96FC83666E3F00C5CAB12016F5A2443214F5EE9DE', 'tiagolima', 32),
+(1, 'F004A3C91938221AFEFD9067B910FABE7488630CC799A5F70BA8EE1B753025A8', 'paulavilla', 38),
+(1, '240BE518FABD2724DDB6F04EEB1DA5967448D7E831C08C8FA822809F74C720A9', 'andrade', 57);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `Pessoa`
+-- Estrutura da tabela `hibernate_sequence`
 --
 
-DROP TABLE IF EXISTS `Pessoa`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Pessoa` (
-  `idPessoa` bigint(20) NOT NULL,
-  `dataNascimento` date DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `nome` varchar(255) DEFAULT NULL,
-  `documento` bigint(20) NOT NULL,
-  `endereco` bigint(20) NOT NULL,
-  PRIMARY KEY (`idPessoa`),
-  KEY `FK6h305v7qflv5wsdnywfrjhtjq` (`documento`),
-  KEY `FKshewtplh8m3w3an9okcvfwh6b` (`endereco`),
-  CONSTRAINT `FK6h305v7qflv5wsdnywfrjhtjq` FOREIGN KEY (`documento`) REFERENCES `Documento` (`idDocumento`),
-  CONSTRAINT `FKshewtplh8m3w3an9okcvfwh6b` FOREIGN KEY (`endereco`) REFERENCES `Endereco` (`idEndereco`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Pessoa`
---
-
-LOCK TABLES `Pessoa` WRITE;
-/*!40000 ALTER TABLE `Pessoa` DISABLE KEYS */;
-INSERT INTO `Pessoa` VALUES (44,'1988-04-21','tiago@gmail.com','Tiago Lima',40,43);
-/*!40000 ALTER TABLE `Pessoa` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Telefone`
---
-
-DROP TABLE IF EXISTS `Telefone`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Telefone` (
-  `idTelefone` bigint(20) NOT NULL,
-  `ddd` varchar(255) DEFAULT NULL,
-  `numero` varchar(255) DEFAULT NULL,
-  `tipo` varchar(255) DEFAULT NULL,
-  `pessoa` bigint(20) NOT NULL,
-  PRIMARY KEY (`idTelefone`),
-  KEY `FK5nmr7ehkuajcjp2py6pqnt3w5` (`pessoa`),
-  CONSTRAINT `FK5nmr7ehkuajcjp2py6pqnt3w5` FOREIGN KEY (`pessoa`) REFERENCES `Pessoa` (`idPessoa`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Telefone`
---
-
-LOCK TABLES `Telefone` WRITE;
-/*!40000 ALTER TABLE `Telefone` DISABLE KEYS */;
-INSERT INTO `Telefone` VALUES (45,'(12)','38879006','F',44);
-/*!40000 ALTER TABLE `Telefone` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `define_tipo_telefone` 
-BEFORE INSERT ON `Telefone` FOR EACH ROW
-BEGIN
-	IF(LENGTH(NEW.numero) = 8) THEN
-		SET NEW.tipo = 'F';
-	ELSE
-		SEt NEW.tipo = 'C';
-    END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
--- Table structure for table `hibernate_sequence`
---
-
-DROP TABLE IF EXISTS `hibernate_sequence`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `hibernate_sequence` (
+CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `hibernate_sequence`
+-- Extraindo dados da tabela `hibernate_sequence`
 --
 
-LOCK TABLES `hibernate_sequence` WRITE;
-/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-INSERT INTO `hibernate_sequence` VALUES (46),(46),(46),(46),(46),(46),(46);
-/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+INSERT INTO `hibernate_sequence` (`next_val`) VALUES
+(61),
+(61),
+(61),
+(61),
+(61),
+(61),
+(61);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `pessoa`
+--
+
+CREATE TABLE IF NOT EXISTS `pessoa` (
+  `idPessoa` bigint(20) NOT NULL,
+  `dataNascimento` date NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `sexo` int(11) DEFAULT NULL,
+  `documento` bigint(20) NOT NULL,
+  `endereco` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `pessoa`
+--
+
+INSERT INTO `pessoa` (`idPessoa`, `dataNascimento`, `email`, `nome`, `sexo`, `documento`, `endereco`) VALUES
+(32, '2016-10-24', 'tiago@gmail.com', 'Tiago Lima', 0, 28, 31),
+(38, '2016-10-24', 'paula@gmail.com', 'Paula Villalobos', 1, 34, 37),
+(57, '2016-10-24', 'andrade@gmail.com', 'Marcos Andrade', 0, 53, 56);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `telefone`
+--
+
+CREATE TABLE IF NOT EXISTS `telefone` (
+  `idTelefone` bigint(20) NOT NULL,
+  `ddd` varchar(4) NOT NULL,
+  `numero` varchar(10) NOT NULL,
+  `tipo` int(11) DEFAULT NULL,
+  `pessoa` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `telefone`
+--
+
+INSERT INTO `telefone` (`idTelefone`, `ddd`, `numero`, `tipo`, `pessoa`) VALUES
+(33, '(12)', '38879006', 0, 32),
+(39, '(11)', '951703043', 1, 38),
+(52, '(12)', '38879006', 0, 38),
+(58, '(11)', '52142301', 0, 57),
+(59, '(12)', '38879006', 0, 38),
+(60, '(15)', '38971200', 0, 57);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `bairro`
+--
+ALTER TABLE `bairro`
+ ADD PRIMARY KEY (`idBairro`), ADD KEY `FK60r3aysiw339apo88005c6d16` (`cidade`);
+
+--
+-- Indexes for table `cidade`
+--
+ALTER TABLE `cidade`
+ ADD PRIMARY KEY (`idCidade`), ADD KEY `FKh6fr9qce1jn2uls4htno0qbf3` (`estado`);
+
+--
+-- Indexes for table `documento`
+--
+ALTER TABLE `documento`
+ ADD PRIMARY KEY (`idDocumento`);
+
+--
+-- Indexes for table `endereco`
+--
+ALTER TABLE `endereco`
+ ADD PRIMARY KEY (`idEndereco`), ADD KEY `FK8ht1pm5smxh5k65vc211hm1es` (`bairro`);
+
+--
+-- Indexes for table `estado`
+--
+ALTER TABLE `estado`
+ ADD PRIMARY KEY (`idEstado`), ADD UNIQUE KEY `UK_rqbyd5fl82quobtqh1sggbqda` (`nome`), ADD UNIQUE KEY `UK_9nl6ktpk90uens3seaft1gyxp` (`uf`);
+
+--
+-- Indexes for table `funcionario`
+--
+ALTER TABLE `funcionario`
+ ADD PRIMARY KEY (`pessoa`);
+
+--
+-- Indexes for table `pessoa`
+--
+ALTER TABLE `pessoa`
+ ADD PRIMARY KEY (`idPessoa`), ADD KEY `FK6h305v7qflv5wsdnywfrjhtjq` (`documento`), ADD KEY `FKshewtplh8m3w3an9okcvfwh6b` (`endereco`);
+
+--
+-- Indexes for table `telefone`
+--
+ALTER TABLE `telefone`
+ ADD PRIMARY KEY (`idTelefone`), ADD KEY `FK5nmr7ehkuajcjp2py6pqnt3w5` (`pessoa`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Limitadores para a tabela `bairro`
+--
+ALTER TABLE `bairro`
+ADD CONSTRAINT `FK60r3aysiw339apo88005c6d16` FOREIGN KEY (`cidade`) REFERENCES `cidade` (`idCidade`);
+
+--
+-- Limitadores para a tabela `cidade`
+--
+ALTER TABLE `cidade`
+ADD CONSTRAINT `FKh6fr9qce1jn2uls4htno0qbf3` FOREIGN KEY (`estado`) REFERENCES `estado` (`idEstado`);
+
+--
+-- Limitadores para a tabela `endereco`
+--
+ALTER TABLE `endereco`
+ADD CONSTRAINT `FK8ht1pm5smxh5k65vc211hm1es` FOREIGN KEY (`bairro`) REFERENCES `bairro` (`idBairro`);
+
+--
+-- Limitadores para a tabela `funcionario`
+--
+ALTER TABLE `funcionario`
+ADD CONSTRAINT `FKjswill93do4651y3iij8rvxep` FOREIGN KEY (`pessoa`) REFERENCES `pessoa` (`idPessoa`);
+
+--
+-- Limitadores para a tabela `pessoa`
+--
+ALTER TABLE `pessoa`
+ADD CONSTRAINT `FK6h305v7qflv5wsdnywfrjhtjq` FOREIGN KEY (`documento`) REFERENCES `documento` (`idDocumento`),
+ADD CONSTRAINT `FKshewtplh8m3w3an9okcvfwh6b` FOREIGN KEY (`endereco`) REFERENCES `endereco` (`idEndereco`);
+
+--
+-- Limitadores para a tabela `telefone`
+--
+ALTER TABLE `telefone`
+ADD CONSTRAINT `FK5nmr7ehkuajcjp2py6pqnt3w5` FOREIGN KEY (`pessoa`) REFERENCES `pessoa` (`idPessoa`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2016-10-23 23:53:08
