@@ -13,7 +13,7 @@ public class Pessoa implements Serializable{
     @GeneratedValue
     private Long idPessoa;
     
-    @Column
+    @Column(nullable = false, length = 100)
     private String nome;
     
     
@@ -41,10 +41,10 @@ public class Pessoa implements Serializable{
         this.endereco = endereco;
     }
     
-    @Column
+    @Column(nullable = false, length = 45)
     private String email;
     
-    @Column
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Calendar dataNascimento;
     

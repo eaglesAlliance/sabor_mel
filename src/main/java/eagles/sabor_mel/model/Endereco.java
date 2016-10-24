@@ -13,13 +13,13 @@ public class Endereco implements Serializable{
     @GeneratedValue
     private Long idEndereco;
     
-    @Column
+    @Column(nullable = false, length = 100)
     private String logradouro;
     
-    @Column
+    @Column(nullable = false, length = 7)
     private String numero;
     
-    @Column
+    @Column(nullable = false, length = 9)
     private String cep;
     
     

@@ -15,10 +15,10 @@ public class Estado implements Serializable{
     @GeneratedValue
     private Long idEstado;
     
-    @Column
+    @Column(nullable = false, length = 45, unique = true)
     private String nome;
     
-    @Column
+    @Column(nullable = false, length = 2, unique = true)
     private String uf;
     
     @OneToMany(

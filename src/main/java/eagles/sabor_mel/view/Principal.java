@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
@@ -47,15 +46,19 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     public Principal() {
-        initComponents();
-        this.setExtendedState(this.MAXIMIZED_BOTH); 
-        
-        
-        carregaComboEstados();
-        
-        carregaUsuarios();
-        
-        redefineEstilo();
+        if(Login.permitir){
+            initComponents();
+            this.setExtendedState(this.MAXIMIZED_BOTH); 
+            carregaComboEstados();
+            carregaUsuarios();
+            redefineEstilo();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Permissão Negada.... ");
+            this.dispose();
+            new Login().setVisible(true);
+            //System.exit(0);
+        }
         
         
     }
@@ -898,7 +901,7 @@ public class Principal extends javax.swing.JFrame {
                                                                     EnderecoDAO    endDAO = new EnderecoDAO();
                                                                     PessoaDAO      pesDAO = new PessoaDAO();
                                                                     DocumentoDAO   docDAO = new DocumentoDAO();
-                                                                    FuncionarioDAO funDAO = new FuncionarioDAO();
+                                                                    //FuncionarioDAO funDAO = new FuncionarioDAO();
                                                                     TelefoneDAO    telDAO = new TelefoneDAO();
 
                                                                     Cidade objCidade = null;
@@ -926,14 +929,15 @@ public class Principal extends javax.swing.JFrame {
                                                                     
                                                                     Endereco objEndereco       = new Endereco   (logradouro.getText(), numero.getText(), cep.getText());
                                                                
-                                                                    Documento objDocumento     = new Documento  (documento.getText(), "CPF");
+                                                                    Documento objDocumento     = new Documento  (documento.getText());
                                                                     Funcionario objFuncionario = new Funcionario(usuario.getText(), senha.getText(), tipoAcesso, nome.getText(), email.getText(), c);
-                                                                    Telefone objTelefone       = new Telefone   (ddd.getText(), telefone.getText(), "F");
+                                                                    Telefone objTelefone       = new Telefone   (ddd.getText(), telefone.getText());
 
 
                                                                     FuncionarioDAO dao = new FuncionarioDAO();
                                                                     EstadoDAO est = new EstadoDAO();
-                                                                    List<Estado> list = est.findByUf("SP");
+                                                                    List<Estado> list = est.findByUf(estados.getSelectedItem().toString());
+                                                                    
 
                                                                     for(int i = 0; i < list.size(); i++){
                                                                         list.get(i).addCidade(objCidade);
