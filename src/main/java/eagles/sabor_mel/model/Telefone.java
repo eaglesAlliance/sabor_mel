@@ -21,7 +21,7 @@ public class Telefone implements Serializable{
     @Enumerated(EnumType.ORDINAL)
     private TipoTelefone tipo;
  
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "pessoa", nullable = false)
     private Pessoa pessoa;
 
