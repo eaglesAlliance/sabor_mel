@@ -29,4 +29,10 @@ public class TelefoneDAO extends DAO<Telefone>{
     	return entityManager
     		.createQuery("FROM Telefone").getResultList();
     }
+        
+    
+	public Telefone getByDddTelefone(String ddd, String numero) {
+    	return (Telefone) entityManager
+    		.createQuery("FROM Telefone WHERE ddd = '"+ddd+"' AND numero = '"+numero+"'").getSingleResult();
+    }
 }

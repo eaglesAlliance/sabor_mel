@@ -28,5 +28,5 @@ public class PessoaDAO extends DAO<Pessoa>{
 	public List<Pessoa> findAll() {
     	return entityManager
     		.createQuery("FROM Pessoa").getResultList();
-    }
+    }        
 }
