@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 24-Out-2016 às 20:53
+-- Generation Time: 25-Out-2016 às 20:32
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -38,8 +38,7 @@ CREATE TABLE IF NOT EXISTS `bairro` (
 
 INSERT INTO `bairro` (`idBairro`, `nome`, `cidade`) VALUES
 (30, 'Pontal Santa Marina', 29),
-(36, 'Itaim Bibi', 35),
-(55, 'Santarem', 54);
+(72, 'Itaim Bibi', 71);
 
 --
 -- Acionadores `bairro`
@@ -76,8 +75,7 @@ CREATE TABLE IF NOT EXISTS `cidade` (
 
 INSERT INTO `cidade` (`idCidade`, `nome`, `estado`) VALUES
 (29, 'Caraguatatuba', 1),
-(35, 'São Paulo', 1),
-(54, 'Curitiba', 17);
+(71, 'São Paulo', 1);
 
 -- --------------------------------------------------------
 
@@ -97,8 +95,7 @@ CREATE TABLE IF NOT EXISTS `documento` (
 
 INSERT INTO `documento` (`idDocumento`, `numero`, `tipo`) VALUES
 (28, '340.124.578-37', 0),
-(34, '125.858.333-99', 0),
-(53, '254.125.478-95', 0);
+(70, '521.457.858-39', 0);
 
 -- --------------------------------------------------------
 
@@ -120,8 +117,7 @@ CREATE TABLE IF NOT EXISTS `endereco` (
 
 INSERT INTO `endereco` (`idEndereco`, `cep`, `logradouro`, `numero`, `bairro`) VALUES
 (31, '11672-020', 'Rua do Contorno', '199', 30),
-(37, '00450-160', 'Rua Viradouro', '63', 36),
-(56, '11254-222', 'Rua Benfica', '240', 55);
+(73, '00515-150', 'Rua Viradouro', '63', 72);
 
 --
 -- Acionadores `endereco`
@@ -204,8 +200,7 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
 
 INSERT INTO `funcionario` (`acesso`, `senha`, `usuario`, `pessoa`) VALUES
 (0, 'E1DD9B9ACB6DDD3CCB36E3B96FC83666E3F00C5CAB12016F5A2443214F5EE9DE', 'tiagolima', 32),
-(1, 'F004A3C91938221AFEFD9067B910FABE7488630CC799A5F70BA8EE1B753025A8', 'paulavilla', 38),
-(1, '240BE518FABD2724DDB6F04EEB1DA5967448D7E831C08C8FA822809F74C720A9', 'andrade', 57);
+(1, '61FBB95F920E6B069A8EF5DBD9ADDB436BC5A8BC92790B148519D4CA4EA2D5D0', 'paulavilla', 74);
 
 -- --------------------------------------------------------
 
@@ -222,13 +217,13 @@ CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
 --
 
 INSERT INTO `hibernate_sequence` (`next_val`) VALUES
-(61),
-(61),
-(61),
-(61),
-(61),
-(61),
-(61);
+(84),
+(84),
+(84),
+(84),
+(84),
+(84),
+(84);
 
 -- --------------------------------------------------------
 
@@ -251,9 +246,8 @@ CREATE TABLE IF NOT EXISTS `pessoa` (
 --
 
 INSERT INTO `pessoa` (`idPessoa`, `dataNascimento`, `email`, `nome`, `sexo`, `documento`, `endereco`) VALUES
-(32, '2016-10-24', 'tiago@gmail.com', 'Tiago Lima', 0, 28, 31),
-(38, '2016-10-24', 'paula@gmail.com', 'Paula Villalobos', 1, 34, 37),
-(57, '2016-10-24', 'andrade@gmail.com', 'Marcos Andrade', 0, 53, 56);
+(32, '1988-04-21', 'tiago@gmail.com', 'Tiago Lima', 0, 28, 31),
+(74, '1988-03-12', 'paula@gmail.com', 'Paula Villalobos', 1, 70, 73);
 
 -- --------------------------------------------------------
 
@@ -275,11 +269,7 @@ CREATE TABLE IF NOT EXISTS `telefone` (
 
 INSERT INTO `telefone` (`idTelefone`, `ddd`, `numero`, `tipo`, `pessoa`) VALUES
 (33, '(12)', '38879006', 0, 32),
-(39, '(11)', '951703043', 1, 38),
-(52, '(12)', '38879006', 0, 38),
-(58, '(11)', '52142301', 0, 57),
-(59, '(12)', '38879006', 0, 38),
-(60, '(15)', '38971200', 0, 57);
+(75, '(11)', '951703043', 1, 74);
 
 --
 -- Indexes for dumped tables
