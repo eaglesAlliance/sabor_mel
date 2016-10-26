@@ -42,7 +42,7 @@ public class ControllerVendas {
         venda.setFormaPagamento(formaPagamento);
         venda.setTipoVenda(tipoVenda);
         if (tipoVenda.equals("CREDIARIO")) {
-            System.out.printf("Foi possivel criar crediario? %b", criarCrediario(ano, mes, dia, venda, quantidadeParcela, itens, 0));
+            System.out.printf("Entity Crediario created: %b", criarCrediario(ano, mes, dia, venda, quantidadeParcela, itens, 0));
         }
 
         return daoVenda.persist(venda);

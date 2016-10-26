@@ -144,7 +144,6 @@ public class Principal extends javax.swing.JFrame {
         eagles = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         vendas = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
         clientes = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         produtos = new javax.swing.JPanel();
@@ -245,6 +244,13 @@ public class Principal extends javax.swing.JFrame {
         mensagem = new javax.swing.JLabel();
         btnSair = new javax.swing.JButton();
         logado = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        productTable = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
+        textCodeBar = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        textFieldDescricaoSearch = new javax.swing.JTextField();
+        ButtonSearchProduct = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -327,24 +333,15 @@ public class Principal extends javax.swing.JFrame {
 
         mainPanel.setLayout(new java.awt.CardLayout());
 
-        jLabel7.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel7.setText("PANEL VENDAS - UNDER CONSTRUCTION...");
-
         javax.swing.GroupLayout vendasLayout = new javax.swing.GroupLayout(vendas);
         vendas.setLayout(vendasLayout);
         vendasLayout.setHorizontalGroup(
             vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vendasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addContainerGap(706, Short.MAX_VALUE))
+            .addGap(0, 1208, Short.MAX_VALUE)
         );
         vendasLayout.setVerticalGroup(
             vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vendasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addContainerGap(423, Short.MAX_VALUE))
+            .addGap(0, 553, Short.MAX_VALUE)
         );
 
         mainPanel.add(vendas, "vendas");
@@ -359,14 +356,14 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(clientesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(687, Short.MAX_VALUE))
+                .addContainerGap(675, Short.MAX_VALUE))
         );
         clientesLayout.setVerticalGroup(
             clientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(clientesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addContainerGap(510, Short.MAX_VALUE))
         );
 
         mainPanel.add(clientes, "clientes");
@@ -381,14 +378,14 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(produtosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addContainerGap(667, Short.MAX_VALUE))
+                .addContainerGap(655, Short.MAX_VALUE))
         );
         produtosLayout.setVerticalGroup(
             produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(produtosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addContainerGap(510, Short.MAX_VALUE))
         );
 
         mainPanel.add(produtos, "produtos");
@@ -403,14 +400,14 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(comprasLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(683, Short.MAX_VALUE))
+                .addContainerGap(671, Short.MAX_VALUE))
         );
         comprasLayout.setVerticalGroup(
             comprasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(comprasLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addContainerGap(510, Short.MAX_VALUE))
         );
 
         mainPanel.add(compras, "compras");
@@ -425,14 +422,14 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(relatoriosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addContainerGap(650, Short.MAX_VALUE))
+                .addContainerGap(638, Short.MAX_VALUE))
         );
         relatoriosLayout.setVerticalGroup(
             relatoriosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(relatoriosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addContainerGap(510, Short.MAX_VALUE))
         );
 
         mainPanel.add(relatorios, "relatorios");
@@ -447,14 +444,14 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(fornecedoresLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(600, Short.MAX_VALUE))
+                .addContainerGap(588, Short.MAX_VALUE))
         );
         fornecedoresLayout.setVerticalGroup(
             fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fornecedoresLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addContainerGap(510, Short.MAX_VALUE))
         );
 
         mainPanel.add(fornecedores, "fornecedores");
@@ -674,7 +671,7 @@ public class Principal extends javax.swing.JFrame {
                                                 .addComponent(nome)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usuariosLayout.createSequentialGroup()
-                                        .addGap(0, 1, Short.MAX_VALUE)
+                                        .addGap(0, 0, Short.MAX_VALUE)
                                         .addComponent(jLabel14)
                                         .addGap(292, 292, 292))
                                     .addGroup(usuariosLayout.createSequentialGroup()
@@ -696,7 +693,7 @@ public class Principal extends javax.swing.JFrame {
                                                 .addComponent(ddd, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(telefone, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 1, Short.MAX_VALUE))
+                                                .addGap(0, 0, Short.MAX_VALUE))
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
                                                 .addComponent(labelTelefone2)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -800,7 +797,7 @@ public class Principal extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnRefresh))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
 
         mainPanel.add(usuarios, "usuarios");
@@ -819,6 +816,41 @@ public class Principal extends javax.swing.JFrame {
         });
 
         logado.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        productTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código", "Descrição", "Valor Unitário", "Valor Total"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Long.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(productTable);
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel7.setText("Código");
+        jLabel7.setToolTipText("");
+
+        jLabel27.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel27.setText("Descrição");
+        jLabel27.setToolTipText("");
+
+        ButtonSearchProduct.setText("Buscar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -844,6 +876,19 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(btnFornecedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnSair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel27)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(textFieldDescricaoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ButtonSearchProduct, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addGap(22, 22, 22)
+                                    .addComponent(textCodeBar, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(400, 400, 400)
                         .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -877,7 +922,19 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(btnUsuario)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSair)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(textCodeBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel27)
+                            .addComponent(textFieldDescricaoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ButtonSearchProduct)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(eagles)
                 .addContainerGap())
@@ -1607,6 +1664,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonSearchProduct;
     private javax.swing.JComboBox<String> acessos;
     private javax.swing.JButton addTelefone;
     private javax.swing.JTextField bairro;
@@ -1655,6 +1713,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1663,6 +1722,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelTelefone2;
     private javax.swing.JLabel labelTelefone3;
     private javax.swing.JLabel logado;
@@ -1672,6 +1732,7 @@ public class Principal extends javax.swing.JFrame {
     public static javax.swing.JLabel mensagem;
     private javax.swing.JTextField nome;
     private javax.swing.JTextField numero;
+    private javax.swing.JTable productTable;
     private javax.swing.JPanel produtos;
     private javax.swing.JPanel relatorios;
     private javax.swing.JPasswordField senha;
@@ -1680,6 +1741,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField telefone;
     private javax.swing.JTextField telefone2;
     private javax.swing.JTextField telefone3;
+    private javax.swing.JTextField textCodeBar;
+    private javax.swing.JTextField textFieldDescricaoSearch;
     private javax.swing.JTextField usuario;
     private javax.swing.JPanel usuarios;
     private javax.swing.JPanel vendas;

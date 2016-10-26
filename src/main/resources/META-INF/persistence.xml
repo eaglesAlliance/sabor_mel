@@ -10,6 +10,9 @@
     <class>eagles.sabor_mel.model.Funcionario</class>
     <class>eagles.sabor_mel.model.Telefone</class>
     <class>eagles.sabor_mel.model.Bairro</class>
+    <class>eagles.sabor_mel.model.Produto</class>
+    <class>eagles.sabor_mel.model.Venda</class>
+    
     <properties>
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
