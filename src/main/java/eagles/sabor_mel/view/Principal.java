@@ -3,7 +3,7 @@ package eagles.sabor_mel.view;
 
 import eagles.sabor_mel.control.HashSha;
 import eagles.sabor_mel.control.Mensagem;
-import eagles.sabor_mel.control.Validation;
+import eagles.sabor_mel.control.Validacao;
 import eagles.sabor_mel.dao.BairroDAO;
 import eagles.sabor_mel.dao.CidadeDAO;
 import eagles.sabor_mel.dao.DocumentoDAO;
@@ -26,6 +26,7 @@ import eagles.sabor_mel.model.TipoDocumento;
 import eagles.sabor_mel.model.TipoTelefone;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -35,8 +36,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.JTextComponent;
 
 /**
  *
@@ -45,6 +49,9 @@ import javax.swing.table.DefaultTableModel;
 public class Principal extends javax.swing.JFrame {
     /*Variavel global para definir as ações do operador*/
     public static String acao = "";
+    
+    /*Variavel para definir a opção selecionada do menu*/
+    public static String menu = "";
     
     /**
      * Creates new form Principal
@@ -327,6 +334,8 @@ public class Principal extends javax.swing.JFrame {
 
         mainPanel.setLayout(new java.awt.CardLayout());
 
+        vendas.setName("vendas"); // NOI18N
+
         jLabel7.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel7.setText("PANEL VENDAS - UNDER CONSTRUCTION...");
 
@@ -348,6 +357,8 @@ public class Principal extends javax.swing.JFrame {
         );
 
         mainPanel.add(vendas, "vendas");
+
+        clientes.setName("clientes"); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel3.setText("PANEL CLIENTES - UNDER CONSTRUCTION...");
@@ -371,6 +382,8 @@ public class Principal extends javax.swing.JFrame {
 
         mainPanel.add(clientes, "clientes");
 
+        produtos.setName("produtos"); // NOI18N
+
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel2.setText("PANEL PRODUTOS - UNDER CONSTRUCTION...");
 
@@ -392,6 +405,8 @@ public class Principal extends javax.swing.JFrame {
         );
 
         mainPanel.add(produtos, "produtos");
+
+        compras.setName("compras"); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel1.setText("PANEL COMPRAS - UNDER CONSTRUCTION...");
@@ -415,6 +430,8 @@ public class Principal extends javax.swing.JFrame {
 
         mainPanel.add(compras, "compras");
 
+        relatorios.setName("relatorios"); // NOI18N
+
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel4.setText("PANEL RELATORIOS - UNDER CONSTRUCTION...");
 
@@ -437,6 +454,8 @@ public class Principal extends javax.swing.JFrame {
 
         mainPanel.add(relatorios, "relatorios");
 
+        fornecedores.setName("fornecedores"); // NOI18N
+
         jLabel5.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel5.setText("PANEL FORNECEDORES - UNDER CONSTRUCTION...");
 
@@ -458,6 +477,8 @@ public class Principal extends javax.swing.JFrame {
         );
 
         mainPanel.add(fornecedores, "fornecedores");
+
+        usuarios.setName("usuarios"); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel8.setText("Usuários");
@@ -674,7 +695,7 @@ public class Principal extends javax.swing.JFrame {
                                                 .addComponent(nome)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, usuariosLayout.createSequentialGroup()
-                                        .addGap(0, 1, Short.MAX_VALUE)
+                                        .addGap(0, 0, Short.MAX_VALUE)
                                         .addComponent(jLabel14)
                                         .addGap(292, 292, 292))
                                     .addGroup(usuariosLayout.createSequentialGroup()
@@ -696,7 +717,7 @@ public class Principal extends javax.swing.JFrame {
                                                 .addComponent(ddd, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(telefone, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 1, Short.MAX_VALUE))
+                                                .addGap(0, 0, Short.MAX_VALUE))
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, usuariosLayout.createSequentialGroup()
                                                 .addComponent(labelTelefone2)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -889,41 +910,49 @@ public class Principal extends javax.swing.JFrame {
     private void btnVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendaActionPerformed
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "vendas");
+        menu = "vendas";
     }//GEN-LAST:event_btnVendaActionPerformed
 
     private void btnClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClienteActionPerformed
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "clientes");
+        menu = "clientes";
     }//GEN-LAST:event_btnClienteActionPerformed
 
     private void btnProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutoActionPerformed
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "produtos");
+        menu = "produtos";
     }//GEN-LAST:event_btnProdutoActionPerformed
 
     private void btnCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraActionPerformed
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "compras");
+        menu = "compras";
     }//GEN-LAST:event_btnCompraActionPerformed
 
     private void btnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioActionPerformed
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "relatorios");
+        menu = "relatorios";
     }//GEN-LAST:event_btnRelatorioActionPerformed
 
     private void btnFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFornecedorActionPerformed
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "fornecedores");
+        menu = "fornecedores";
     }//GEN-LAST:event_btnFornecedorActionPerformed
 
     private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "usuarios");
+        menu = "usuarios";
     }//GEN-LAST:event_btnUsuarioActionPerformed
 
     private void btnVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVendaMouseClicked
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "vendas");
+        menu = "vendas";
     }//GEN-LAST:event_btnVendaMouseClicked
 
     private void btnClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClienteMouseClicked
@@ -949,25 +978,25 @@ public class Principal extends javax.swing.JFrame {
    
     private void confirmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmMouseClicked
         
-        Validation validate = new Validation();
+        Validacao valida = new Validacao();
 
-        if(validate.validateNome(nome.getText())){
-            if(validate.validateEmail(email.getText())){
-                if(validate.validateDataNascimento(dataNascimento.getText())){
-                    if(validate.validateCpf(documento.getText())){
-                        if(validate.validateDdd(ddd.getText())){
-                            if(validate.validateTelefone(telefone.getText())){
-                                if(validate.validateCep(cep.getText())){
-                                    if(validate.validateEndereco(logradouro.getText())){
-                                        if(validate.validateEndereco(bairro.getText())){
-                                            if(validate.validateEndereco(cidade.getText())){
-                                                if(validate.validateNumero(numero.getText())){
-                                                    if(validate.validateUsuario(usuario.getText())){
+        if(valida.validaNome(nome.getText())){
+            if(valida.validateEmail(email.getText())){
+                if(valida.validateDataNascimento(dataNascimento.getText())){
+                    if(valida.validateCpf(documento.getText())){
+                        if(valida.validateDdd(ddd.getText())){
+                            if(valida.validateTelefone(telefone.getText())){
+                                if(valida.validateCep(cep.getText())){
+                                    if(valida.validateEndereco(logradouro.getText())){
+                                        if(valida.validateEndereco(bairro.getText())){
+                                            if(valida.validateEndereco(cidade.getText())){
+                                                if(valida.validateNumero(numero.getText())){
+                                                    if(valida.validateUsuario(usuario.getText())){
                                                         if(!checkSenha.isSelected()){
                                                             senha.setText("tempsenha");
                                                         }
-                                                        if(validate.validateSenha(senha.getText())){
-                                                            if(validate.validateCombo(acessos.getSelectedIndex())){
+                                                        if(valida.validateSenha(senha.getText())){
+                                                            if(valida.validateCombo(acessos.getSelectedIndex())){
                                                                 
                                                                 List<Telefone> telefones = new ArrayList<>();
                                                                 
@@ -978,8 +1007,8 @@ public class Principal extends javax.swing.JFrame {
                                                                     telefones.add(new Telefone(ddd.getText(), telefone.getText(), TipoTelefone.Celular));
                                                                 }
                                                                 
-                                                                if(ddd2.isVisible() && validate.validateDdd(ddd2.getText())){
-                                                                    if(validate.validateTelefone(telefone2.getText())){
+                                                                if(ddd2.isVisible() && valida.validateDdd(ddd2.getText())){
+                                                                    if(valida.validateTelefone(telefone2.getText())){
                                                                         if(telefone2.getText().length() == 8){
                                                                             telefones.add(new Telefone(ddd2.getText(), telefone2.getText(), TipoTelefone.Fixo));
                                                                         }
@@ -989,8 +1018,8 @@ public class Principal extends javax.swing.JFrame {
                                                                     }
                                                                 }
                                                                 
-                                                                if(ddd3.isVisible() && validate.validateDdd(ddd3.getText())){
-                                                                    if(validate.validateTelefone(telefone3.getText())){
+                                                                if(ddd3.isVisible() && valida.validateDdd(ddd3.getText())){
+                                                                    if(valida.validateTelefone(telefone3.getText())){
                                                                         if(telefone3.getText().length() == 8){
                                                                             telefones.add(new Telefone(ddd3.getText(), telefone3.getText(), TipoTelefone.Fixo));
                                                                         }
@@ -1102,13 +1131,13 @@ public class Principal extends javax.swing.JFrame {
                                                                     
                                                                     
                                                                     if(funcionario.getTelefones().size() == 1){
-                                                                        if(ddd2.isVisible() && validate.validateDdd(ddd2.getText())){
-                                                                            if(validate.validateTelefone(telefone2.getText())){
+                                                                        if(ddd2.isVisible() && valida.validateDdd(ddd2.getText())){
+                                                                            if(valida.validateTelefone(telefone2.getText())){
                                                                                 funcionario.getTelefones().get(0).setDdd(ddd.getText());
                                                                                 funcionario.getTelefones().get(0).setNumero(telefone.getText());
                                                                                 
-                                                                                if(ddd2.isVisible() && validate.validateDdd(ddd2.getText())){
-                                                                                    if(validate.validateTelefone(telefone2.getText())){
+                                                                                if(ddd2.isVisible() && valida.validateDdd(ddd2.getText())){
+                                                                                    if(valida.validateTelefone(telefone2.getText())){
                                                                                         if(telefone2.getText().length() == 8){
                                                                                             funcionario.addTelefone(new Telefone(ddd2.getText(), telefone2.getText(), TipoTelefone.Fixo));
                                                                                         }
@@ -1118,8 +1147,8 @@ public class Principal extends javax.swing.JFrame {
                                                                                     }
                                                                                 }
 
-                                                                                if(ddd3.isVisible() && validate.validateDdd(ddd3.getText())){
-                                                                                    if(validate.validateTelefone(telefone3.getText())){
+                                                                                if(ddd3.isVisible() && valida.validateDdd(ddd3.getText())){
+                                                                                    if(valida.validateTelefone(telefone3.getText())){
                                                                                         if(telefone3.getText().length() == 8){
                                                                                             funcionario.addTelefone(new Telefone(ddd3.getText(), telefone3.getText(), TipoTelefone.Fixo));
                                                                                         }
@@ -1133,16 +1162,16 @@ public class Principal extends javax.swing.JFrame {
                                                                     }
                                                                     
                                                                     if(funcionario.getTelefones().size() == 2){
-                                                                        if(ddd2.isVisible() && validate.validateDdd(ddd2.getText())){
-                                                                            if(validate.validateTelefone(telefone2.getText())){
+                                                                        if(ddd2.isVisible() && valida.validateDdd(ddd2.getText())){
+                                                                            if(valida.validateTelefone(telefone2.getText())){
                                                                                 funcionario.getTelefones().get(0).setDdd(ddd.getText());
                                                                                 funcionario.getTelefones().get(0).setNumero(telefone.getText());
                                                                                 
                                                                                 funcionario.getTelefones().get(1).setDdd(ddd2.getText());
                                                                                 funcionario.getTelefones().get(1).setNumero(telefone2.getText());
                                                                                 
-                                                                                if(ddd3.isVisible() && validate.validateDdd(ddd3.getText())){
-                                                                                    if(validate.validateTelefone(telefone3.getText())){
+                                                                                if(ddd3.isVisible() && valida.validateDdd(ddd3.getText())){
+                                                                                    if(valida.validateTelefone(telefone3.getText())){
                                                                                         if(telefone3.getText().length() == 8){
                                                                                             funcionario.addTelefone(new Telefone(ddd3.getText(), telefone3.getText(), TipoTelefone.Fixo));
                                                                                         }
@@ -1156,8 +1185,8 @@ public class Principal extends javax.swing.JFrame {
                                                                     }
                                                                     
                                                                     if(funcionario.getTelefones().size() == 3){
-                                                                        if(ddd2.isVisible() && validate.validateDdd(ddd2.getText())){
-                                                                            if(validate.validateTelefone(telefone2.getText())){
+                                                                        if(ddd2.isVisible() && valida.validateDdd(ddd2.getText())){
+                                                                            if(valida.validateTelefone(telefone2.getText())){
                                                                                 funcionario.getTelefones().get(0).setDdd(ddd.getText());
                                                                                 funcionario.getTelefones().get(0).setNumero(telefone.getText());
                                                                                 
@@ -1325,24 +1354,23 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_confirmMouseClicked
 
     public void limpaCampos() {
-        nome.setText(null);
-        email.setText(null);
-        dataNascimento.setText(null);
-        documento.setText(null);
-        ddd.setText(null);
-        telefone.setText(null);
-        cep.setText(null);
-        logradouro.setText(null);
-        bairro.setText(null);
-        cidade.setText(null);
-        numero.setText(null);
-        usuario.setText(null);
-        senha.setText(null);
-        tabelaUsuario.clearSelection();
-        ddd2.setText(null);
-        telefone2.setText(null);
-        ddd3.setText(null);
-        telefone3.setText(null);
+        
+        if(menu.equals("usuarios")){
+            for (Component C : usuarios.getComponents()){
+            
+                if (C instanceof JTextField){
+
+                    ((JTextComponent) C).setText(null);
+                }
+                
+            }
+            tabelaUsuario.clearSelection();
+            
+            checkSenha.setVisible(false);
+            senha.setEnabled(true);
+            senha.setEditable(true);
+        }
+        
         
         labelTelefone2.setVisible(false);
         ddd2.setVisible(false);
@@ -1353,9 +1381,7 @@ public class Principal extends javax.swing.JFrame {
         telefone3.setVisible(false);
         delTel3.setVisible(false);
         
-        checkSenha.setVisible(false);
-        senha.setEnabled(true);
-        senha.setEditable(true);
+        
     }
 
     private void nomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nomeMouseClicked
@@ -1513,7 +1539,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_checkSenhaMouseClicked
 
     private void delTel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_delTel2MouseClicked
-       Validation valida = new Validation();
+       Validacao valida = new Validacao();
         if(tabelaUsuario.getSelectedRow() > -1){
            if(valida.validateDdd(ddd2.getText()) && valida.validateTelefone(telefone2.getText())){
                TelefoneDAO dao = new TelefoneDAO();
@@ -1542,7 +1568,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_delTel2MouseClicked
 
     private void delTel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_delTel3MouseClicked
-        Validation valida = new Validation();
+        Validacao valida = new Validacao();
         if(tabelaUsuario.getSelectedRow() > -1){
            if(valida.validateDdd(ddd3.getText()) && valida.validateTelefone(telefone3.getText())){
                TelefoneDAO dao = new TelefoneDAO();

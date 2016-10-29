@@ -198,6 +198,9 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="vendas">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="vendas" noResource="true"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="vendas"/>
@@ -236,6 +239,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="clientes">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="clientes" noResource="true"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="clientes"/>
@@ -274,6 +280,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="produtos">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="produtos" noResource="true"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="produtos"/>
@@ -312,6 +321,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="compras">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="compras" noResource="true"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="compras"/>
@@ -350,6 +362,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="relatorios">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="relatorios" noResource="true"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="relatorios"/>
@@ -388,6 +403,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="fornecedores">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="fornecedores" noResource="true"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="fornecedores"/>
@@ -426,6 +444,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="usuarios">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="usuarios" noResource="true"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="usuarios"/>
@@ -536,7 +557,7 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="1" attributes="0">
-                                              <EmptySpace min="0" pref="1" max="32767" attributes="0"/>
+                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                               <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="292" max="-2" attributes="0"/>
                                           </Group>
@@ -562,7 +583,7 @@
                                                       <Component id="ddd" min="-2" pref="40" max="-2" attributes="0"/>
                                                       <EmptySpace max="-2" attributes="0"/>
                                                       <Component id="telefone" min="-2" pref="115" max="-2" attributes="0"/>
-                                                      <EmptySpace min="0" pref="1" max="32767" attributes="0"/>
+                                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                                   </Group>
                                                   <Group type="102" alignment="0" attributes="0">
                                                       <Component id="labelTelefone2" min="-2" max="-2" attributes="0"/>
