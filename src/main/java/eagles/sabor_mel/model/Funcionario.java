@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 @Entity(name="Funcionario")
 @PrimaryKeyJoinColumn(name="pessoa")
-//@Table
+@Table
 public class Funcionario extends Pessoa{
     
 

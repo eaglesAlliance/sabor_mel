@@ -6,7 +6,8 @@
 package eagles.sabor_mel.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,13 +35,13 @@ public class Venda implements Serializable{
     
     @Id
     @SequenceGenerator(name = "idVenda", sequenceName="idvenda_seq", allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idPessoa")
-    @Column(name="idPessoa", nullable=false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idVenda")
+    @Column(name="idVenda", nullable=false)
     private Long idVenda;
     
     @Column(name = "dataVenda")
     @Temporal(TemporalType.DATE)
-    private Date dataVenda;
+    private Calendar dataVenda;
     
     @Column(name = "tipoVenda")
     private String tipoVenda;
@@ -51,16 +52,20 @@ public class Venda implements Serializable{
     @Column(name = "desconto")
     private Double desconto;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="idPessoa", nullable=true)
     private Pessoa cliente;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="idFuncionario", nullable=false)
+    @ManyToOne
+    @JoinColumn(name="idFuncionario", nullable=true)
     private Funcionario vendedor;
     
-    @OneToMany(mappedBy = "venda", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "venda", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<ItemVenda> itens;
+    
+    public Venda(){
+        itens = new ArrayList<ItemVenda>();
+    }
 
     public List<ItemVenda> getItens() {
         return itens;
@@ -79,11 +84,11 @@ public class Venda implements Serializable{
         this.idVenda = idVenda;
     }
 
-    public Date getDataVenda() {
+    public Calendar getDataVenda() {
         return dataVenda;
     }
 
-    public void setData(Date dataVenda) {
+    public void setData(Calendar dataVenda) {
         this.dataVenda = dataVenda;
     }
 

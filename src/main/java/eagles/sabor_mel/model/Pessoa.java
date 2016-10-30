@@ -8,6 +8,7 @@ import java.util.*;
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table
 public class Pessoa implements Serializable{
+    
     @Id
     @Column
     @GeneratedValue

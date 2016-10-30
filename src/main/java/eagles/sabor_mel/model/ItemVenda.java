@@ -36,11 +36,11 @@ public class ItemVenda implements Serializable{
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idProduto", nullable = false)
     private Produto produto;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idVenda", nullable = false)
     private Venda venda;
 
@@ -75,6 +75,4 @@ public class ItemVenda implements Serializable{
     public void setVenda(Venda venda) {
         this.venda = venda;
     }
-    
-    
 }
