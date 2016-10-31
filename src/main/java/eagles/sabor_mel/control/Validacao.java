@@ -32,6 +32,11 @@ public class Validacao {
         return ptr.matcher(cpf).matches();
     }
     
+    public boolean validaCnpj(String cnpj){
+        Pattern ptr = Pattern.compile("[0-9]{2}\\.?[0-9]{3}\\.?[0-9]{3}\\/?[0-9]{4}\\-?[0-9]{2}");
+        return ptr.matcher(cnpj).matches();
+    }
+    
     public boolean validaDdd(String ddd){
         return !ddd.equals("(  )");
         
