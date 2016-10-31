@@ -9,6 +9,6 @@ package eagles.sabor_mel.model;
  *
  * @author etivideo
  */
-public enum Sexo {
-    Masculino, Feminino, Não_Definido;
+public enum TipoVenda {
+    Vista, Parcelado;
 }

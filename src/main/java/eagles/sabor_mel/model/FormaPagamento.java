@@ -9,6 +9,12 @@ package eagles.sabor_mel.model;
  *
  * @author etivideo
  */
-public enum Sexo {
-    Masculino, Feminino, Não_Definido;
+public enum FormaPagamento {
+    Vista_Dinheiro,
+    Vista_Cartao_Visa,
+    Vista_Cartao_Master,
+    Vista_Cheque,
+    Parcela_Cheque,
+    Parcela_Visa,
+    Parcela_Master;
 }
