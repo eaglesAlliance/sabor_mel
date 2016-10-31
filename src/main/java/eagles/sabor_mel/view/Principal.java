@@ -27,6 +27,11 @@ import eagles.sabor_mel.model.TipoTelefone;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -35,6 +40,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -69,6 +77,7 @@ public class Principal extends javax.swing.JFrame {
             logado.setText("Usuário: "+Login.nome);
             this.setExtendedState(this.MAXIMIZED_BOTH); 
             carregaComboEstados();
+            carregaComboFornecedores();
             carregaDados();
             redefineEstilo();
         }
@@ -89,6 +98,18 @@ public class Principal extends javax.swing.JFrame {
         for(int i = 0; i < listDaoEstados.size(); i++){
             estados.addItem(listDaoEstados.get(i).getUf());
             estadosCliente.addItem(listDaoEstados.get(i).getUf());
+            estadosFornecedor.addItem(listDaoEstados.get(i).getUf());
+        }
+    }
+    
+    public void carregaComboFornecedores(){
+        PessoaDAO dao = new PessoaDAO();
+        List<Pessoa> Listfornecedores = dao.findAll();
+        
+        for(int i = 0; i < Listfornecedores.size(); i++){
+           if(Listfornecedores.get(i).getDocumento().getTipo().toString().equals("CNPJ")){
+                comboFornecedores.addItem(Listfornecedores.get(i).getNome());
+            }
         }
     }
 
@@ -96,6 +117,7 @@ public class Principal extends javax.swing.JFrame {
         acessos.setBackground(Color.white);
         estados.setBackground(Color.white);
         sexo.setBackground(Color.white);
+        
         
         checkSenha.setVisible(false);
         delete.setVisible(false);
@@ -121,6 +143,17 @@ public class Principal extends javax.swing.JFrame {
         telefone3Cliente.setVisible(false);
         delTel3Cliente.setVisible(false);
         
+        /*Fornecedor*/
+        deleteFornecedor.setVisible(false);
+        confirmFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png")));
+        labelTelefone2Fornecedor.setVisible(false);
+        ddd2Fornecedor.setVisible(false);
+        telefone2Fornecedor.setVisible(false);
+        delTel2Fornecedor.setVisible(false);
+        labelTelefone3Fornecedor.setVisible(false);
+        ddd3Fornecedor.setVisible(false);
+        telefone3Fornecedor.setVisible(false);
+        delTel3Fornecedor.setVisible(false);
         
         
         mensagem.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -151,14 +184,31 @@ public class Principal extends javax.swing.JFrame {
         List<Pessoa> listClientes = pesDAO.findAll();
         ((DefaultTableModel)tabelaCliente.getModel()).setNumRows(0);
         for(int i = 0; i < listClientes.size(); i++){
-            
-            ((DefaultTableModel)tabelaCliente.getModel()).addRow(new String[]{
-                listClientes.get(i).getIdPessoa().toString(),
-                listClientes.get(i).getNome()
-            });
+            if(listClientes.get(i).getDocumento().getTipo().toString().equals("CPF")){
+                ((DefaultTableModel)tabelaCliente.getModel()).addRow(new String[]{
+                    listClientes.get(i).getIdPessoa().toString(),
+                    listClientes.get(i).getNome()
+                });
+            }
             
             confirmCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png")));
             deleteCliente.setVisible(false);
+        }
+        
+        /*Fornecedores*/
+        PessoaDAO fornecedorDAO = new PessoaDAO();
+        List<Pessoa> listFornecedores = fornecedorDAO.findAll();
+        ((DefaultTableModel)tabelaFornecedor.getModel()).setNumRows(0);
+        for(int i = 0; i < listFornecedores.size(); i++){
+            if(listFornecedores.get(i).getDocumento().getTipo().toString().equals("CNPJ")){
+                ((DefaultTableModel)tabelaFornecedor.getModel()).addRow(new String[]{
+                    listClientes.get(i).getIdPessoa().toString(),
+                    listClientes.get(i).getNome()
+                });
+            }
+            
+            confirmFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png")));
+            deleteFornecedor.setVisible(false);
         }
     }
     
@@ -263,13 +313,112 @@ public class Principal extends javax.swing.JFrame {
         deleteCliente = new javax.swing.JButton();
         confirmCliente = new javax.swing.JButton();
         produtos = new javax.swing.JPanel();
+        jLabel46 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel47 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        nomeProduto = new javax.swing.JTextField();
+        jLabel54 = new javax.swing.JLabel();
+        quantidadeProduto = new javax.swing.JSpinner();
+        jLabel55 = new javax.swing.JLabel();
+        valorCompraProduto = new javax.swing.JTextField();
+        try{ 
+            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("R$ ##,##");
+            valorCompraProduto = new javax.swing.JFormattedTextField(mask);
+        }
+        catch (Exception e){
+        }
+        jLabel56 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        descricaoProduto = new javax.swing.JTextArea();
+        deleteProduto = new javax.swing.JButton();
+        confirmProduto = new javax.swing.JButton();
+        refreshProduto = new javax.swing.JButton();
+        jLabel57 = new javax.swing.JLabel();
+        valorVendaProduto = new javax.swing.JTextField();
+        try{ 
+            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("R$ ##,##");
+            valorVendaProduto = new javax.swing.JFormattedTextField(mask);
+        }
+        catch (Exception e){
+        }
+        jLabel58 = new javax.swing.JLabel();
+        comboFornecedores = new javax.swing.JComboBox<>();
+        imagemProduto = new javax.swing.JButton();
         compras = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         relatorios = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         fornecedores = new javax.swing.JPanel();
+        jLabel29 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tabelaFornecedor = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        nomeFornecedor = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
+        emailFornecedor = new javax.swing.JTextField();
+        jLabel43 = new javax.swing.JLabel();
+        documentoFornecedor = new javax.swing.JTextField();
+        try{ 
+            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("##.###.###/####-##");
+            documentoFornecedor = new javax.swing.JFormattedTextField(mask);
+        }
+        catch (Exception e){
+        }
+        jLabel44 = new javax.swing.JLabel();
+        jLabel45 = new javax.swing.JLabel();
+        dddFornecedor = new javax.swing.JTextField();
+        try{ 
+            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("(##)");
+            dddFornecedor = new javax.swing.JFormattedTextField(mask);
+        }
+        catch (Exception e){
+        }
+        telefoneFornecedor = new javax.swing.JTextField();
+        addTelefoneFornecedor = new javax.swing.JButton();
+        labelTelefone2Fornecedor = new javax.swing.JLabel();
+        ddd2Fornecedor = new javax.swing.JTextField();
+        try{ 
+            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("(##)");
+            ddd2Fornecedor = new javax.swing.JFormattedTextField(mask);
+        }
+        catch (Exception e){
+        }
+        telefone2Fornecedor = new javax.swing.JTextField();
+        delTel2Fornecedor = new javax.swing.JButton();
+        labelTelefone3Fornecedor = new javax.swing.JLabel();
+        ddd3Fornecedor = new javax.swing.JTextField();
+        try{ 
+            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("(##)");
+            ddd3Fornecedor = new javax.swing.JFormattedTextField(mask);
+        }
+        catch (Exception e){
+        }
+        telefone3Fornecedor = new javax.swing.JTextField();
+        delTel3Fornecedor = new javax.swing.JButton();
+        jLabel48 = new javax.swing.JLabel();
+        cepFornecedor = new javax.swing.JTextField();
+        try{ 
+            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("#####-###");
+            cepFornecedor = new javax.swing.JFormattedTextField(mask);
+        }
+        catch (Exception e){
+        }
+        jLabel49 = new javax.swing.JLabel();
+        logradouroFornecedor = new javax.swing.JTextField();
+        jLabel50 = new javax.swing.JLabel();
+        numeroFornecedor = new javax.swing.JTextField();
+        jLabel51 = new javax.swing.JLabel();
+        bairroFornecedor = new javax.swing.JTextField();
+        jLabel52 = new javax.swing.JLabel();
+        cidadeFornecedor = new javax.swing.JTextField();
+        jLabel53 = new javax.swing.JLabel();
+        estadosFornecedor = new javax.swing.JComboBox<>();
+        refreshFornecedor = new javax.swing.JButton();
+        deleteFornecedor = new javax.swing.JButton();
+        confirmFornecedor = new javax.swing.JButton();
         usuarios = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -760,8 +909,59 @@ public class Principal extends javax.swing.JFrame {
 
         mainPanel.add(clientes, "clientes");
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel2.setText("PANEL PRODUTOS - UNDER CONSTRUCTION...");
+        jLabel46.setText("Produtos");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome", "R$", "QTD", "Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(jTable1);
+
+        jLabel47.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jLabel47.setText("Cadastro de Produtos");
+
+        jLabel2.setText("Nome");
+
+        jLabel54.setText("Quantidade");
+
+        quantidadeProduto.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        jLabel55.setText("Compra ");
+
+        jLabel56.setText("Descrição");
+
+        descricaoProduto.setColumns(20);
+        descricaoProduto.setRows(5);
+        jScrollPane5.setViewportView(descricaoProduto);
+
+        deleteProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete.png"))); // NOI18N
+
+        confirmProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png"))); // NOI18N
+
+        refreshProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/refresh-page-option.png"))); // NOI18N
+
+        jLabel57.setText("Venda ");
+
+        jLabel58.setText("Fornecedor");
+
+        imagemProduto.setText("IMAGEM");
+        imagemProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                imagemProdutoMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout produtosLayout = new javax.swing.GroupLayout(produtos);
         produtos.setLayout(produtosLayout);
@@ -769,15 +969,92 @@ public class Principal extends javax.swing.JFrame {
             produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(produtosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addContainerGap(667, Short.MAX_VALUE))
+                .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel46)
+                    .addGroup(produtosLayout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel47)
+                            .addGroup(produtosLayout.createSequentialGroup()
+                                .addComponent(imagemProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel56)
+                                    .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jScrollPane5)
+                                        .addGroup(produtosLayout.createSequentialGroup()
+                                            .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(produtosLayout.createSequentialGroup()
+                                                    .addComponent(jLabel2)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(nomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jLabel54)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(quantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(produtosLayout.createSequentialGroup()
+                                                    .addComponent(jLabel58)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(comboFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addGroup(produtosLayout.createSequentialGroup()
+                                                    .addComponent(jLabel57)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                    .addComponent(valorVendaProduto))
+                                                .addGroup(produtosLayout.createSequentialGroup()
+                                                    .addComponent(jLabel55)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(valorCompraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                            .addGroup(produtosLayout.createSequentialGroup()
+                                .addComponent(refreshProduto)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(confirmProduto)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteProduto)))))
+                .addContainerGap(201, Short.MAX_VALUE))
         );
         produtosLayout.setVerticalGroup(
             produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(produtosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addComponent(jLabel46)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(produtosLayout.createSequentialGroup()
+                        .addComponent(jLabel47)
+                        .addGap(18, 18, 18)
+                        .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(produtosLayout.createSequentialGroup()
+                                .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(nomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel54)
+                                    .addComponent(quantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel55)
+                                    .addComponent(valorCompraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(3, 3, 3)
+                                .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel57)
+                                    .addComponent(valorVendaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel56)
+                                .addGap(8, 8, 8)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(produtosLayout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel58)
+                                    .addComponent(comboFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(imagemProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(deleteProduto)
+                            .addComponent(confirmProduto)
+                            .addComponent(refreshProduto))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         mainPanel.add(produtos, "produtos");
@@ -826,8 +1103,103 @@ public class Principal extends javax.swing.JFrame {
 
         mainPanel.add(relatorios, "relatorios");
 
-        jLabel5.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel5.setText("PANEL FORNECEDORES - UNDER CONSTRUCTION...");
+        jLabel29.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jLabel29.setText("Fornecedores");
+
+        tabelaFornecedor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabelaFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaFornecedorMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tabelaFornecedor);
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jLabel5.setText("Dados");
+
+        jLabel33.setText("Nome Fantasia");
+
+        jLabel34.setText("E-mail");
+
+        jLabel43.setText("CNPJ");
+
+        jLabel44.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jLabel44.setText("Endereço");
+
+        jLabel45.setText("Telefone");
+
+        addTelefoneFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/add.png"))); // NOI18N
+        addTelefoneFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addTelefoneFornecedorMouseClicked(evt);
+            }
+        });
+
+        labelTelefone2Fornecedor.setText("Telefone 2");
+
+        delTel2Fornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete_icon.png"))); // NOI18N
+        delTel2Fornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                delTel2FornecedorMouseClicked(evt);
+            }
+        });
+
+        labelTelefone3Fornecedor.setText("Telefone 3");
+
+        delTel3Fornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete_icon.png"))); // NOI18N
+        delTel3Fornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                delTel3FornecedorMouseClicked(evt);
+            }
+        });
+
+        jLabel48.setText("CEP");
+
+        jLabel49.setText("Logradouro");
+
+        jLabel50.setText("Nº");
+
+        jLabel51.setText("Bairro");
+
+        jLabel52.setText("Cidade");
+
+        jLabel53.setText("Estado");
+
+        refreshFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/refresh-page-option.png"))); // NOI18N
+        refreshFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                refreshFornecedorMouseClicked(evt);
+            }
+        });
+
+        deleteFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete.png"))); // NOI18N
+        deleteFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteFornecedorMouseClicked(evt);
+            }
+        });
+
+        confirmFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png"))); // NOI18N
+        confirmFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                confirmFornecedorMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout fornecedoresLayout = new javax.swing.GroupLayout(fornecedores);
         fornecedores.setLayout(fornecedoresLayout);
@@ -835,15 +1207,156 @@ public class Principal extends javax.swing.JFrame {
             fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fornecedoresLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5)
-                .addContainerGap(600, Short.MAX_VALUE))
+                .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel29)
+                    .addGroup(fornecedoresLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(fornecedoresLayout.createSequentialGroup()
+                                .addComponent(refreshFornecedor)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(confirmFornecedor)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteFornecedor))
+                            .addGroup(fornecedoresLayout.createSequentialGroup()
+                                .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(jLabel33)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(nomeFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(jLabel43)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(documentoFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel34)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(emailFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel44)
+                            .addGroup(fornecedoresLayout.createSequentialGroup()
+                                .addComponent(jLabel48)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cepFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(fornecedoresLayout.createSequentialGroup()
+                                .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(jLabel49)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(logradouroFornecedor))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(jLabel51)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bairroFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel52)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cidadeFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(jLabel53)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(estadosFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(jLabel50)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(numeroFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(105, 105, 105))
+                            .addGroup(fornecedoresLayout.createSequentialGroup()
+                                .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(labelTelefone3Fornecedor)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ddd3Fornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, fornecedoresLayout.createSequentialGroup()
+                                        .addGap(286, 286, 286)
+                                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel45)
+                                            .addComponent(labelTelefone2Fornecedor))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(ddd2Fornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(dddFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(telefone3Fornecedor)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(delTel3Fornecedor))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(telefone2Fornecedor)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(delTel2Fornecedor))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fornecedoresLayout.createSequentialGroup()
+                                        .addComponent(telefoneFornecedor)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(addTelefoneFornecedor)))))))
+                .addGap(151, 151, 151))
         );
         fornecedoresLayout.setVerticalGroup(
             fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fornecedoresLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5)
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addComponent(jLabel29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(fornecedoresLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel33)
+                            .addComponent(nomeFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel34)
+                            .addComponent(emailFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel43)
+                            .addComponent(documentoFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel45)
+                            .addComponent(dddFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(telefoneFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addTelefoneFornecedor))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelTelefone2Fornecedor)
+                            .addComponent(ddd2Fornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(telefone2Fornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(delTel2Fornecedor))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelTelefone3Fornecedor)
+                            .addComponent(ddd3Fornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(telefone3Fornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(delTel3Fornecedor))
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel44)
+                        .addGap(18, 18, 18)
+                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel48)
+                            .addComponent(cepFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel49)
+                            .addComponent(logradouroFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel50)
+                            .addComponent(numeroFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel51)
+                            .addComponent(bairroFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel52)
+                            .addComponent(cidadeFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel53)
+                            .addComponent(estadosFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(fornecedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(refreshFornecedor)
+                            .addComponent(deleteFornecedor)
+                            .addComponent(confirmFornecedor))))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
 
         mainPanel.add(fornecedores, "fornecedores");
@@ -1359,6 +1872,19 @@ public class Principal extends javax.swing.JFrame {
             
         }
         
+        if(menu.equals("fornecedores")){
+            for (Component C : fornecedores.getComponents()){
+            
+                if (C instanceof JTextField){
+
+                    ((JTextComponent) C).setText(null);
+                }
+                
+            }
+            tabelaFornecedor.clearSelection();
+            
+        }
+        
         
         labelTelefone2.setVisible(false);
         ddd2.setVisible(false);
@@ -1368,6 +1894,24 @@ public class Principal extends javax.swing.JFrame {
         ddd3.setVisible(false);
         telefone3.setVisible(false);
         delTel3.setVisible(false);
+        
+        labelTelefone2Cliente.setVisible(false);
+        ddd2Cliente.setVisible(false);
+        telefone2Cliente.setVisible(false);
+        delTel2Cliente.setVisible(false);
+        labelTelefone3Cliente.setVisible(false);
+        ddd3Cliente.setVisible(false);
+        telefone3Cliente.setVisible(false);
+        delTel3Cliente.setVisible(false);
+        
+        labelTelefone2Fornecedor.setVisible(false);
+        ddd2Fornecedor.setVisible(false);
+        telefone2Fornecedor.setVisible(false);
+        delTel2Fornecedor.setVisible(false);
+        labelTelefone3Fornecedor.setVisible(false);
+        ddd3Fornecedor.setVisible(false);
+        telefone3Fornecedor.setVisible(false);
+        delTel3Fornecedor.setVisible(false);
         
         
     }
@@ -1581,6 +2125,102 @@ public class Principal extends javax.swing.JFrame {
 
             deleteCliente.setVisible(true);
             confirmCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/edit.png")));
+
+        }
+        
+        if(menu.equals("fornecedores")){
+            DecimalFormat df = new DecimalFormat("00");
+            DecimalFormat dff = new DecimalFormat("0000");
+            Long id = Long.parseLong((String) tabelaFornecedor.getValueAt(tabelaFornecedor.getSelectedRow(), 0));
+            PessoaDAO dao = new PessoaDAO();
+            Pessoa pessoa = dao.getById(id);
+
+            nomeFornecedor.setText(pessoa.getNome());
+            emailFornecedor.setText(pessoa.getEmail());
+
+            
+            documentoFornecedor.setText(pessoa.getDocumento().getNumero());
+
+            if(pessoa.getTelefones().size() == 1){
+                labelTelefone2Fornecedor.setVisible(false);
+                ddd2Fornecedor.setVisible(false);
+                ddd2Fornecedor.setText(null);
+                telefone2Fornecedor.setVisible(false);
+                telefone2Fornecedor.setText(null);
+                delTel2Fornecedor.setVisible(false);
+
+                labelTelefone3Fornecedor.setVisible(false);
+                ddd3Fornecedor.setVisible(false);
+                ddd3Fornecedor.setText(null);
+                telefone3Fornecedor.setVisible(false);
+                telefone3Fornecedor.setText(null);
+                delTel3Fornecedor.setVisible(false);
+
+                dddFornecedor.setText(pessoa.getTelefones().get(0).getDdd());
+                telefoneFornecedor.setText(pessoa.getTelefones().get(0).getNumero());
+            }
+
+
+            if(pessoa.getTelefones().size() == 2){
+                labelTelefone2Fornecedor.setVisible(true);
+                ddd2Fornecedor.setVisible(true);
+                telefone2Fornecedor.setVisible(true);
+                delTel2Fornecedor.setVisible(true);
+
+                labelTelefone3Fornecedor.setVisible(false);
+                ddd3Fornecedor.setVisible(false);
+                ddd3Fornecedor.setText(null);
+                telefone3Fornecedor.setVisible(false);
+                telefone3Fornecedor.setText(null);
+                delTel3Fornecedor.setVisible(false);
+
+                dddFornecedor.setText(pessoa.getTelefones().get(0).getDdd());
+                telefoneFornecedor.setText(pessoa.getTelefones().get(0).getNumero());
+                ddd2Fornecedor.setText(pessoa.getTelefones().get(1).getDdd());
+                telefone2Fornecedor.setText(pessoa.getTelefones().get(1).getNumero());
+            }
+
+
+            if(pessoa.getTelefones().size() == 3){
+                labelTelefone2Fornecedor.setVisible(true);
+                ddd2Fornecedor.setVisible(true);
+                telefone2Fornecedor.setVisible(true);
+                delTel2Fornecedor.setVisible(true);
+
+                ddd2Fornecedor.setText(pessoa.getTelefones().get(1).getDdd());
+                telefone2Fornecedor.setText(pessoa.getTelefones().get(1).getNumero());
+
+                labelTelefone3Fornecedor.setVisible(true);
+                ddd3Fornecedor.setVisible(true);
+                telefone3Fornecedor.setVisible(true);
+                delTel3Fornecedor.setVisible(true);
+
+                dddFornecedor.setText(pessoa.getTelefones().get(0).getDdd());
+                telefoneFornecedor.setText(pessoa.getTelefones().get(0).getNumero());
+                ddd2Fornecedor.setText(pessoa.getTelefones().get(1).getDdd());
+                telefone2Fornecedor.setText(pessoa.getTelefones().get(1).getNumero());
+                ddd3Fornecedor.setText(pessoa.getTelefones().get(2).getDdd());
+                telefone3Fornecedor.setText(pessoa.getTelefones().get(2).getNumero());
+            }
+
+
+
+
+            cepFornecedor.setText(pessoa.getEndereco().getCep());
+            logradouroFornecedor.setText(pessoa.getEndereco().getLogradouro());
+            numeroFornecedor.setText(pessoa.getEndereco().getNumero());
+            bairroFornecedor.setText(pessoa.getEndereco().getBairro().getNome());
+            cidadeFornecedor.setText(pessoa.getEndereco().getBairro().getCidade().getNome());
+
+
+
+
+
+            estadosFornecedor.setSelectedItem(pessoa.getEndereco().getBairro().getCidade().getEstado().getUf());
+            
+
+            deleteFornecedor.setVisible(true);
+            confirmFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/edit.png")));
 
         }
     }
@@ -2496,6 +3136,471 @@ public class Principal extends javax.swing.JFrame {
         carregaDados();
     }//GEN-LAST:event_deleteClienteMouseClicked
 
+    private void addTelefoneFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addTelefoneFornecedorMouseClicked
+        if(labelTelefone2Fornecedor.isVisible()){
+            labelTelefone3Fornecedor.setVisible(true);
+            ddd3Fornecedor.setVisible(true);
+            telefone3Fornecedor.setVisible(true);
+            delTel3Fornecedor.setVisible(true);
+        }
+        else{
+            labelTelefone2Fornecedor.setVisible(true);
+            ddd2Fornecedor.setVisible(true);
+            telefone2Fornecedor.setVisible(true);
+            delTel2Fornecedor.setVisible(true);
+        }
+    }//GEN-LAST:event_addTelefoneFornecedorMouseClicked
+
+    private void delTel2FornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_delTel2FornecedorMouseClicked
+        Validacao valida = new Validacao();
+        if(tabelaFornecedor.getSelectedRow() > -1){
+            if(valida.validaDdd(ddd2Fornecedor.getText()) && valida.validaTelefone(telefone2Fornecedor.getText())){
+                TelefoneDAO dao = new TelefoneDAO();
+                PessoaDAO pes = new PessoaDAO();
+                Long id = Long.parseLong((String) tabelaFornecedor.getValueAt(tabelaFornecedor.getSelectedRow(), 0));
+
+                Pessoa pessoa = pes.getById(id);
+
+                for(int i = 0; i < pessoa.getTelefones().size(); i++){
+                    if(pessoa.getTelefones().get(i).getDdd().equals(ddd2Fornecedor.getText())
+                        && pessoa.getTelefones().get(i).getNumero().equals(telefone2Fornecedor.getText())){
+                        dao.removeById(pessoa.getTelefones().get(i).getIdTelefone());
+                    }
+                }
+
+                preencheFormulario();
+            }
+        }
+        labelTelefone2Fornecedor.setVisible(false);
+        ddd2Fornecedor.setVisible(false);
+        ddd2Fornecedor.setText(null);
+        telefone2Fornecedor.setVisible(false);
+        telefone2Fornecedor.setText(null);
+        delTel2Fornecedor.setVisible(false);
+    }//GEN-LAST:event_delTel2FornecedorMouseClicked
+
+    private void delTel3FornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_delTel3FornecedorMouseClicked
+       Validacao valida = new Validacao();
+        if(tabelaFornecedor.getSelectedRow() > -1){
+            if(valida.validaDdd(ddd3Fornecedor.getText()) && valida.validaTelefone(telefone3Fornecedor.getText())){
+                TelefoneDAO dao = new TelefoneDAO();
+                PessoaDAO pes = new PessoaDAO();
+                Long id = Long.parseLong((String) tabelaFornecedor.getValueAt(tabelaFornecedor.getSelectedRow(), 0));
+
+                Pessoa pessoa = pes.getById(id);
+
+                for(int i = 0; i < pessoa.getTelefones().size(); i++){
+                    if(pessoa.getTelefones().get(i).getDdd().equals(ddd3Fornecedor.getText())
+                        && pessoa.getTelefones().get(i).getNumero().equals(telefone3Fornecedor.getText())){
+                        dao.removeById(pessoa.getTelefones().get(i).getIdTelefone());
+                    }
+                }
+
+                preencheFormulario();
+            }
+        }
+        labelTelefone3Fornecedor.setVisible(false);
+        ddd3Fornecedor.setVisible(false);
+        ddd3Fornecedor.setText(null);
+        telefone3Fornecedor.setVisible(false);
+        telefone3Fornecedor.setText(null);
+        delTel3Fornecedor.setVisible(false);
+    }//GEN-LAST:event_delTel3FornecedorMouseClicked
+
+    private void refreshFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshFornecedorMouseClicked
+        limpaCampos();
+        deleteFornecedor.setVisible(false);
+        confirmFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png")));
+    }//GEN-LAST:event_refreshFornecedorMouseClicked
+
+    private void confirmFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmFornecedorMouseClicked
+        Validacao valida = new Validacao();
+        
+        if(valida.validaNome(nomeFornecedor.getText())){
+            if(valida.validaEmail(emailFornecedor.getText())){
+                if(valida.validaCnpj(documentoFornecedor.getText())){
+                    if(valida.validaDdd(dddFornecedor.getText())){
+                        if(valida.validaTelefone(telefoneFornecedor.getText())){
+                            if(valida.validaCep(cepFornecedor.getText())){
+                                if(valida.validaEndereco(logradouroFornecedor.getText())){
+                                    if(valida.validaNumero(numeroFornecedor.getText())){
+                                        if(valida.validaEndereco(bairroFornecedor.getText())){
+                                            if(valida.validaEndereco(cidadeFornecedor.getText())){
+                                                
+                                                /*Persist Pessoa*/
+
+
+                                                List<Telefone> telefones = new ArrayList<>();
+
+                                                if(telefoneFornecedor.getText().length() == 8){
+                                                    telefones.add(new Telefone(dddFornecedor.getText(), telefoneFornecedor.getText(), TipoTelefone.Fixo));
+                                                }
+                                                else{
+                                                    telefones.add(new Telefone(dddFornecedor.getText(), telefoneFornecedor.getText(), TipoTelefone.Celular));
+                                                }
+
+                                                if(ddd2Fornecedor.isVisible() && valida.validaDdd(ddd2Fornecedor.getText())){
+                                                    if(valida.validaTelefone(telefone2Fornecedor.getText())){
+                                                        if(telefone2Fornecedor.getText().length() == 8){
+                                                            telefones.add(new Telefone(ddd2Fornecedor.getText(), telefone2Fornecedor.getText(), TipoTelefone.Fixo));
+                                                        }
+                                                        else{
+                                                            telefones.add(new Telefone(ddd2Fornecedor.getText(), telefone2Fornecedor.getText(), TipoTelefone.Celular));
+                                                        }
+                                                    }
+                                                }
+
+                                                if(ddd3Fornecedor.isVisible() && valida.validaDdd(ddd3Fornecedor.getText())){
+                                                    if(valida.validaTelefone(telefone3Fornecedor.getText())){
+                                                        if(telefone3Fornecedor.getText().length() == 8){
+                                                            telefones.add(new Telefone(ddd3Fornecedor.getText(), telefone3Fornecedor.getText(), TipoTelefone.Fixo));
+                                                        }
+                                                        else{
+                                                            telefones.add(new Telefone(ddd3Fornecedor.getText(), telefone3Fornecedor.getText(), TipoTelefone.Celular));
+                                                        }
+                                                    }
+                                                }
+
+                                                Calendar c = Calendar.getInstance();
+                                                c.set(0, 0, 0);
+
+                                                if(!deleteCliente.isVisible()){
+                                                    /*Persistence With Hibernate - Good Luck For Us!!!!*/
+
+                                                    EstadoDAO      estDAO = new EstadoDAO();
+                                                    CidadeDAO      cidDAO = new CidadeDAO();
+                                                    BairroDAO      baiDAO = new BairroDAO();
+                                                    EnderecoDAO    endDAO = new EnderecoDAO();
+                                                    PessoaDAO      pesDAO = new PessoaDAO();
+                                                    DocumentoDAO   docDAO = new DocumentoDAO();
+                                                    TelefoneDAO    telDAO = new TelefoneDAO();
+
+                                                    Cidade objCidade = null;
+                                                    for(int i = 0; i < cidDAO.findAll().size(); i++){
+                                                        if(cidDAO.findAll().get(i).getNome().equals(cidadeFornecedor.getText())){
+                                                            objCidade = cidDAO.findAll().get(i);
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if(objCidade == null){
+                                                        objCidade = new Cidade(cidadeFornecedor.getText());
+                                                    }
+
+                                                    Bairro objBairro = null;
+                                                    for(int i = 0; i < baiDAO.findAll().size(); i++){
+                                                        if(baiDAO.findAll().get(i).getNome().equals(bairroFornecedor.getText())){
+                                                            objBairro = baiDAO.findAll().get(i);
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(objBairro == null){
+                                                        objBairro = new Bairro(bairroFornecedor.getText());
+                                                    }
+
+                                                    Endereco objEndereco = new Endereco   (logradouroFornecedor.getText(), numeroFornecedor.getText(), cepFornecedor.getText());
+                                                    Documento objDocumento = new Documento  (documentoFornecedor.getText(), TipoDocumento.CNPJ);
+
+                                                    Pessoa objPessoa = new Pessoa(nomeFornecedor.getText(), emailFornecedor.getText(), c, Sexo.Não_Definido); 
+                                                    EstadoDAO est = new EstadoDAO();
+                                                    List<Estado> list = est.findByUf(estadosFornecedor.getSelectedItem().toString());
+
+                                                    for(int i = 0; i < list.size(); i++){
+                                                        list.get(i).addCidade(objCidade);
+                                                        objCidade.addBairro(objBairro);
+                                                        objBairro.addEndereco(objEndereco);
+                                                        objPessoa.setEndereco(objEndereco);
+                                                        objPessoa.setTelefone(telefones);
+                                                        objPessoa.setDocumento(objDocumento);
+
+                                                        pesDAO.merge(objPessoa);
+                                                    }
+
+                                                    acao = "insert";
+                                                    Mensagem msg = new Mensagem();
+                                                    Thread mensagemT = new Thread(msg);
+                                                    mensagemT.start();
+
+                                                    limpaCampos();
+
+                                                    carregaDados();
+
+                                                }
+                                                else{
+                                                    /*Atualiza os Dados*/
+                                                    PessoaDAO dao = new PessoaDAO();
+                                                    CidadeDAO      cidDAO = new CidadeDAO();
+                                                    BairroDAO      baiDAO = new BairroDAO();
+
+                                                    Long id = Long.parseLong(
+                                                        (String) tabelaFornecedor.getValueAt(tabelaFornecedor.getSelectedRow(), 0)
+                                                    );
+
+                                                    Pessoa pessoa = dao.getById(id);
+
+                                                    pessoa.setNome(nomeFornecedor.getText());
+                                                    pessoa.setEmail(emailFornecedor.getText());
+                                                    pessoa.setDataNascimento(c);
+                                                    pessoa.getDocumento().setNumero(documentoFornecedor.getText());
+
+                                                    if(pessoa.getTelefones().size() == 1){
+                                                        if(ddd2Fornecedor.isVisible() && valida.validaDdd(ddd2Fornecedor.getText())){
+                                                            if(valida.validaTelefone(telefone2Fornecedor.getText())){
+                                                                pessoa.getTelefones().get(0).setDdd(dddFornecedor.getText());
+                                                                pessoa.getTelefones().get(0).setNumero(telefoneFornecedor.getText());
+
+                                                                if(ddd2Fornecedor.isVisible() && valida.validaDdd(ddd2Fornecedor.getText())){
+                                                                    if(valida.validaTelefone(telefone2Fornecedor.getText())){
+                                                                        if(telefone2Fornecedor.getText().length() == 8){
+                                                                            pessoa.addTelefone(new Telefone(ddd2Fornecedor.getText(), telefone2Fornecedor.getText(), TipoTelefone.Fixo));
+                                                                        }
+                                                                        else{
+                                                                            pessoa.addTelefone(new Telefone(ddd2Fornecedor.getText(), telefone2Fornecedor.getText(), TipoTelefone.Celular));
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                if(ddd3Fornecedor.isVisible() && valida.validaDdd(ddd3Fornecedor.getText())){
+                                                                    if(valida.validaTelefone(telefone3Fornecedor.getText())){
+                                                                        if(telefone3Fornecedor.getText().length() == 8){
+                                                                            pessoa.addTelefone(new Telefone(ddd3Fornecedor.getText(), telefone3Fornecedor.getText(), TipoTelefone.Fixo));
+                                                                        }
+                                                                        else{
+                                                                            pessoa.addTelefone(new Telefone(ddd3Fornecedor.getText(), telefone3Fornecedor.getText(), TipoTelefone.Celular));
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if(pessoa.getTelefones().size() == 2){
+                                                        if(ddd2Fornecedor.isVisible() && valida.validaDdd(ddd2Fornecedor.getText())){
+                                                            if(valida.validaTelefone(telefone2Fornecedor.getText())){
+                                                                pessoa.getTelefones().get(0).setDdd(dddFornecedor.getText());
+                                                                pessoa.getTelefones().get(0).setNumero(telefoneFornecedor.getText());
+
+                                                                pessoa.getTelefones().get(1).setDdd(ddd2Fornecedor.getText());
+                                                                pessoa.getTelefones().get(1).setNumero(telefone2Fornecedor.getText());
+
+                                                                if(ddd3Fornecedor.isVisible() && valida.validaDdd(ddd3Fornecedor.getText())){
+                                                                    if(valida.validaTelefone(telefone3Fornecedor.getText())){
+                                                                        if(telefone3Fornecedor.getText().length() == 8){
+                                                                            pessoa.addTelefone(new Telefone(ddd3Fornecedor.getText(), telefone3Fornecedor.getText(), TipoTelefone.Fixo));
+                                                                        }
+                                                                        else{
+                                                                            pessoa.addTelefone(new Telefone(ddd3Fornecedor.getText(), telefone3Fornecedor.getText(), TipoTelefone.Celular));
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if(pessoa.getTelefones().size() == 3){
+                                                        if(ddd2Fornecedor.isVisible() && valida.validaDdd(ddd2Fornecedor.getText())){
+                                                            if(valida.validaTelefone(telefone2Fornecedor.getText())){
+                                                                pessoa.getTelefones().get(0).setDdd(dddFornecedor.getText());
+                                                                pessoa.getTelefones().get(0).setNumero(telefoneFornecedor.getText());
+
+                                                                pessoa.getTelefones().get(1).setDdd(ddd2Fornecedor.getText());
+                                                                pessoa.getTelefones().get(1).setNumero(telefone2Fornecedor.getText());
+
+                                                                pessoa.getTelefones().get(2).setDdd(ddd3Fornecedor.getText());
+                                                                pessoa.getTelefones().get(2).setNumero(telefone3Fornecedor.getText());
+                                                            }
+                                                        }
+                                                    }
+
+                                                    pessoa.getEndereco().setLogradouro(logradouroFornecedor.getText());
+                                                    pessoa.getEndereco().setNumero(numeroFornecedor.getText());
+                                                    pessoa.getEndereco().setCep(cepFornecedor.getText());
+
+                                                    boolean existeBairro = false;
+                                                    Bairro exsBairro = null;
+                                                    for(int i = 0; i < baiDAO.findAll().size(); i++){
+
+                                                        if(baiDAO.findAll().get(i).getNome().equals(bairroFornecedor.getText())){
+                                                            existeBairro = true;
+                                                            exsBairro = baiDAO.findAll().get(i);
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if(existeBairro){
+                                                        exsBairro.addEndereco(pessoa.getEndereco());
+                                                    }else{
+                                                        new Bairro(bairroFornecedor.getText()).addEndereco(pessoa.getEndereco());
+                                                    }
+
+                                                    boolean existeCidade = false;
+                                                    Cidade exsCidade = null;
+                                                    for(int i = 0; i < cidDAO.findAll().size(); i++){
+
+                                                        if(cidDAO.findAll().get(i).getNome().equals(cidadeFornecedor.getText())){
+                                                            existeCidade = true;
+                                                            exsCidade = cidDAO.findAll().get(i);
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if(existeCidade){
+                                                        exsCidade.addBairro(pessoa.getEndereco().getBairro());
+                                                    }else{
+                                                        new Cidade(cidadeFornecedor.getText()).addBairro(pessoa.getEndereco().getBairro());
+
+                                                    }
+
+                                                    EstadoDAO estDao = new EstadoDAO();
+                                                    Estado atualEstado = null;
+                                                    List<Estado> list = estDao.findByUf(estadosFornecedor.getSelectedItem().toString());
+                                                    for(int i = 0; i < list.size(); i++){
+                                                        atualEstado = list.get(i);
+                                                    }
+
+                                                    atualEstado.addCidade(pessoa.getEndereco().getBairro().getCidade());
+
+
+                                                    pessoa.setDataNascimento(c);
+
+                                                    dao.merge(pessoa);
+
+                                                    acao = "edit";
+                                                    Mensagem msg = new Mensagem();
+                                                    Thread mensagemT = new Thread(msg);
+                                                    mensagemT.start();
+
+                                                    limpaCampos();
+                                                    carregaDados();
+                                                }
+                                                
+                                                
+                                            }
+                                            else{
+                                                JOptionPane.showMessageDialog(null, "Cidade Requerida!");
+                                                cidadeFornecedor.requestFocus();
+                                            }
+                                        }
+                                        else{
+                                            JOptionPane.showMessageDialog(null, "Bairro Requerido!");
+                                            bairroFornecedor.requestFocus();
+                                        }
+                                    }
+                                    else{
+                                        JOptionPane.showMessageDialog(null, "Número Requerido!");
+                                        numeroFornecedor.requestFocus();
+                                    }
+                                }
+                                else{
+                                    JOptionPane.showMessageDialog(null, "Logradouro Requerido!");
+                                    logradouroFornecedor.requestFocus();
+                                }
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(null, "CEP Requerido!");
+                                cepFornecedor.requestFocus();
+                            }
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Telefone Requerido!");
+                            telefoneFornecedor.requestFocus();
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "DDD Requerido!");
+                        dddFornecedor.requestFocus();
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "CNPJ Requerido!");
+                    documentoFornecedor.requestFocus();
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "E-Mail Requerido!");
+                emailFornecedor.requestFocus();
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Nome Fantasia Requerido!");
+            nomeFornecedor.requestFocus();
+        }
+        
+    }//GEN-LAST:event_confirmFornecedorMouseClicked
+
+    private void tabelaFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFornecedorMouseClicked
+        preencheFormulario();
+    }//GEN-LAST:event_tabelaFornecedorMouseClicked
+
+    private void deleteFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteFornecedorMouseClicked
+        PessoaDAO dao = new PessoaDAO();
+        Long id = Long.parseLong(
+            (String) tabelaFornecedor.getValueAt(tabelaFornecedor.getSelectedRow(), 0)
+        );
+
+        dao.removeById(id);
+        acao = "delete";
+        Mensagem msg = new Mensagem();
+        Thread mensagem = new Thread(msg);
+        mensagem.start();
+        limpaCampos();
+        carregaDados();
+    }//GEN-LAST:event_deleteFornecedorMouseClicked
+
+    private void imagemProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemProdutoMouseClicked
+        JFileChooser arquivo = new JFileChooser();
+
+        int retorno = arquivo.showOpenDialog(arquivo);
+        String caminhoArquivo = "";
+
+        if (retorno == JFileChooser.APPROVE_OPTION) {
+            caminhoArquivo = arquivo.getSelectedFile().getAbsolutePath();
+
+            File selecionado = arquivo.getSelectedFile();
+
+            String extensao = getExtensaoArquivo(selecionado);
+
+//            if (!extensao.equals("png") || !extensao.equals("jpg")) {
+//                    JOptionPane.showMessageDialog(null, "Arquivo Não Suportado!");
+//                }
+//            else{
+                try {
+                    BufferedImage original = ImageIO.read(new File(caminhoArquivo));
+                    int tipoImagem = original.getType();
+                    BufferedImage rImg = resizeImage(original, tipoImagem);
+                    JFrame preImg = new ImagemVIsualizacao();
+                    
+                    preImg.setVisible(true);
+                    preImg.setBackground(Color.yellow);
+                    imagemProduto.setIcon(new javax.swing.ImageIcon(rImg));
+                } catch (IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+//            }
+
+        }
+    }//GEN-LAST:event_imagemProdutoMouseClicked
+    
+    private static BufferedImage resizeImage(BufferedImage originalImage, int type){
+	BufferedImage resizedImage = new BufferedImage(107, 110, type);
+	Graphics2D g = resizedImage.createGraphics();
+	g.drawImage(originalImage, 0, 0, 107, 110, null);
+	g.dispose();
+
+	return resizedImage;
+    }
+    
+    private static String getExtensaoArquivo(File file){
+        String nomeArquivo = file.getName();
+        if(nomeArquivo.lastIndexOf(".") != -1 && nomeArquivo.lastIndexOf(".") != 0){
+            return nomeArquivo.substring(nomeArquivo.lastIndexOf(".")+1);
+        }
+        else {
+            return "";
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -2535,8 +3640,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> acessos;
     private javax.swing.JButton addTelCliente;
     private javax.swing.JButton addTelefone;
+    private javax.swing.JButton addTelefoneFornecedor;
     private javax.swing.JTextField bairro;
     private javax.swing.JTextField bairroCliente;
+    private javax.swing.JTextField bairroFornecedor;
     private javax.swing.JButton btnCliente;
     private javax.swing.JButton btnCompra;
     private javax.swing.JButton btnFornecedor;
@@ -2548,35 +3655,52 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnVenda;
     private javax.swing.JTextField cep;
     private javax.swing.JTextField cepCliente;
+    private javax.swing.JTextField cepFornecedor;
     private javax.swing.JCheckBox checkSenha;
     private javax.swing.JTextField cidade;
     private javax.swing.JTextField cidadeCliente;
+    private javax.swing.JTextField cidadeFornecedor;
     private javax.swing.JPanel clientes;
+    private javax.swing.JComboBox<String> comboFornecedores;
     private javax.swing.JPanel compras;
     private javax.swing.JButton confirm;
     private javax.swing.JButton confirmCliente;
+    private javax.swing.JButton confirmFornecedor;
+    private javax.swing.JButton confirmProduto;
     private javax.swing.JTextField dataNascimento;
     private javax.swing.JTextField dataNascimentoCliente;
     private javax.swing.JTextField ddd;
     private javax.swing.JTextField ddd2;
     private javax.swing.JTextField ddd2Cliente;
+    private javax.swing.JTextField ddd2Fornecedor;
     private javax.swing.JTextField ddd3;
     private javax.swing.JTextField ddd3Cliente;
+    private javax.swing.JTextField ddd3Fornecedor;
     private javax.swing.JTextField dddCliente;
+    private javax.swing.JTextField dddFornecedor;
     private javax.swing.JButton delTel2;
     private javax.swing.JButton delTel2Cliente;
+    private javax.swing.JButton delTel2Fornecedor;
     private javax.swing.JButton delTel3;
     private javax.swing.JButton delTel3Cliente;
+    private javax.swing.JButton delTel3Fornecedor;
     private javax.swing.JButton delete;
     private javax.swing.JButton deleteCliente;
+    private javax.swing.JButton deleteFornecedor;
+    private javax.swing.JButton deleteProduto;
+    private javax.swing.JTextArea descricaoProduto;
     private javax.swing.JTextField documento;
     private javax.swing.JTextField documentoCliente;
+    private javax.swing.JTextField documentoFornecedor;
     private javax.swing.JLabel eagles;
     private javax.swing.JTextField email;
     private javax.swing.JTextField emailCliente;
+    private javax.swing.JTextField emailFornecedor;
     private javax.swing.JComboBox<String> estados;
     private javax.swing.JComboBox<String> estadosCliente;
+    private javax.swing.JComboBox<String> estadosFornecedor;
     private javax.swing.JPanel fornecedores;
+    private javax.swing.JButton imagemProduto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2598,10 +3722,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
@@ -2611,43 +3738,78 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
+    private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelTelefone2;
     private javax.swing.JLabel labelTelefone2Cliente;
+    private javax.swing.JLabel labelTelefone2Fornecedor;
     private javax.swing.JLabel labelTelefone3;
     private javax.swing.JLabel labelTelefone3Cliente;
+    private javax.swing.JLabel labelTelefone3Fornecedor;
     private javax.swing.JLabel logado;
     private javax.swing.JLabel logo;
     private javax.swing.JTextField logradouro;
     private javax.swing.JTextField logradouroCliente;
+    private javax.swing.JTextField logradouroFornecedor;
     private javax.swing.JPanel mainPanel;
     public static javax.swing.JLabel mensagem;
     private javax.swing.JTextField nome;
     private javax.swing.JTextField nomeCliente;
+    private javax.swing.JTextField nomeFornecedor;
+    private javax.swing.JTextField nomeProduto;
     private javax.swing.JTextField numero;
     private javax.swing.JTextField numeroCliente;
+    private javax.swing.JTextField numeroFornecedor;
     private javax.swing.JPanel produtos;
+    private javax.swing.JSpinner quantidadeProduto;
     private javax.swing.JButton refreshCliente;
+    private javax.swing.JButton refreshFornecedor;
+    private javax.swing.JButton refreshProduto;
     private javax.swing.JPanel relatorios;
     private javax.swing.JPasswordField senha;
     private javax.swing.JComboBox<String> sexo;
     private javax.swing.JComboBox<String> sexoCliente;
     private javax.swing.JTable tabelaCliente;
+    private javax.swing.JTable tabelaFornecedor;
     private javax.swing.JTable tabelaUsuario;
     private javax.swing.JTextField telefone;
     private javax.swing.JTextField telefone2;
     private javax.swing.JTextField telefone2Cliente;
+    private javax.swing.JTextField telefone2Fornecedor;
     private javax.swing.JTextField telefone3;
     private javax.swing.JTextField telefone3Cliente;
+    private javax.swing.JTextField telefone3Fornecedor;
     private javax.swing.JTextField telefoneCliente;
+    private javax.swing.JTextField telefoneFornecedor;
     private javax.swing.JTextField usuario;
     private javax.swing.JPanel usuarios;
+    private javax.swing.JTextField valorCompraProduto;
+    private javax.swing.JTextField valorVendaProduto;
     private javax.swing.JPanel vendas;
     // End of variables declaration//GEN-END:variables
 }
