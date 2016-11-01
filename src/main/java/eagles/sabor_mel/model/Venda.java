@@ -46,7 +46,9 @@ public class Venda implements Serializable{
     @Column(name = "tipoVenda")
     private String tipoVenda;
     
-      
+    @Column(name = "formaPagamento")
+    private String formaPagamento;
+    
     @Column(name = "desconto")
     private Double desconto;
     
@@ -96,6 +98,14 @@ public class Venda implements Serializable{
 
     public void setTipoVenda(String tipoVenda) {
         this.tipoVenda = tipoVenda;
+    }
+
+    public String getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public void setFormaPagamento(String formaPagamento) {
+        this.formaPagamento = formaPagamento;
     }
 
     public Double getDesconto() {
