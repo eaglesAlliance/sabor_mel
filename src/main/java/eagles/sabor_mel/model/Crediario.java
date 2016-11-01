@@ -6,6 +6,7 @@
 package eagles.sabor_mel.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,12 +39,16 @@ public class Crediario implements Serializable{
     @Column(name = "quantidadeParcela", nullable = false)
     private Integer quantidadeParcela;
     
-    @ManyToOne
-    @JoinColumn(name = "idVenda", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venda", nullable = false)
     private Venda venda;
     
     @OneToMany(mappedBy = "crediario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Parcela> parcelas;
+    
+    public Crediario(){
+        parcelas = new ArrayList<Parcela>();
+    }
 
     public List<Parcela> getParcelas() {
         return parcelas;
