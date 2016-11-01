@@ -22,15 +22,15 @@ public class Mensagem implements Runnable{
         
         switch (eagles.sabor_mel.view.Principal.acao) {
             case "edit":
-                mensagem = "Alteração de Dados Realizada com Sucesso!";
+                mensagem = "Alteração Realizada com Sucesso!";
                 eagles.sabor_mel.view.Principal.mensagem.setForeground(Color.YELLOW);
                 break;
             case "delete":
-                mensagem = "Usuário Excluído Com Sucesso!";
+                mensagem = "Exclusão Realizada Com Sucesso!";
                 eagles.sabor_mel.view.Principal.mensagem.setForeground(Color.RED);
                 break;
             case "insert": 
-                mensagem = "Usuário Cadastrado Com Sucesso!";
+                mensagem = "Inserção Realizada Com Sucesso!";
                 eagles.sabor_mel.view.Principal.mensagem.setForeground(Color.GREEN);
                 break;
             default:
