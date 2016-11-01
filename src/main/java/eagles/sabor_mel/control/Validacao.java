@@ -71,4 +71,8 @@ public class Validacao {
     public boolean validaSenha(String senha){
         return senha.length() > 5;
     }
+    
+    public boolean validaPreco(String preco){
+        return !preco.equals("R$   ,  ");
+    }
 }
