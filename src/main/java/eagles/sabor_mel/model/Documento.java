@@ -1,6 +1,7 @@
 package eagles.sabor_mel.model;
 
 
+import eagles.sabor_mel.model.enums.TipoDocumento;
 import javax.persistence.*;
 import java.io.*;
 

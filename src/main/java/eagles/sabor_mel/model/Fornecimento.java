@@ -43,8 +43,8 @@ public class Fornecimento implements Serializable{
     private Calendar dataFornecimento;
     
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "idFornecedor", nullable = false)
-    private Fornecedor fornecedor;
+    @JoinColumn(name = "idPessoa", nullable = false)
+    private Pessoa fornecedor;
     
     @OneToMany(mappedBy = "fornecimento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ItemFornecimento> itens;
@@ -74,13 +74,12 @@ public class Fornecimento implements Serializable{
         this.dataFornecimento = dataFornecimento;
     }
 
-    public Fornecedor getFornecedor() {
+    public Pessoa getPessoa() {
         return fornecedor;
     }
 
-    public void setFornecedor(Fornecedor fornecedor) {
+    public void setPessoa(Pessoa fornecedor) {
         this.fornecedor = fornecedor;
     }
-    
     
 }
