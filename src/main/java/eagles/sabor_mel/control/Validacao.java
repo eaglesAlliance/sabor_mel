@@ -75,4 +75,12 @@ public class Validacao {
     public boolean validaPreco(String preco){
         return !preco.equals("R$   ,  ");
     }
+    
+    public boolean validaImagem(String imagem){
+        return imagem == null;
+    }
+    
+    public boolean validaTexto(String texto){
+        return texto.length() > 8;
+    }
 }
