@@ -11,6 +11,7 @@ import eagles.sabor_mel.dao.EnderecoDAO;
 import eagles.sabor_mel.dao.EstadoDAO;
 import eagles.sabor_mel.dao.FuncionarioDAO;
 import eagles.sabor_mel.dao.PessoaDAO;
+import eagles.sabor_mel.dao.ProdutoDAO;
 import eagles.sabor_mel.dao.TelefoneDAO;
 import eagles.sabor_mel.model.Acesso;
 import eagles.sabor_mel.model.Bairro;
@@ -20,10 +21,12 @@ import eagles.sabor_mel.model.Endereco;
 import eagles.sabor_mel.model.Estado;
 import eagles.sabor_mel.model.Funcionario;
 import eagles.sabor_mel.model.Pessoa;
+import eagles.sabor_mel.model.Produto;
 import eagles.sabor_mel.model.Sexo;
 import eagles.sabor_mel.model.Telefone;
 import eagles.sabor_mel.model.TipoDocumento;
 import eagles.sabor_mel.model.TipoTelefone;
+import eagles.sabor_mel.test.Temp;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -33,8 +36,15 @@ import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -65,6 +75,13 @@ public class Principal extends javax.swing.JFrame {
     /*Variavel para definir a opção selecionada do menu*/
     public static String menu = "";
     
+    /*Variavel para definir o caminho da imagem*/
+    public static String caminhoArquivo = "";
+    public static String nomeArquivo = "";
+    
+    /*Variavel para definir valor total da venda*/
+    public static Double totalParcialVenda = 0.0;
+    
     /**
      * Creates new form Principal
      */
@@ -82,7 +99,7 @@ public class Principal extends javax.swing.JFrame {
             logado.setText("Usuário: "+Login.nome);
             this.setExtendedState(this.MAXIMIZED_BOTH); 
             carregaComboEstados();
-            carregaComboFornecedores();
+            //carregaComboFornecedores();
             carregaDados();
             redefineEstilo();
         }
@@ -107,16 +124,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }
     
-    public void carregaComboFornecedores(){
-        PessoaDAO dao = new PessoaDAO();
-        List<Pessoa> Listfornecedores = dao.findAll();
-        
-        for(int i = 0; i < Listfornecedores.size(); i++){
-           if(Listfornecedores.get(i).getDocumento().getTipo().toString().equals("CNPJ")){
-                comboFornecedores.addItem(Listfornecedores.get(i).getNome());
-            }
-        }
-    }
+//    public void carregaComboFornecedores(){
+//        PessoaDAO dao = new PessoaDAO();
+//        List<Pessoa> Listfornecedores = dao.findAll();
+//        
+//        for(int i = 0; i < Listfornecedores.size(); i++){
+//           if(Listfornecedores.get(i).getDocumento().getTipo().toString().equals("CNPJ")){
+//                comboFornecedores.addItem(Listfornecedores.get(i).getNome());
+//            }
+//        }
+//    }
 
     public void redefineEstilo() {
         acessos.setBackground(Color.white);
@@ -215,6 +232,24 @@ public class Principal extends javax.swing.JFrame {
             confirmFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png")));
             deleteFornecedor.setVisible(false);
         }
+        
+        /*Produtos*/
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        List<Produto> listProdutos = produtoDAO.findAll();
+        ((DefaultTableModel)tabelaProduto.getModel()).setNumRows(0);
+        for(int i = 0; i < listProdutos.size(); i++){
+            Double total = listProdutos.get(i).getQuantidade() * listProdutos.get(i).getValorUnitario();
+            ((DefaultTableModel)tabelaProduto.getModel()).addRow(new String[]{
+                listProdutos.get(i).getIdProduto().toString(),
+                listProdutos.get(i).getNome(),
+                listProdutos.get(i).getValorUnitario().toString(),
+                listProdutos.get(i).getQuantidade().toString(),
+                total.toString() 
+            });
+            
+            confirmProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png")));
+            deleteProduto.setVisible(false);
+        }
     }
     
     /**
@@ -237,7 +272,14 @@ public class Principal extends javax.swing.JFrame {
         eagles = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         vendas = new javax.swing.JPanel();
+        jLabel57 = new javax.swing.JLabel();
+        codigoProduto = new javax.swing.JTextField();
+        procuraProduto = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tabelaVendaProduto = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
+        totalVendaProduto = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         clientes = new javax.swing.JPanel();
         jLabel26 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -327,29 +369,13 @@ public class Principal extends javax.swing.JFrame {
         jLabel54 = new javax.swing.JLabel();
         quantidadeProduto = new javax.swing.JSpinner();
         jLabel55 = new javax.swing.JLabel();
-        valorCompraProduto = new javax.swing.JTextField();
-        try{ 
-            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("R$ ##,##");
-            valorCompraProduto = new javax.swing.JFormattedTextField(mask);
-        }
-        catch (Exception e){
-        }
+        precoProduto = new javax.swing.JTextField();
         jLabel56 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         descricaoProduto = new javax.swing.JTextArea();
         deleteProduto = new javax.swing.JButton();
         confirmProduto = new javax.swing.JButton();
         refreshProduto = new javax.swing.JButton();
-        jLabel57 = new javax.swing.JLabel();
-        valorVendaProduto = new javax.swing.JTextField();
-        try{ 
-            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("R$ ##,##");
-            valorVendaProduto = new javax.swing.JFormattedTextField(mask);
-        }
-        catch (Exception e){
-        }
-        jLabel58 = new javax.swing.JLabel();
-        comboFornecedores = new javax.swing.JComboBox<>();
         imagemProduto = new javax.swing.JLabel();
         compras = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -596,8 +622,38 @@ public class Principal extends javax.swing.JFrame {
 
         mainPanel.setLayout(new java.awt.CardLayout());
 
-        jLabel7.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel7.setText("PANEL VENDAS - UNDER CONSTRUCTION...");
+        jLabel57.setText("Produto");
+
+        procuraProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search.png"))); // NOI18N
+        procuraProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                procuraProdutoMouseClicked(evt);
+            }
+        });
+
+        tabelaVendaProduto.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Produto", "Preço"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane6.setViewportView(tabelaVendaProduto);
+
+        jLabel7.setText("TOTAL");
+
+        totalVendaProduto.setEditable(false);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete_icon.png"))); // NOI18N
 
         javax.swing.GroupLayout vendasLayout = new javax.swing.GroupLayout(vendas);
         vendas.setLayout(vendasLayout);
@@ -605,15 +661,43 @@ public class Principal extends javax.swing.JFrame {
             vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(vendasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7)
-                .addContainerGap(706, Short.MAX_VALUE))
+                .addGroup(vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(vendasLayout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalVendaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(vendasLayout.createSequentialGroup()
+                        .addGroup(vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(codigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel57))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(procuraProduto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
+                .addContainerGap(807, Short.MAX_VALUE))
         );
         vendasLayout.setVerticalGroup(
             vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(vendasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addGroup(vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(vendasLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel57))
+                    .addGroup(vendasLayout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addGroup(vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(codigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(procuraProduto)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(vendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(totalVendaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(256, Short.MAX_VALUE))
         );
 
         mainPanel.add(vendas, "vendas");
@@ -932,6 +1016,11 @@ public class Principal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabelaProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaProdutoMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tabelaProduto);
 
         jLabel47.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -943,7 +1032,7 @@ public class Principal extends javax.swing.JFrame {
 
         quantidadeProduto.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
-        jLabel55.setText("Compra ");
+        jLabel55.setText("Preço");
 
         jLabel56.setText("Descrição");
 
@@ -952,6 +1041,11 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane5.setViewportView(descricaoProduto);
 
         deleteProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete.png"))); // NOI18N
+        deleteProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteProdutoMouseClicked(evt);
+            }
+        });
 
         confirmProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/checked (1).png"))); // NOI18N
         confirmProduto.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -967,10 +1061,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jLabel57.setText("Venda ");
-
-        jLabel58.setText("Fornecedor");
-
         imagemProduto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imagemProduto.setText("IMAGEM");
         imagemProduto.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -979,6 +1069,12 @@ public class Principal extends javax.swing.JFrame {
         imagemProduto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 imagemProdutoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                imagemProdutoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                imagemProdutoMouseExited(evt);
             }
         });
 
@@ -999,29 +1095,17 @@ public class Principal extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(produtosLayout.createSequentialGroup()
-                                        .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(produtosLayout.createSequentialGroup()
-                                                .addComponent(jLabel2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(nomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel54)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(quantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(produtosLayout.createSequentialGroup()
-                                                .addComponent(jLabel58)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(comboFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, produtosLayout.createSequentialGroup()
-                                                .addComponent(jLabel57)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(valorVendaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(produtosLayout.createSequentialGroup()
-                                                .addComponent(jLabel55)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(valorCompraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(nomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel54)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(quantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel55)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(precoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel56)
                                     .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addGroup(produtosLayout.createSequentialGroup()
@@ -1054,20 +1138,14 @@ public class Principal extends javax.swing.JFrame {
                                     .addComponent(jLabel54)
                                     .addComponent(quantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel55)
-                                    .addComponent(valorCompraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel57)
-                                    .addComponent(valorVendaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel58)
-                                    .addComponent(comboFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
+                                    .addComponent(precoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(48, 48, 48)
                                 .addComponent(jLabel56)
                                 .addGap(8, 8, 8)
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(deleteProduto)
+                                .addGroup(produtosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(deleteProduto, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(confirmProduto)
                                     .addComponent(refreshProduto))))))
                 .addContainerGap(65, Short.MAX_VALUE))
@@ -1820,7 +1898,7 @@ public class Principal extends javax.swing.JFrame {
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "produtos");
         menu = "produtos";
-        carregaComboFornecedores();
+        //carregaComboFornecedores();
     }//GEN-LAST:event_btnProdutoActionPerformed
 
     private void btnCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraActionPerformed
@@ -1915,6 +1993,7 @@ public class Principal extends javax.swing.JFrame {
             descricaoProduto.setText(null);
             imagemProduto.setIcon(null);
             imagemProduto.setText("IMAGEM");
+            quantidadeProduto.setValue(1);
             
         }
         
@@ -2254,6 +2333,28 @@ public class Principal extends javax.swing.JFrame {
 
             deleteFornecedor.setVisible(true);
             confirmFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/edit.png")));
+
+        }
+        
+        
+        if(menu.equals("produtos")){
+            DecimalFormat df = new DecimalFormat("0.00");
+            
+            Long id = Long.parseLong((String) tabelaProduto.getValueAt(tabelaProduto.getSelectedRow(), 0));
+            ProdutoDAO dao = new ProdutoDAO();
+            Produto produto = dao.getById(id);
+
+            nomeProduto.setText(produto.getNome());
+            quantidadeProduto.setValue(produto.getQuantidade());
+            precoProduto.setText(df.format(produto.getValorUnitario()).toString());
+            descricaoProduto.setText(produto.getDescricao());
+            imagemProduto.setText(null);
+            imagemProduto.setIcon(new javax.swing.ImageIcon(produto.getImagem()));
+            
+            caminhoArquivo = null;
+            
+            deleteProduto.setVisible(true);
+            confirmProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/edit.png")));
 
         }
     }
@@ -3584,11 +3685,11 @@ public class Principal extends javax.swing.JFrame {
         JFileChooser arquivo = new JFileChooser();
 
         int retorno = arquivo.showOpenDialog(arquivo);
-        String caminhoArquivo = "";
+        
 
         if (retorno == JFileChooser.APPROVE_OPTION) {
             caminhoArquivo = arquivo.getSelectedFile().getAbsolutePath();
-
+            nomeArquivo = arquivo.getSelectedFile().getName();
             File selecionado = arquivo.getSelectedFile();
 
             String extensao = getExtensaoArquivo(selecionado);
@@ -3625,8 +3726,206 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshProdutoMouseClicked
 
     private void confirmProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmProdutoMouseClicked
-        
+          Validacao valida = new Validacao();
+          
+          if(valida.validaImagem(imagemProduto.getText())){
+              if(valida.validaNome(nomeProduto.getText())){
+                  if(valida.validaPreco(precoProduto.getText())){
+                        if(valida.validaTexto(descricaoProduto.getText())){
+                            
+                            
+                            if(!deleteProduto.isVisible()){
+                                FileInputStream origem;
+                                FileOutputStream destino;
+                                FileChannel fcOrigem;
+                                FileChannel fcDestino;
+
+                                /*Persistindo Produto*/
+                                ProdutoDAO dao = new ProdutoDAO();
+
+                                 try {
+
+                                    URL resource = Principal.class.getResource("/produtos/");
+
+                                    Produto objProduto = new Produto(
+                                      nomeProduto.getText(), descricaoProduto.getText(), Integer.parseInt(quantidadeProduto.getValue().toString()),
+                                      Double.parseDouble(precoProduto.getText().replace("R$", "").replace(",", ".")), (Paths.get(resource.toURI()).toFile()+ "/" +nomeArquivo));
+
+                                    origem = new FileInputStream(caminhoArquivo);
+                                    destino = new FileOutputStream( Paths.get(resource.toURI()).toFile()+ "/" +nomeArquivo);
+
+                                    fcOrigem = origem.getChannel();
+                                    fcDestino = destino.getChannel();
+
+                                    fcOrigem.transferTo(0, fcOrigem.size(), fcDestino);
+
+                                    dao.persist(objProduto);
+
+                                    origem.close();
+                                    destino.close();
+                                } catch (FileNotFoundException ex) {
+                                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (URISyntaxException ex) {
+                                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
+
+
+                                acao = "insert";
+                                Mensagem msg = new Mensagem();
+                                Thread mensagemT = new Thread(msg);
+                                mensagemT.start();
+
+                                limpaCampos();
+
+                                carregaDados();
+                            }
+                            else{
+                                /*Atualiza os Dados*/
+                                ProdutoDAO dao = new ProdutoDAO();
+
+                                Long id = Long.parseLong(
+                                    (String) tabelaProduto.getValueAt(tabelaProduto.getSelectedRow(), 0)
+                                );
+
+                                Produto produto = dao.getById(id);
+
+                                produto.setNome(nomeProduto.getText());
+                                produto.setQuantidade(Integer.parseInt(quantidadeProduto.getValue().toString()));
+                                produto.setValorUnitario(Double.parseDouble(precoProduto.getText().replace("R$", "").replace(",", ".")));
+                                produto.setDescricao(descricaoProduto.getText());
+                                
+                                if(!caminhoArquivo.isEmpty()){
+                                    FileInputStream origem;
+                                    FileOutputStream destino;
+                                    FileChannel fcOrigem;
+                                    FileChannel fcDestino;
+                                    
+                                    File imagemAntiga = new File(produto.getImagem());
+                                    imagemAntiga.delete();
+                                    
+                                    try {
+                                        URL resource = Principal.class.getResource("/produtos/");
+                                        origem = new FileInputStream(caminhoArquivo);
+                                        JOptionPane.showMessageDialog(null, caminhoArquivo);
+                                        JOptionPane.showMessageDialog(null, nomeArquivo);
+                                        destino = new FileOutputStream( Paths.get(resource.toURI()).toFile()+ "/" +nomeArquivo);
+                                        produto.setImagem((Paths.get(resource.toURI()).toFile()+ "/" +nomeArquivo));
+                                        
+                                        fcOrigem = origem.getChannel();
+                                        fcDestino = destino.getChannel();
+
+                                        fcOrigem.transferTo(0, fcOrigem.size(), fcDestino);
+                                        
+                                        origem.close();
+                                        destino.close();
+                                       
+                                    } 
+                                    catch (FileNotFoundException ex) {
+                                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                    } 
+                                    catch (URISyntaxException ex) {
+                                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                    } 
+                                    catch (IOException ex) {
+                                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    
+                                }
+                                
+                                
+                                dao.merge(produto);
+
+                                acao = "edit";
+                                Mensagem msg = new Mensagem();
+                                Thread mensagemT = new Thread(msg);
+                                mensagemT.start();
+
+                                limpaCampos();
+                                carregaDados();
+                            
+                            }
+
+                        }
+                        else{
+                              JOptionPane.showMessageDialog(null,"Descrição requerida!");
+                              descricaoProduto.requestFocus();
+                        }
+                  }
+                  else{
+                        JOptionPane.showMessageDialog(null,"Valor de compra requerido!");
+                        precoProduto.requestFocus();
+                  }
+              }
+              else{
+                    JOptionPane.showMessageDialog(null,"Nome requerido!");
+                    nomeProduto.requestFocus();
+              }
+          }
+          else{
+              JOptionPane.showMessageDialog(null,"Selecione uma imagem!");
+              imagemProduto.requestFocus();
+          }
     }//GEN-LAST:event_confirmProdutoMouseClicked
+
+    private void imagemProdutoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemProdutoMouseEntered
+        Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR); 
+        setCursor(cursor);
+    }//GEN-LAST:event_imagemProdutoMouseEntered
+
+    private void imagemProdutoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemProdutoMouseExited
+        Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR); 
+        setCursor(cursor);
+    }//GEN-LAST:event_imagemProdutoMouseExited
+
+    private void tabelaProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProdutoMouseClicked
+        preencheFormulario();
+    }//GEN-LAST:event_tabelaProdutoMouseClicked
+
+    private void deleteProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteProdutoMouseClicked
+        ProdutoDAO dao = new ProdutoDAO();
+        Long id = Long.parseLong(
+            (String) tabelaProduto.getValueAt(tabelaProduto.getSelectedRow(), 0)
+        );
+        
+        File imagemAntiga = new File(dao.getById(id).getImagem());
+        imagemAntiga.delete();
+        
+        dao.removeById(id);
+        acao = "delete";
+        Mensagem msg = new Mensagem();
+        Thread mensagem = new Thread(msg);
+        mensagem.start();
+        limpaCampos();
+        carregaDados();
+    }//GEN-LAST:event_deleteProdutoMouseClicked
+
+    private void procuraProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_procuraProdutoMouseClicked
+        ProdutoDAO dao = new ProdutoDAO();
+        DecimalFormat df = new DecimalFormat("0.00");
+        
+        
+        Long id = Long.parseLong(codigoProduto.getText());
+        
+        try{
+           codigoProduto.setText(null);
+            
+            ((DefaultTableModel)tabelaVendaProduto.getModel()).addRow(new String[]{
+                dao.getById(id).getNome(),
+                df.format(dao.getById(id).getValorUnitario())
+            });
+            
+            totalParcialVenda += dao.getById(id).getValorUnitario();
+            
+            totalVendaProduto.setText(totalParcialVenda.toString());
+        }
+        catch(NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Produto não encontrado");
+            codigoProduto.setText(null);
+        }
+    }//GEN-LAST:event_procuraProdutoMouseClicked
     
     private static BufferedImage resizeImage(BufferedImage originalImage, int type){
 	BufferedImage resizedImage = new BufferedImage(200, 200, type);
@@ -3707,7 +4006,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField cidadeCliente;
     private javax.swing.JTextField cidadeFornecedor;
     private javax.swing.JPanel clientes;
-    private javax.swing.JComboBox<String> comboFornecedores;
+    private javax.swing.JTextField codigoProduto;
     private javax.swing.JPanel compras;
     private javax.swing.JButton confirm;
     private javax.swing.JButton confirmCliente;
@@ -3747,6 +4046,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> estadosFornecedor;
     private javax.swing.JPanel fornecedores;
     private javax.swing.JLabel imagemProduto;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -3800,7 +4100,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel55;
     private javax.swing.JLabel jLabel56;
     private javax.swing.JLabel jLabel57;
-    private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -3810,6 +4109,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JLabel labelTelefone2;
     private javax.swing.JLabel labelTelefone2Cliente;
     private javax.swing.JLabel labelTelefone2Fornecedor;
@@ -3830,6 +4130,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField numero;
     private javax.swing.JTextField numeroCliente;
     private javax.swing.JTextField numeroFornecedor;
+    private javax.swing.JTextField precoProduto;
+    private javax.swing.JButton procuraProduto;
     private javax.swing.JPanel produtos;
     private javax.swing.JSpinner quantidadeProduto;
     private javax.swing.JButton refreshCliente;
@@ -3843,6 +4145,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable tabelaFornecedor;
     private javax.swing.JTable tabelaProduto;
     private javax.swing.JTable tabelaUsuario;
+    private javax.swing.JTable tabelaVendaProduto;
     private javax.swing.JTextField telefone;
     private javax.swing.JTextField telefone2;
     private javax.swing.JTextField telefone2Cliente;
@@ -3852,10 +4155,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField telefone3Fornecedor;
     private javax.swing.JTextField telefoneCliente;
     private javax.swing.JTextField telefoneFornecedor;
+    private javax.swing.JTextField totalVendaProduto;
     private javax.swing.JTextField usuario;
     private javax.swing.JPanel usuarios;
-    private javax.swing.JTextField valorCompraProduto;
-    private javax.swing.JTextField valorVendaProduto;
     private javax.swing.JPanel vendas;
     // End of variables declaration//GEN-END:variables
 }
