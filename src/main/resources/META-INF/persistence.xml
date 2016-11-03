@@ -17,8 +17,8 @@
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sabor_mel"/>
-      <property name="javax.persistence.jdbc.user" value="dhiegobalthazar"/>
-      <property name="javax.persistence.jdbc.password" value="abc123"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <!--<property name="javax.persistence.jdbc.password" value=""/>-->
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
       <property name="hibernate.use_sql_comments" value="false"/>

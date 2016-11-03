@@ -1,5 +1,6 @@
 package eagles.sabor_mel.model;
 
+import eagles.sabor_mel.model.enums.TipoTelefone;
 import javax.persistence.*;
 import java.io.*;
 

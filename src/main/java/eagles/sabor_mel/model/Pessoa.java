@@ -1,5 +1,6 @@
 package eagles.sabor_mel.model;
 
+import eagles.sabor_mel.model.enums.Sexo;
 import javax.persistence.*;
 import java.io.*;
 import java.util.*;
