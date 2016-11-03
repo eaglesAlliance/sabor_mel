@@ -83,4 +83,8 @@ public class Validacao {
     public boolean validaTexto(String texto){
         return texto.length() > 8;
     }
+    
+    public boolean validaCodigoBarras(String codigoBarras){
+        return !codigoBarras.equals("         ");
+    }
 }
