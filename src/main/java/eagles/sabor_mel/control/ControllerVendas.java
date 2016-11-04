@@ -31,6 +31,7 @@ public class ControllerVendas {
      * @author Dhiego
      * Map<String,String> produtos: recebe o id e a quantidade de produtos escolhidos na View
      */
+    
     public boolean vender(long idPessoa, long idFuncionario, String tipoVenda, long[] produtos, int[] quantidades, double desconto) {
         VendaDAO daoVenda = new VendaDAO();
         Venda venda = createVenda(idPessoa, idFuncionario, tipoVenda, desconto, produtos, quantidades);
@@ -47,9 +48,11 @@ public class ControllerVendas {
         
         Crediario crediario =  createCrediario(quantidadeParcela, dia, mes, ano, valorTotal, venda);
         
-        if(!daoCrediario.persist(crediario) && daoVenda.persist(venda))
-            result = false;
-        return result;
+        daoVenda.persist(venda);
+        daoCrediario.persist(crediario);
+        
+        return true;
+        
     }
 
     private Crediario createCrediario(int quantidadeParcela, int dia, int mes, int ano, double valorTotal, Venda venda) {
@@ -80,8 +83,9 @@ public class ControllerVendas {
         FuncionarioDAO daoFuncionario = new FuncionarioDAO();
         ProdutoDAO daoProduto = new ProdutoDAO();
 
-        Pessoa pessoa = daoPessoa.getById(idPessoa);
-        Funcionario funcionario = daoFuncionario.getById(idFuncionario);
+        
+        Pessoa pessoa = null;
+        Funcionario funcionario = null;
 
         Venda venda = new Venda();
         Calendar cal = Calendar.getInstance();
@@ -96,7 +100,9 @@ public class ControllerVendas {
             ItemVenda item = new ItemVenda();
             item.setProduto(produto);
             item.setQuantidade(quantidades[i]);
+            changeQuantityProduto(produto, quantidades[i]);
             venda.addItem(item);
+            
         }
         return venda;
     }
@@ -110,6 +116,13 @@ public class ControllerVendas {
             valorTotal = valorTotal - (valorTotal * (desconto/100));
         }
         return valorTotal;
+    }
+    
+    private boolean changeQuantityProduto(Produto p, int quantity){
+        ProdutoDAO pDAO  = new ProdutoDAO();
+        int newQuantity = p.getQuantidade() - quantity;
+        p.setQuantidade(newQuantity);
+        return pDAO.merge(p);
     }
 
 }
